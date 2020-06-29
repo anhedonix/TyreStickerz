@@ -1,0 +1,87 @@
+import Popover from '@material-ui/core/Popover'
+import PropTypes from 'prop-types'
+import React from 'react'
+import Scroll from 'react-scrollbars-custom'
+
+import NotificationSection from '../NotificationSection/NotificationSection'
+
+const NotificationsPopover = props => {
+  const { personal, global } = props.data
+
+  const calcHeight = () => {
+    const p = personal ? Object.keys(personal).length : 0
+    const g = global ? Object.keys(global).length : 0
+    return (p + g) * 80 + 100
+  }
+
+  const pValues = []
+  for (var key in personal) {
+    pValues.push([key, personal[key]])
+  }
+
+  pValues.sort(function compare(v1, v2) {
+    return (
+      v2[1]['timestamp']['seconds'] * 1000000000 +
+      v2[1]['timestamp']['nanoseconds'] -
+      v1[1]['timestamp']['seconds'] * 1000000000 +
+      v1[1]['timestamp']['nanoseconds']
+    )
+  })
+
+  const gValues = []
+  for (var key2 in global) {
+    gValues.push([key2, global[key2]])
+  }
+
+  gValues.sort(function compare(v1, v2) {
+    return v2[1]['timestamp']['seconds'] - v1[1]['timestamp']['seconds']
+  })
+
+  return (
+    <Popover
+      open={props.open}
+      onClose={() => props.onClose()}
+      anchorEl={props.anchor}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+    >
+      {props.open && (
+        <Scroll
+          style={{
+            minWidth: '200px',
+            width: '90vw',
+            maxWidth: '580px',
+            height: `${calcHeight()}px`,
+            maxHeight: '80vh',
+          }}
+        >
+          {personal && Object.keys(personal).length > 0 && (
+            <NotificationSection title="Personal" data={pValues} dynamic />
+          )}
+          {global && Object.keys(global).length > 0 && (
+            <NotificationSection
+              title="Global"
+              data={gValues}
+              dynamic={false}
+            />
+          )}
+        </Scroll>
+      )}
+    </Popover>
+  )
+}
+
+NotificationsPopover.propTypes = {
+  data: PropTypes.object,
+  anchor: PropTypes.object,
+  onClose: PropTypes.func,
+  open: PropTypes.bool,
+}
+
+export default NotificationsPopover
