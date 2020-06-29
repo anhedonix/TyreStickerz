@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import React from 'react'
+import Link from 'next/Link'
 
 import { name } from '../package.json'
 import MainLayout from '../src/components/shared/Layout/MainLayout'
@@ -18,9 +19,9 @@ export default function Home() {
             Welcome to {name[0].toUpperCase() + name.substr(1).toLowerCase()}
           </h1>
 
-          <p className="description">
-            The Base-Framework to be used for site-building.
-          </p>
+          <Link href='/designer' className='description'>
+            Customize Tyre Stickers
+          </Link>
         </main>
 
         <footer>
