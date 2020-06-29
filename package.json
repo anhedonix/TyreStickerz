@@ -1,0 +1,75 @@
+{
+  "name": "TyreStickerz",
+  "version": "0.0.2",
+  "private": true,
+  "variables": {
+    "primaryColor": "#00aaff",
+    "secondaryColor": "#0088ff"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "start_local": "next start",
+    "storybook": "start-storybook -p 9009 -s public --ci",
+    "flow": "flow",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.10.1",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.55",
+    "@types/browserify": "^12.0.36",
+    "firebase": "^7.14.6",
+    "moment": "^2.26.0",
+    "next": "^9.4.4",
+    "prop-types": "^15.7.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-icons": "^3.9.0",
+    "react-moment": "^0.9.7",
+    "react-router-dom": "^5.2.0",
+    "react-scrollbars-custom": "^4.0.25",
+    "react-swipeable-views": "^0.13.8",
+    "typeface-roboto": "^0.0.75",
+    "uuid": "^8.1.0",
+    "validate.js": "^0.13.1",
+    "webpack": "^4.41.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/react": "^5.3.19",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "gh-pages": "^2.2.0",
+    "husky": "^4.2.5",
+    "import-js": "^4.0.2",
+    "javascript-typescript-langserver": "^2.11.3",
+    "lint-staged": "^10.2.7",
+    "lorem-ipsum": "^2.0.3",
+    "prettier": "^2.0.5",
+    "tern": "^0.24.3",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5",
+    "typescript-language-server": "^0.4.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,sass,md}": [
+      "./node_modules/.bin/prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
