@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow'
+import ToggleButton from '@material-ui/lab/ToggleButton'
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 
 import Slide from './Slide'
 import { useEffect } from 'react'
@@ -16,15 +17,20 @@ const useStyles = makeStyles(theme => ({
   },
   viewport: {
     flexGrow: '1',
+    // height: '60vh',
+
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'hidden',
   },
   slides: {
     display: 'flex',
-    height: '300px',
+    height: '40vh',
+    maxHeight: '300px',
+    minheight: '200px',
     width: '80%',
-    overflow: 'hidden',
+    overflow: 'scroll',
   },
   image: {
     height: '100%',
@@ -42,10 +48,17 @@ const useStyles = makeStyles(theme => ({
     height: '50vh',
     backgroundPositionY: '-20px',
   },
+  toggle: {
+    alignSelf: 'flex-end',
+    minWidth: '0',
+    margin: '0 4vw 0 0',
+    position: 'absolute',
+  },
 }))
 
 const Designer = () => {
   const classes = useStyles()
+
   const data = {
     image: <div className={classes.image} />,
     info: {
@@ -67,9 +80,29 @@ const Designer = () => {
   }
   addItems()
 
+  const [view, setView] = React.useState('Full')
+
+  const handleView = (event, newView) => {
+    setView(newView)
+  }
+
   return (
     <div className={classes.designer}>
       <div className={classes.viewport}>
+        <ToggleButtonGroup
+          value={view}
+          exclusive
+          onChange={handleView}
+          aria-label="views"
+          className={classes.toggle}
+        >
+          <ToggleButton value="Component" aria-label="left aligned">
+            Component
+          </ToggleButton>
+          <ToggleButton value="Full " aria-label="centered">
+            Full
+          </ToggleButton>
+        </ToggleButtonGroup>
         <div className={classes.tyre} />
       </div>
 
