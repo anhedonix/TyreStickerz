@@ -4,11 +4,14 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(theme => ({
   slide: {
     minWidth: '200px',
-    height: '250px',
+    height: '270px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     borderLeft: 'solid 2px #8888',
+    '&:hover': {
+      backgroundColor: theme.palette.action.selected,
+    },
   },
   slideAvatar: {
     height: '70%',
