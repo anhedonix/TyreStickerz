@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow'
 
 import Slide from './Slide'
 import { useEffect } from 'react'
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     height: '300px',
     width: '80%',
-    overflow: 'scroll',
+    overflow: 'hidden',
   },
   image: {
     height: '100%',
