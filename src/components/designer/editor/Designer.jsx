@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import ArrowRightIcon from '@material-ui/icons/ArrowRight'
+import IconButton from '@material-ui/core/IconButton'
 
 import Slide from './Slide'
-import { useEffect } from 'react'
 
 const useStyles = makeStyles(theme => ({
   designer: {
@@ -24,14 +25,15 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     overflow: 'hidden',
   },
-  slides: {
+  slides: slideValue => ({
     display: 'flex',
     height: '40vh',
     maxHeight: '300px',
     minheight: '200px',
-    width: '80%',
-    overflow: 'scroll',
-  },
+    width: '80vw',
+    transform: `translateX(calc(100%*${-slideValue}))`,
+    transitionProperty: 'all',
+  }),
   image: {
     height: '100%',
     width: '100',
@@ -54,10 +56,25 @@ const useStyles = makeStyles(theme => ({
     margin: '0 4vw 0 0',
     position: 'absolute',
   },
+  slidebar: {
+    display: 'flex',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  arrow: {
+    height: '7vw',
+    width: '7vw',
+    opacity: '.7',
+  },
+  scroll: slideValue => ({
+    overflow: 'hidden',
+  }),
 }))
 
 const Designer = () => {
-  const classes = useStyles()
+  const [slideValue, setslideValue] = useState(0)
+  console.log(slideValue)
+  const classes = useStyles(slideValue)
 
   const data = {
     image: <div className={classes.image} />,
@@ -70,7 +87,6 @@ const Designer = () => {
   }
 
   let list = []
-
   const addItems = () => {
     let i
     for (i = 0; i < 100; i++) {
@@ -79,9 +95,7 @@ const Designer = () => {
     return list
   }
   addItems()
-
   const [view, setView] = React.useState('Full')
-
   const handleView = (event, newView) => {
     setView(newView)
   }
@@ -105,11 +119,27 @@ const Designer = () => {
         </ToggleButtonGroup>
         <div className={classes.tyre} />
       </div>
-
-      <div className={classes.slides}>
-        {list.map(value => (
-          <Slide info={value.info} image={value.image} />
-        ))}
+      <div className={classes.slidebar}>
+        <ArrowRightIcon
+          className={classes.arrow}
+          style={{ transform: 'rotate(180deg)' }}
+          onClick={() => setslideValue(slideValue === 0 ? 0 : slideValue - 1)}
+        />
+        <div className={classes.scroll}>
+          <div className={classes.slides}>
+            {list.map(value => (
+              <Slide info={value.info} image={value.image} />
+            ))}
+          </div>
+        </div>
+        <ArrowRightIcon
+          className={classes.arrow}
+          onClick={() =>
+            setslideValue(
+              list.length > slideValue ? slideValue + 1 : slideValue
+            )
+          }
+        />
       </div>
     </div>
   )
