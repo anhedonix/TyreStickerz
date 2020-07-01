@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
-import IconButton from '@material-ui/core/IconButton'
+import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 
 import Slide from './Slide'
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
   viewport: {
     flexGrow: '1',
-    // height: '60vh',
+    height: '50vh',
 
     width: '100%',
     display: 'flex',
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   slides: slideValue => ({
     display: 'flex',
-    height: '40vh',
+    height: '30vh',
     maxHeight: '300px',
     minheight: '200px',
     width: '80vw',
@@ -69,10 +69,15 @@ const useStyles = makeStyles(theme => ({
   scroll: {
     overflow: 'hidden',
   },
+  breadCrumbs: {
+    margin: '0 0 2vw 10vw',
+    fontSize: '20px',
+  },
 }))
 
 const Designer = () => {
   const [slideValue, setslideValue] = useState(0)
+
   const classes = useStyles(slideValue)
 
   const data = {
@@ -99,10 +104,10 @@ const Designer = () => {
     setView(newView)
   }
 
-  // console.log(
-  //   slideValue,
-  //   (200 * list.length) / ((screen.availWidth / 100) * 80)
-  // )
+  const [selected, setSelected] = useState(0)
+  const handleSelected = value => {
+    setSelected(value)
+  }
 
   return (
     <div className={classes.designer}>
@@ -122,6 +127,15 @@ const Designer = () => {
           </ToggleButton>
         </ToggleButtonGroup>
         <div className={classes.tyre} />
+        <Breadcrumbs
+          separator="›"
+          aria-label="breadcrumb"
+          className={classes.breadCrumbs}
+        >
+          <div>Car Model</div>
+          <div>Rim Mdel</div>
+          <div>{list[selected].info.header + selected}</div>
+        </Breadcrumbs>
       </div>
       <div className={classes.slidebar}>
         <ArrowRightIcon
@@ -131,8 +145,15 @@ const Designer = () => {
         />
         <div className={classes.scroll}>
           <div className={classes.slides}>
-            {list.map(value => (
-              <Slide info={value.info} image={value.image} />
+            {list.map((value, i) => (
+              <Slide
+                info={value.info}
+                image={value.image}
+                key={i}
+                id={i}
+                handleSelected={handleSelected}
+                selected={selected}
+              />
             ))}
           </div>
         </div>
