@@ -141,7 +141,7 @@ const Designer = () => {
           onClick={() =>
             setslideValue(
               Math.ceil(
-                (200 * list.length) / ((screen.availWidth / 100) * 80)
+                (200 * list.length) / ((window.innerWidth / 100) * 80)
               ) -
                 1 ===
                 slideValue
