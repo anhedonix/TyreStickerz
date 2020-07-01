@@ -2,21 +2,22 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
-  slide: {
+  slide: selected => ({
     minWidth: '200px',
     minHieght: '200px',
-    height: '270px',
+    // height: '200px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     borderLeft: 'solid 2px #8888',
+    backgroundColor: selected ? theme.palette.action.focus : null,
     '&:hover': {
       backgroundColor: theme.palette.action.selected,
       cursor: 'pointer',
     },
-  },
+  }),
   slideAvatar: {
-    height: '70%',
+    height: '60%',
     width: '100%',
   },
   slideInfo: {
@@ -40,11 +41,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Slide = ({ info, image }) => {
-  const classes = useStyles()
+const Slide = ({ info, image, id, handleSelected, selected }) => {
+  const classes = useStyles(selected === id)
 
   return (
-    <div className={classes.slide}>
+    <div className={classes.slide} onClick={() => handleSelected(id)}>
       <div className={classes.slideAvatar}>{image}</div>
       <div className={classes.slideInfo}>
         <div className={classes.header}>{info.header}</div>
