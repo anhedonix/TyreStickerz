@@ -32,11 +32,11 @@ const useStyles = makeStyles(theme => ({
     minheight: '200px',
     width: '80vw',
     transform: `translateX(calc(100%*${-slideValue}))`,
-    transitionProperty: 'all',
+    transition: 'transform 1.5s',
   }),
   image: {
     height: '100%',
-    width: '100',
+    width: '100%',
     backgroundImage: `url(https://tyrewallstickers.com/wp-content/uploads/2019/08/tyre-2-1.png)`,
     backgroundSize: '100% 100%',
   },
@@ -66,14 +66,13 @@ const useStyles = makeStyles(theme => ({
     width: '7vw',
     opacity: '.7',
   },
-  scroll: slideValue => ({
+  scroll: {
     overflow: 'hidden',
-  }),
+  },
 }))
 
 const Designer = () => {
   const [slideValue, setslideValue] = useState(0)
-  console.log(slideValue)
   const classes = useStyles(slideValue)
 
   const data = {
@@ -99,6 +98,11 @@ const Designer = () => {
   const handleView = (event, newView) => {
     setView(newView)
   }
+
+  // console.log(
+  //   slideValue,
+  //   (200 * list.length) / ((screen.availWidth / 100) * 80)
+  // )
 
   return (
     <div className={classes.designer}>
@@ -136,7 +140,13 @@ const Designer = () => {
           className={classes.arrow}
           onClick={() =>
             setslideValue(
-              list.length > slideValue ? slideValue + 1 : slideValue
+              Math.ceil(
+                (200 * list.length) / ((screen.availWidth / 100) * 80)
+              ) -
+                1 ===
+                slideValue
+                ? slideValue
+                : slideValue + 1
             )
           }
         />
