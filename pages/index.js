@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/Link'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
@@ -20,18 +20,17 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
   },
   designerLinkCover: {
-    backgroundColor: 'black',
+    backgroundColor: 'rgba(0,0,0,.6)',
     width: '100%',
     display: 'flex',
-    opacity: '.6',
-    '&:hover': {
-      opacity: '.7',
-    },
+    zIndex: '0',
   },
   text: {
     fontSize: '30px',
     fontWeight: '500',
     margin: 'auto',
+    color: 'white',
+    zIndex: '1',
   },
   tittle: {
     margin: '50px 0 0 0',
@@ -40,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles()
+  const [hover, setHover] = useState(false)
   return (
     <div>
       <Head>
@@ -52,7 +52,12 @@ export default function Home() {
           Welcome to {name[0].toUpperCase() + name.substr(1).toLowerCase()}
         </h1>
         <Link href='/designer'>
-          <Paper className={classes.designerLinkCard} elevation='10'>
+          <Paper
+            className={classes.designerLinkCard}
+            elevation={hover ? 24 : 10}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+          >
             <div className={classes.designerLinkCover}>
               <div className={classes.text}>Customize Tyre Stickers</div>
             </div>
