@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: '14vw',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'space-between',
     // borderLeft: 'solid 2px #8888',
     backgroundColor: selected ? theme.palette.action.focus : null,
     '&:hover': {
@@ -15,15 +15,17 @@ const useStyles = makeStyles(theme => ({
     },
   }),
   slideAvatar: {
-    height: '60%',
+    // height: '60%',
     width: '100%',
+    flexGrow: '1',
   },
   slideInfo: {
-    height: '30%',
+    // height: '50%',
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     fontSize: '16px',
