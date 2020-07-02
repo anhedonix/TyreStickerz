@@ -15,6 +15,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: '1',
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundImage: `url('/Banners/DesignerBanner.png')`,
+    backgroundSize: '100% 100%',
   },
   viewport: {
     flexGrow: '1',
