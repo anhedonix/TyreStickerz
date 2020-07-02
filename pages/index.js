@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     width: '500px',
     height: '250px',
     display: 'flex',
-    backgroundImage: `url(https://http2.mlstatic.com/letras-para-llantas-hechas-de-caucho-D_NQ_NP_725621-MLM20805920899_072016-O.webp)`,
+    backgroundImage: `url('/Banners/TyreStickersBanner.jpg')`,
     backgroundSize: 'cover',
     backgroundPositionY: '-100px',
     cursor: 'pointer',

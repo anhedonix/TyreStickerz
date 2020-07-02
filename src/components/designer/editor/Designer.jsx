@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
   viewport: {
     flexGrow: '1',
     height: '50vh',
-
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -39,13 +38,13 @@ const useStyles = makeStyles(theme => ({
   image: {
     height: '100%',
     width: '100%',
-    backgroundImage: `url(https://tyrewallstickers.com/wp-content/uploads/2019/08/tyre-2-1.png)`,
+    backgroundImage: `url('/Tyre.png')`,
     backgroundSize: '100% 100%',
   },
   tyre: {
     margin: 'auto',
     // flexGrow: '1',
-    backgroundImage: `url(https://tyrewallstickers.com/wp-content/uploads/2019/08/tyre-2-1.png)`,
+    backgroundImage: `url('/Tyre.png')`,
     backgroundSize: '100%',
     alignSelf: 'center',
     width: '50vh',
