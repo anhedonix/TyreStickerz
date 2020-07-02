@@ -32,16 +32,19 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
   },
   overlay: {
-    // backgroundColor: 'black',
-    background: `linear-gradient(90deg, \
-                  ${vars.variables.primaryColor} 0%, \
-                  ${vars.variables.secondaryColor} 100%)`,
+    backgroundColor: 'black',
+    // background: `linear-gradient(90deg, \
+    //               ${vars.variables.primaryColor} 0%, \
+    //               ${vars.variables.secondaryColor} 100%)`,
     height: '100%',
     width: '100%',
     position: 'absolute',
-    opacity: '.8',
+    opacity: '.6',
+    zIndex: '0',
   },
   bannerContent: {
     width: '350px',
@@ -65,11 +68,13 @@ const useStyles = makeStyles(theme => ({
     minHeight: '200px',
   },
   logo: {
-    width: '100px',
+    width: '300px',
     margin: '0 auto',
-    display: 'block',
-    position: 'relative',
-    top: '30%',
+    // display: 'block',
+    // position: 'relative',
+    // top: '15%',
+    flexGrow: '0',
+    zIndex: '1',
   },
 }))
 
@@ -104,12 +109,7 @@ const AccountDialogue = props => {
         <Hidden smDown>
           <Grid item xs={6} className={classes.banner}>
             <div className={classes.overlay} />
-            <img
-              src="/CompanyLogo.png"
-              alt="logo"
-              style={{ width: '100px' }}
-              className={classes.logo}
-            />
+            <img src="/CompanyLogo.png" alt="logo" className={classes.logo} />
           </Grid>
         </Hidden>
       </Grid>
