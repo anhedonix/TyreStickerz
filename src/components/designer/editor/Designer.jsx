@@ -4,6 +4,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
+import { v4 as uuid } from 'uuid'
 
 import Slide from './Slide'
 
@@ -21,6 +22,9 @@ const useStyles = makeStyles(theme => ({
   breadCrumbs: {
     margin: '0 0 2vh 10vw',
     fontSize: '20px',
+    position: 'absolute',
+    bottom: '0',
+    left: '0',
   },
   viewport: {
     flexGrow: '1',
@@ -29,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-    // padding: '4vw',
+    position: 'relative',
     justifyContent: 'space-evenly',
   },
   toggle: {
@@ -42,8 +46,8 @@ const useStyles = makeStyles(theme => ({
     // flexGrow: '1',
     backgroundImage: `url('/Tyre.png')`,
     alignSelf: 'center',
-    width: '40vh',
-    height: '40vh',
+    width: '50vh',
+    height: '50vh',
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -55,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: `url('/Tyre.png')`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
+    backgroundPosition: 'bottom',
   },
   slidebar: {
     display: 'flex',
@@ -96,7 +100,7 @@ const Designer = () => {
   const data = {
     image: <div className={classes.image} />,
     info: {
-      header: 'Header',
+      header: 'Sticker',
       description: 'description',
       meta1: 'meta1',
       meta2: 'meta2',
@@ -125,30 +129,28 @@ const Designer = () => {
   return (
     <div className={classes.designer}>
       <div className={classes.viewport}>
-        <ToggleButtonGroup
+        {/* <ToggleButtonGroup
           value={view}
           exclusive
           onChange={handleView}
-          aria-label="views"
+          aria-label='views'
           className={classes.toggle}
         >
-          <ToggleButton value="Component" aria-label="left aligned">
+          <ToggleButton value='Component' aria-label='left aligned'>
             Component
           </ToggleButton>
-          <ToggleButton value="Full " aria-label="centered">
+          <ToggleButton value='Full ' aria-label='centered'>
             Full
           </ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> */}
         <div className={classes.tyre} />
-        <Breadcrumbs
-          separator="›"
-          aria-label="breadcrumb"
-          className={classes.breadCrumbs}
-        >
-          <div>Car Model</div>
-          <div>Rim Mdel</div>
-          <div>{list[selected].info.header + selected}</div>
-        </Breadcrumbs>
+        <div className={classes.breadCrumbs}>
+          <div style={{ fontSize: '20px', fontWeight: '500' }}>Mazda MX5</div>
+          <div style={{ fontSize: '16px', opacity: '.6' }}>Tyre Stickers</div>
+          <div style={{ fontSize: '16px' }}>
+            Code: {list[selected].info.header + selected}
+          </div>
+        </div>
       </div>
       <div className={classes.slidebar}>
         <ArrowRightIcon
