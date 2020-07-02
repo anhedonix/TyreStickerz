@@ -145,9 +145,9 @@ const Designer = () => {
         </ToggleButtonGroup> */}
         <div className={classes.tyre} />
         <div className={classes.breadCrumbs}>
-          <div style={{ fontSize: '20px', fontWeight: '500' }}>Mazda MX5</div>
+          <div style={{ fontSize: '32px', fontWeight: '500' }}>Mazda MX5</div>
           <div style={{ fontSize: '16px', opacity: '.6' }}>Tyre Stickers</div>
-          <div style={{ fontSize: '16px' }}>
+          <div style={{ fontSize: '24px' }}>
             Code: {list[selected].info.header + selected}
           </div>
         </div>
