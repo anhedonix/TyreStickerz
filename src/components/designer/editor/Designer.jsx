@@ -18,6 +18,10 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: `url('/Banners/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
   },
+  breadCrumbs: {
+    margin: '0 0 2vh 10vw',
+    fontSize: '20px',
+  },
   viewport: {
     flexGrow: '1',
     height: '50vh',
@@ -25,54 +29,62 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-  },
-  slides: slideValue => ({
-    display: 'flex',
-    height: '30vh',
-    maxHeight: '300px',
-    minheight: '200px',
-    width: '80vw',
-    transform: `translateX(calc(100%*${-slideValue}))`,
-    transition: 'transform 1.5s',
-  }),
-  image: {
-    height: '100%',
-    width: '100%',
-    backgroundImage: `url('/Tyre.png')`,
-    backgroundSize: '100% 100%',
-  },
-  tyre: {
-    margin: 'auto',
-    // flexGrow: '1',
-    backgroundImage: `url('/Tyre.png')`,
-    backgroundSize: '100%',
-    alignSelf: 'center',
-    width: '50vh',
-    height: '50vh',
-    backgroundPositionY: '-20px',
+    // padding: '4vw',
+    justifyContent: 'space-evenly',
   },
   toggle: {
     alignSelf: 'flex-end',
     minWidth: '0',
-    margin: '0 4vw 0 0',
-    position: 'absolute',
+    margin: '0 2vw 0 0',
+    // position: 'absolute',
+  },
+  tyre: {
+    // flexGrow: '1',
+    backgroundImage: `url('/Tyre.png')`,
+    alignSelf: 'center',
+    width: '40vh',
+    height: '40vh',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+  },
+
+  image: {
+    height: '100%',
+    width: '100%',
+    backgroundImage: `url('/Tyre.png')`,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
   },
   slidebar: {
     display: 'flex',
     alignItems: 'center',
     overflow: 'hidden',
+    // height: '20vh',
+    alignItems: 'center',
+    flexGrow: '1',
+    width: '100vw',
+    justifyContent: 'center',
   },
+  visibleSlides: {
+    overflow: 'hidden',
+    // flexGrow: '1',
+    height: '30vh',
+    width: '84vw',
+  },
+  slides: slideValue => ({
+    display: 'flex',
+    flexGrow: '1',
+    // width: '80vw',
+    height: '100%',
+    transform: `translateX(calc(100%*${-slideValue}))`,
+    transition: 'transform 1.5s',
+  }),
   arrow: {
     height: '7vw',
     width: '7vw',
     opacity: '.7',
-  },
-  scroll: {
-    overflow: 'hidden',
-  },
-  breadCrumbs: {
-    margin: '0 0 2vw 10vw',
-    fontSize: '20px',
   },
 }))
 
@@ -144,7 +156,7 @@ const Designer = () => {
           style={{ transform: 'rotate(180deg)' }}
           onClick={() => setslideValue(slideValue === 0 ? 0 : slideValue - 1)}
         />
-        <div className={classes.scroll}>
+        <div className={classes.visibleSlides}>
           <div className={classes.slides}>
             {list.map((value, i) => (
               <Slide
@@ -163,9 +175,10 @@ const Designer = () => {
           onClick={() =>
             setslideValue(
               Math.ceil(
-                (200 * list.length) / ((window.innerWidth / 100) * 80)
+                ((window.innerWidth / 100) * 14 * list.length) /
+                  ((window.innerWidth / 100) * 80)
               ) -
-                1 ===
+                2 ===
                 slideValue
                 ? slideValue
                 : slideValue + 1

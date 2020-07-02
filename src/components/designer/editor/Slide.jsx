@@ -3,13 +3,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   slide: selected => ({
-    minWidth: '200px',
-    minHieght: '200px',
-    // height: '200px',
+    minWidth: '14vw',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    borderLeft: 'solid 2px #8888',
+    // borderLeft: 'solid 2px #8888',
     backgroundColor: selected ? theme.palette.action.focus : null,
     '&:hover': {
       backgroundColor: theme.palette.action.selected,
