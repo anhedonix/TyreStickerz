@@ -4,6 +4,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton'
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
+import { v4 as uuid } from 'uuid'
 
 import Slide from './Slide'
 
@@ -15,63 +16,79 @@ const useStyles = makeStyles(theme => ({
     flexGrow: '1',
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundImage: `url('/Banners/DesignerBanner.png')`,
+    backgroundSize: '100% 100%',
+  },
+  breadCrumbs: {
+    margin: '0 0 2vh 10vw',
+    fontSize: '20px',
+    position: 'absolute',
+    bottom: '0',
+    left: '0',
   },
   viewport: {
     flexGrow: '1',
     height: '50vh',
-
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-  },
-  slides: slideValue => ({
-    display: 'flex',
-    height: '30vh',
-    maxHeight: '300px',
-    minheight: '200px',
-    width: '80vw',
-    transform: `translateX(calc(100%*${-slideValue}))`,
-    transition: 'transform 1.5s',
-  }),
-  image: {
-    height: '100%',
-    width: '100%',
-    backgroundImage: `url(https://tyrewallstickers.com/wp-content/uploads/2019/08/tyre-2-1.png)`,
-    backgroundSize: '100% 100%',
-  },
-  tyre: {
-    margin: 'auto',
-    // flexGrow: '1',
-    backgroundImage: `url(https://tyrewallstickers.com/wp-content/uploads/2019/08/tyre-2-1.png)`,
-    backgroundSize: '100%',
-    alignSelf: 'center',
-    width: '50vh',
-    height: '50vh',
-    backgroundPositionY: '-20px',
+    position: 'relative',
+    justifyContent: 'space-evenly',
   },
   toggle: {
     alignSelf: 'flex-end',
     minWidth: '0',
-    margin: '0 4vw 0 0',
-    position: 'absolute',
+    margin: '0 2vw 0 0',
+    // position: 'absolute',
+  },
+  tyre: {
+    // flexGrow: '1',
+    backgroundImage: `url('/Tyre.png')`,
+    alignSelf: 'center',
+    width: '50vh',
+    height: '50vh',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+  },
+
+  image: {
+    height: '100%',
+    width: '100%',
+    backgroundImage: `url('/Tyre.png')`,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'bottom',
   },
   slidebar: {
     display: 'flex',
     alignItems: 'center',
     overflow: 'hidden',
+    // height: '20vh',
+    alignItems: 'center',
+    flexGrow: '1',
+    width: '100vw',
+    justifyContent: 'center',
   },
+  visibleSlides: {
+    overflow: 'hidden',
+    // flexGrow: '1',
+    height: '30vh',
+    width: '84vw',
+  },
+  slides: slideValue => ({
+    display: 'flex',
+    flexGrow: '1',
+    // width: '80vw',
+    height: '100%',
+    transform: `translateX(calc(100%*${-slideValue}))`,
+    transition: 'transform 1.5s',
+  }),
   arrow: {
     height: '7vw',
     width: '7vw',
     opacity: '.7',
-  },
-  scroll: {
-    overflow: 'hidden',
-  },
-  breadCrumbs: {
-    margin: '0 0 2vw 10vw',
-    fontSize: '20px',
   },
 }))
 
@@ -83,7 +100,7 @@ const Designer = () => {
   const data = {
     image: <div className={classes.image} />,
     info: {
-      header: 'Header',
+      header: 'Sticker',
       description: 'description',
       meta1: 'meta1',
       meta2: 'meta2',
@@ -112,30 +129,28 @@ const Designer = () => {
   return (
     <div className={classes.designer}>
       <div className={classes.viewport}>
-        <ToggleButtonGroup
+        {/* <ToggleButtonGroup
           value={view}
           exclusive
           onChange={handleView}
-          aria-label="views"
+          aria-label='views'
           className={classes.toggle}
         >
-          <ToggleButton value="Component" aria-label="left aligned">
+          <ToggleButton value='Component' aria-label='left aligned'>
             Component
           </ToggleButton>
-          <ToggleButton value="Full " aria-label="centered">
+          <ToggleButton value='Full ' aria-label='centered'>
             Full
           </ToggleButton>
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> */}
         <div className={classes.tyre} />
-        <Breadcrumbs
-          separator="›"
-          aria-label="breadcrumb"
-          className={classes.breadCrumbs}
-        >
-          <div>Car Model</div>
-          <div>Rim Mdel</div>
-          <div>{list[selected].info.header + selected}</div>
-        </Breadcrumbs>
+        <div className={classes.breadCrumbs}>
+          <div style={{ fontSize: '32px', fontWeight: '500' }}>Mazda MX5</div>
+          <div style={{ fontSize: '16px', opacity: '.6' }}>Tyre Stickers</div>
+          <div style={{ fontSize: '24px' }}>
+            Code: {list[selected].info.header + selected}
+          </div>
+        </div>
       </div>
       <div className={classes.slidebar}>
         <ArrowRightIcon
@@ -143,7 +158,7 @@ const Designer = () => {
           style={{ transform: 'rotate(180deg)' }}
           onClick={() => setslideValue(slideValue === 0 ? 0 : slideValue - 1)}
         />
-        <div className={classes.scroll}>
+        <div className={classes.visibleSlides}>
           <div className={classes.slides}>
             {list.map((value, i) => (
               <Slide
@@ -162,9 +177,10 @@ const Designer = () => {
           onClick={() =>
             setslideValue(
               Math.ceil(
-                (200 * list.length) / ((window.innerWidth / 100) * 80)
+                ((window.innerWidth / 100) * 14 * list.length) /
+                  ((window.innerWidth / 100) * 80)
               ) -
-                1 ===
+                2 ===
                 slideValue
                 ? slideValue
                 : slideValue + 1

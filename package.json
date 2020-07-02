@@ -3,8 +3,8 @@
   "version": "0.0.2",
   "private": true,
   "variables": {
-    "primaryColor": "#00aaff",
-    "secondaryColor": "#0088ff"
+    "primaryColor": "#ff4400",
+    "secondaryColor": "#ff2200"
   },
   "scripts": {
     "dev": "next dev",

@@ -3,13 +3,11 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
   slide: selected => ({
-    minWidth: '200px',
-    minHieght: '200px',
-    // height: '200px',
+    minWidth: '14vw',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    borderLeft: 'solid 2px #8888',
+    alignItems: 'space-between',
+    // borderLeft: 'solid 2px #8888',
     backgroundColor: selected ? theme.palette.action.focus : null,
     '&:hover': {
       backgroundColor: theme.palette.action.selected,
@@ -17,15 +15,17 @@ const useStyles = makeStyles(theme => ({
     },
   }),
   slideAvatar: {
-    height: '60%',
+    // height: '60%',
     width: '100%',
+    flexGrow: '1',
   },
   slideInfo: {
-    height: '30%',
+    // height: '50%',
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     fontSize: '16px',
