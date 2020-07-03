@@ -50,7 +50,7 @@ const Slide = ({ info, image, id, handleSelected, selected }) => {
       <div className={classes.slideInfo}>
         <div className={classes.header}>{info.header}</div>
         <div className={classes.description}>{info.description}</div>
-        <div className={classes.meta}>{info.meta1}</div>
+        <div className={classes.meta}>{info.uuid}</div>
         <div className={classes.meta}>{info.meta2}</div>
       </div>
     </div>
