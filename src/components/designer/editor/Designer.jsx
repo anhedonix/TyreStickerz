@@ -5,7 +5,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { v4 as uuid } from 'uuid'
-
+import { Swipeable } from 'react-touch'
 import Slide from './Slide'
 import { useEffect } from 'react'
 
@@ -90,6 +90,7 @@ const useStyles = makeStyles(theme => ({
   arrow: {
     height: '7vw',
     width: '7vw',
+    cursor: 'pointer',
     '& svg': {
       height: '7vw',
       width: '7vw',
@@ -178,20 +179,25 @@ const Designer = () => {
           )}
         </div>
         <div className={classes.visibleSlides}>
-          <div className={classes.slides}>
-            {scrollSlice.map((value, i) => (
-              <Slide
-                info={value.info}
-                image={value.image}
-                key={i}
-                id={value.info.uuid}
-                order={i}
-                page={page}
-                handleSelected={handleSelected}
-                selected={selected}
-              />
-            ))}
-          </div>
+          <Swipeable
+            onSwipeLeft={handleScrollRight}
+            onSwipeRight={handleScrollLeft}
+          >
+            <div className={classes.slides}>
+              {scrollSlice.map((value, i) => (
+                <Slide
+                  info={value.info}
+                  image={value.image}
+                  key={i}
+                  id={value.info.uuid}
+                  order={i}
+                  page={page}
+                  handleSelected={handleSelected}
+                  selected={selected}
+                />
+              ))}
+            </div>
+          </Swipeable>
         </div>
         <div className={classes.arrow}>
           {' '}
