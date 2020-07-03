@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { min } from 'moment'
 import { useSpring, animated } from 'react-spring'
 import Loader from '../../shared/Loading/Loading'
 
