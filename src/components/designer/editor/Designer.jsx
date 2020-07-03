@@ -186,6 +186,7 @@ const Designer = () => {
                 key={i}
                 id={value.info.uuid}
                 order={i}
+                page={page}
                 handleSelected={handleSelected}
                 selected={selected}
               />

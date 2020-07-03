@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { min } from 'moment'
 import { useSpring, animated } from 'react-spring'
+import Loader from '../../shared/Loading/Loading'
 
 const useStyles = makeStyles(theme => ({
   slide: selected => ({
@@ -10,6 +11,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'space-between',
     // borderLeft: 'solid 2px #8888',
+
+    position: 'relative',
     backgroundColor: selected ? theme.palette.action.focus : null,
     '&:hover': {
       backgroundColor: theme.palette.action.selected,
@@ -47,29 +50,43 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Slide = ({ info, image, id, handleSelected, selected, order }) => {
+const Slide = ({ info, image, id, handleSelected, selected, order, page }) => {
   const classes = useStyles(selected === id)
   const [width, setWidth] = useState()
   const [height, setHeight] = useState()
+  const [loading, setLoading] = useState(true)
+  const [cPage, setCPage] = useState(page)
   const display = useRef()
   const springConfig = { mass: 2, friction: 26, tension: 170 }
   const springProps = useSpring({
     opacity: 1,
     from: { opacity: 0 },
     config: springConfig,
-    reset: true,
+    reset: cPage !== page,
     delay: order * 100,
   })
 
   const setSize = () => {
-    const value = display.current.clientWidth
+    if (display.current) {
+      const value = display.current.clientWidth
 
-    setHeight(value)
-    setWidth(value)
+      setHeight(value)
+      setWidth(value)
+    }
   }
+  useEffect(() => {
+    setCPage(page)
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, order * 200)
+  }, [page])
 
   useEffect(() => {
     setSize()
+    setTimeout(() => {
+      setLoading(false)
+    }, order * 200)
     window.addEventListener('resize', setSize)
     return () => window.removeEventListener('resize', setSize)
   }, [])
@@ -85,12 +102,16 @@ const Slide = ({ info, image, id, handleSelected, selected, order }) => {
         className={classes.displayWrapper}
         style={{ maxHeight: height, display: 'block' }}
       >
-        <img
-          className={classes.slideAvatar}
-          src={image}
-          height={height}
-          width={width}
-        ></img>
+        {loading ? (
+          <Loader />
+        ) : (
+          <img
+            className={classes.slideAvatar}
+            src={image}
+            height={height}
+            width={width}
+          ></img>
+        )}
       </div>
       <div className={classes.slideInfo}>
         <div className={classes.header}>{info.header}</div>
