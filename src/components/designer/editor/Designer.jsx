@@ -68,14 +68,15 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     // height: '20vh',
     alignItems: 'center',
-    flexGrow: '1',
+    flexGrow: '0',
     width: '100vw',
     justifyContent: 'center',
+    paddingBottom: '4rem',
   },
   visibleSlides: {
     overflow: 'hidden',
     // flexGrow: '1',
-    height: '30vh',
+    // height: '30vh',
     width: '84vw',
   },
   slides: slideValue => ({
@@ -107,7 +108,7 @@ const Designer = () => {
 
   const data = () => {
     return {
-      image: <div className={classes.image} />,
+      image: '/Tyre.png',
       info: {
         header: 'Sticker',
         description: 'description',

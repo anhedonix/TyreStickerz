@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { min } from 'moment'
 
 const useStyles = makeStyles(theme => ({
   slide: selected => ({
@@ -16,8 +17,9 @@ const useStyles = makeStyles(theme => ({
   }),
   slideAvatar: {
     // height: '60%',
-    width: '100%',
-    flexGrow: '1',
+    // maxWidth: '100%',
+    margin: 'auto auto 0 auto',
+    display: 'block',
   },
   slideInfo: {
     // height: '50%',
@@ -39,14 +41,48 @@ const useStyles = makeStyles(theme => ({
     fontSize: '14px',
     fontWeight: '401',
   },
+  displayWrapper: {
+    flexGrow: '1',
+  },
 }))
 
 const Slide = ({ info, image, id, handleSelected, selected }) => {
   const classes = useStyles(selected === id)
+  const [width, setWidth] = useState()
+  const [height, setHeight] = useState()
+  const display = useRef()
+
+  const setSize = () => {
+    const value = display.current.clientWidth
+
+    setHeight(value)
+    setWidth(value)
+  }
+
+  useEffect(() => {
+    setSize()
+    window.addEventListener('resize', setSize)
+    return () => window.removeEventListener('resize', setSize)
+  }, [])
 
   return (
-    <div className={classes.slide} onClick={() => handleSelected(id)}>
-      <div className={classes.slideAvatar}>{image}</div>
+    <div
+      className={classes.slide}
+      onClick={() => handleSelected(id)}
+      style={{ maxHeight: height + 150 }}
+    >
+      <div
+        ref={display}
+        className={classes.displayWrapper}
+        style={{ maxHeight: height, display: 'block' }}
+      >
+        <img
+          className={classes.slideAvatar}
+          src={image}
+          height={height}
+          width={width}
+        ></img>
+      </div>
       <div className={classes.slideInfo}>
         <div className={classes.header}>{info.header}</div>
         <div className={classes.description}>{info.description}</div>
