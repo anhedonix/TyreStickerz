@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { min } from 'moment'
+import { useSpring, animated } from 'react-spring'
 
 const useStyles = makeStyles(theme => ({
   slide: selected => ({
@@ -46,11 +47,19 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Slide = ({ info, image, id, handleSelected, selected }) => {
+const Slide = ({ info, image, id, handleSelected, selected, order }) => {
   const classes = useStyles(selected === id)
   const [width, setWidth] = useState()
   const [height, setHeight] = useState()
   const display = useRef()
+  const springConfig = { mass: 2, friction: 26, tension: 170 }
+  const springProps = useSpring({
+    opacity: 1,
+    from: { opacity: 0 },
+    config: springConfig,
+    reset: true,
+    delay: order * 100,
+  })
 
   const setSize = () => {
     const value = display.current.clientWidth
@@ -66,10 +75,10 @@ const Slide = ({ info, image, id, handleSelected, selected }) => {
   }, [])
 
   return (
-    <div
+    <animated.div
       className={classes.slide}
       onClick={() => handleSelected(id)}
-      style={{ maxHeight: height + 150 }}
+      style={{ ...springProps, maxHeight: height + 150 }}
     >
       <div
         ref={display}
@@ -89,7 +98,7 @@ const Slide = ({ info, image, id, handleSelected, selected }) => {
         <div className={classes.meta}>{info.uuid}</div>
         <div className={classes.meta}>{info.meta2}</div>
       </div>
-    </div>
+    </animated.div>
   )
 }
 

@@ -185,6 +185,7 @@ const Designer = () => {
                 image={value.image}
                 key={i}
                 id={value.info.uuid}
+                order={i}
                 handleSelected={handleSelected}
                 selected={selected}
               />
