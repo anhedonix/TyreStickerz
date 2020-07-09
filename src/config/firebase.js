@@ -1,12 +1,14 @@
+const dev = process.env.NODE_ENV === 'development'
+
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_APIKEY,
-  authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
-  databaseURL: process.env.NEXT_PUBLIC_DATABASEURL,
-  projectId: process.env.NEXT_PUBLIC_PROJECTID,
-  storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
-  appId: process.env.NEXT_PUBLIC_APPID,
-  measurementId: process.env.NEXT_PUBLIC_MEASUREMENTID,
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 }
 
 export default firebaseConfig
