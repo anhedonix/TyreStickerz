@@ -13,7 +13,7 @@ if (!app.apps.length) {
 
 export default app.app()
 
-// export const analytics = app.analytics()
+export const analytics = app.analytics()
 export const auth = app.auth()
 export const firestore = app.firestore()
 export const storage = app.storage()
