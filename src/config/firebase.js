@@ -1,12 +1,12 @@
 const firebaseConfig = {
-  apiKey: 'AIzaSyBZELxNBTGDBBSAC4ssj7lcrYEIn7nVBFM',
-  authDomain: 'nocturne-70ec4.firebaseapp.com',
-  databaseURL: 'https://nocturne-70ec4.firebaseio.com',
-  projectId: 'nocturne-70ec4',
-  storageBucket: 'nocturne-70ec4.appspot.com',
-  messagingSenderId: '625661962052',
-  appId: '1:625661962052:web:f87b0edf99fd643ca21911',
-  measurementId: 'G-E9MQ91JLDV',
+  apiKey: process.env.NEXT_PUBLIC_APIKEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_DATABASEURL,
+  projectId: process.env.NEXT_PUBLIC_PROJECTID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+  appId: process.env.NEXT_PUBLIC_APPID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENTID,
 }
 
 export default firebaseConfig
