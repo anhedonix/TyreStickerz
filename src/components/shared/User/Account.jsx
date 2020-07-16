@@ -11,6 +11,7 @@ import PropTypes from 'prop-types'
 import React, { useState, useContext } from 'react'
 import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent'
 import Tooltip from '@material-ui/core/Tooltip'
+import DashboardIcon from '@material-ui/icons/Dashboard'
 
 import { MainContext } from '../../../states/mainState'
 import AccountDialogue from './AccountDialogue/AccountDialogue'
@@ -148,6 +149,17 @@ const Account = ({ CType = Button }) => {
               </ListItemIcon>
               Profile
             </MenuItem>
+            {state.userData.type === 'ADMIN' ||
+              (state.userData.type === 'DEV' && (
+                <Link href="/dashboard" as="/dashboard">
+                  <MenuItem>
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    Dashboard
+                  </MenuItem>
+                </Link>
+              ))}
             <Preferences />
             <MenuItem
               onClick={() => {
