@@ -15,21 +15,6 @@ const Notifications = () => {
   const [pNotif, setPNotif] = useState(null)
   const [gNotif, setGNotif] = useState(null)
 
-  /**
-   * This is a static docRef function, left here only for refrence
-   *
-   * useEffect(() => {
-   *   setPNotif(null)
-   *   if (state.user) {
-   *     store
-   *       .getContent(CONTENT.notif, state.user.uid)
-   *       .then(data => setPNotif(data))
-   *       .catch(reason => console.log(reason))
-   *   }
-   * }, [state.user])
-   *
-   */
-
   useEffect(() => {
     if (state.user) {
       setPNotif(state.userData['notifications'])
@@ -69,20 +54,22 @@ const Notifications = () => {
   }
 
   return (
-    <>
-      <IconButton onClick={handleClick} color="inherit">
-        <Badge badgeContent={unread} color="primary">
-          <NotificationsIcon />
-        </Badge>
-      </IconButton>
+    (pNotif || gNotif) && (
+      <>
+        <IconButton onClick={handleClick} color="inherit">
+          <Badge badgeContent={unread} color="primary">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
 
-      <NotificationsDialog
-        open={open}
-        onClose={handleClose}
-        anchor={anchorEl}
-        data={{ personal: pNotif, global: gNotif }}
-      />
-    </>
+        <NotificationsDialog
+          open={open}
+          onClose={handleClose}
+          anchor={anchorEl}
+          data={{ personal: pNotif, global: gNotif }}
+        />
+      </>
+    )
   )
 }
 
