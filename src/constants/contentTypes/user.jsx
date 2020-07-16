@@ -42,7 +42,7 @@ const content = {
         email: '',
         darkUI: false,
         messageTimeOut: 6,
-        type: USER.ANON,
+        type: USER.CLIENT,
       }
     },
     contentListStruct: data => {
