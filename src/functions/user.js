@@ -30,6 +30,8 @@ authentication.signUp = fields => {
           return
         }
 
+        user.sendEmailVerification()
+
         const uid = user.uid
 
         if (!uid) {
