@@ -40,6 +40,7 @@ const FileUploader = props => {
     type,
     then,
     variant = 'contained',
+    uid = undefined,
     drop = undefined,
     dropButton = false,
     dropThen = () => {},
@@ -47,7 +48,7 @@ const FileUploader = props => {
   const classes = useStyles()
   const [progress, setProgress] = useState(0)
   const [running, setRunning] = useState(false)
-  const id = uuid()
+  const id = uid || uuid()
   return (
     <div className={props.className}>
       <input
