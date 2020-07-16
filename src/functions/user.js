@@ -1,4 +1,5 @@
 import firebase, { analytics, auth, firestore } from 'firebase/app'
+import contentTypeUser from '../constants/contentTypes/user'
 
 const authentication = {}
 
@@ -38,19 +39,15 @@ authentication.signUp = fields => {
 
         const userDocumentReference = firestore().collection('users').doc(uid)
 
+        const data = {
+          ...contentTypeUser.format.default(),
+          firstName,
+          lastName,
+          email,
+        }
+
         userDocumentReference
-          .set(
-            {
-              firstName,
-              lastName,
-              email,
-              darkUI: false,
-              messageTimeOut: 6000,
-            },
-            {
-              merge: true,
-            }
-          )
+          .set(data, { merge: true })
           .then(() => {
             resolve(user)
           })
