@@ -32,16 +32,14 @@ const ContentMenu = () => {
   const classes = useStyles()
   return (
     <List className={classes.root}>
-      <ListItem button>
-        <Link href={`/dashboard`} as={`/dashboard`}>
-          <a className={classes.anchor}>
-            <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-          </a>
-        </Link>
-      </ListItem>
+      <Link href={`/dashboard`} as={`/dashboard`}>
+        <ListItem button>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+      </Link>
       <Divider />
       {AdminContentTypes.map(el => (
         <MenuItem {...el} key={el.ID} />
