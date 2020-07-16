@@ -106,7 +106,7 @@ const user = {
         loremIpsum().split(' ')[0] + '@' + loremIpsum().split(' ')[0] + '.com',
       darkUI: true,
       messageTimeOut: 6,
-      type: USER.USER,
+      type: USER.CLIENT,
     }
   },
   struct: data => {
