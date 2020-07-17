@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ContentMenu from './ContentMenu'
+import ContentPalette from './ContentPalette'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,6 +18,7 @@ const DashboardLayout = props => {
   return (
     <div className={classes.root}>
       <ContentMenu />
+      <ContentPalette />
       Dashboard Layout
     </div>
   )
