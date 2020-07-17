@@ -1,7 +1,5 @@
 import React from 'react'
-import * as USER from '../../constants/user'
 import crud from '../../functions/crud'
-import { v4 as uuid } from 'uuid'
 import moment from 'moment'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import notif from './notification'
@@ -23,6 +21,14 @@ const content = {
         message: '',
         link: '',
         timestamp: moment().toDate(),
+      }
+    },
+    contentListStruct: data => {
+      return {
+        header: data.message.substring(0, 20) + '...',
+        detail: data.uid,
+        meta1: moment(data.timestamp.toDate()).format('YY MM DD LT'),
+        uid: data.uid,
       }
     },
   },
