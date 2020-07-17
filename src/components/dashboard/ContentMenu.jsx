@@ -8,19 +8,32 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import DashboardIcon from '@material-ui/icons/Dashboard'
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     borderRight: '1px solid rgba(128,128,128,0.5)',
+    padding: '0',
+  },
+  item: {
+    paddingLeft: '2rem',
+    paddingRight: '2rem',
   },
 }))
 
 const MenuItem = props => {
+  const classes = useStyles()
+  const router = useRouter()
+  const { contentType } = router.query
   return (
     <Link href={`/dashboard/[contentType]`} as={`/dashboard/${props.ID}`}>
-      <ListItem button>
+      <ListItem
+        button
+        selected={contentType === props.ID}
+        className={classes.item}
+      >
         <ListItemIcon>{props.extra.icon}</ListItemIcon>
         <ListItemText primary={props.label} />
       </ListItem>
@@ -30,10 +43,16 @@ const MenuItem = props => {
 
 const ContentMenu = () => {
   const classes = useStyles()
+  const router = useRouter()
+  const { contentType } = router.query
   return (
     <List className={classes.root}>
       <Link href={`/dashboard`} as={`/dashboard`}>
-        <ListItem button>
+        <ListItem
+          button
+          className={classes.item}
+          selected={contentType === undefined}
+        >
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
