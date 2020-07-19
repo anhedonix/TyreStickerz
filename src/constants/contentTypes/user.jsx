@@ -27,11 +27,16 @@ const content = {
       type: 'int',
     },
     {
-      id: 'notification',
+      id: 'notifications',
       label: 'Notifications',
       editable: true,
       type: 'content',
       content: notification,
+      format: input => {
+        const data = []
+        Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
+        return data
+      },
     },
   ],
   format: {
