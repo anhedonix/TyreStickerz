@@ -35,7 +35,7 @@ const Content = () => {
   useEffect(() => {
     setLoading(true)
     if (contentType && contentId) {
-      CONTENT[contentType].read(contentId).then(i => {
+      CONTENT[contentType].element.read(contentId).then(i => {
         setData(i)
         setLoading(false)
       })
@@ -58,7 +58,19 @@ const Content = () => {
           {editMode ? 'Discard Edits' : 'Edit'}
         </Button>
       </Paper>
-      {editMode ? <ContentEditor data={data} /> : <ContentViewer data={data} />}
+      {editMode ? (
+        <ContentEditor
+          data={data}
+          contentType={contentType}
+          contentId={contentId}
+        />
+      ) : (
+        <ContentViewer
+          data={data}
+          contentType={contentType}
+          contentId={contentId}
+        />
+      )}
     </div>
   ) : null
 }
