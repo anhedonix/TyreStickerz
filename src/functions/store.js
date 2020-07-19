@@ -165,7 +165,7 @@ store.readContent = (contentType, id = null) => {
           .collection(token)
           .doc(id)
           .get()
-          .then(doc => resolve(doc.data()))
+          .then(doc => resolve({ ...doc.data(), uid: id }))
           .catch(reason => reject(reason))
         break
       }
@@ -177,7 +177,7 @@ store.readContent = (contentType, id = null) => {
           .collection(path[0])
           .doc(id)
           .get()
-          .then(doc => resolve(doc.data()[path[1]]))
+          .then(doc => resolve({ ...doc.data()[path[1]], uid: id }))
           .catch(reason => reject(reason))
         break
       }
