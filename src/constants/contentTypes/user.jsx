@@ -51,6 +51,7 @@ const content = {
         detail: data.uid,
         meta1: data.type,
         meta2: data.email,
+        uid: data.uid,
       }
     },
   },

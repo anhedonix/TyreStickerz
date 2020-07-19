@@ -41,6 +41,10 @@ content.extra = {
   ],
 }
 
-const notifications_global = { ...content, ...crud(content) }
+const notifications_global = {
+  ...content,
+  ...crud(content),
+  element: { ...crud(content) },
+}
 
 export default notifications_global
