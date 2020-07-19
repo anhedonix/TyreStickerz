@@ -12,6 +12,7 @@ import * as CONTENT from '../../../constants/contentTypes'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: '1',
+    position: 'relative',
   },
   contentToolbar: {
     padding: '0.5rem',
