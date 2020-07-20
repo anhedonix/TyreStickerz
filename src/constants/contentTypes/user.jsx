@@ -27,11 +27,16 @@ const content = {
       type: 'int',
     },
     {
-      id: 'notification',
+      id: 'notifications',
       label: 'Notifications',
       editable: true,
       type: 'content',
       content: notification,
+      format: input => {
+        const data = []
+        Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
+        return data
+      },
     },
   ],
   format: {
@@ -42,7 +47,7 @@ const content = {
         email: '',
         darkUI: false,
         messageTimeOut: 6,
-        type: USER.ANON,
+        type: USER.CLIENT,
       }
     },
     contentListStruct: data => {
@@ -51,6 +56,7 @@ const content = {
         detail: data.uid,
         meta1: data.type,
         meta2: data.email,
+        uid: data.uid,
       }
     },
   },

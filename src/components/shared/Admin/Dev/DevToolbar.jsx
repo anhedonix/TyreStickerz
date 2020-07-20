@@ -77,7 +77,7 @@ const DevToolbar = () => {
     handleNotifMenuClose()
   }
 
-  return state.userData.type === USER.ADMIN ? (
+  return state.userData.type === USER.DEV ? (
     <Paper square className={classes.root}>
       <a
         href="/"
@@ -106,7 +106,9 @@ const DevToolbar = () => {
         onClose={handleUserMenuClose}
       >
         <MenuItem onClick={() => handleUserChange(USER.ADMIN)}>Admin</MenuItem>
-        <MenuItem onClick={() => handleUserChange(USER.USER)}>User</MenuItem>
+        <MenuItem onClick={() => handleUserChange(USER.CLIENT)}>
+          Client
+        </MenuItem>
         <MenuItem onClick={() => handleUserChange(USER.ANON)}>Anon</MenuItem>
         <MenuItem onClick={() => handleUserChange(USER.PREMIUM)}>
           Premium

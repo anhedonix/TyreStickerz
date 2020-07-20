@@ -1,7 +1,8 @@
 export const ANON = 'ANON'
-export const USER = 'USER'
+export const CLIENT = 'CLIENT'
 export const PREMIUM = 'PREMIUM'
 export const ADMIN = 'ADMIN'
+export const DEV = 'DEV'
 
 // Account dialogue values
 export const AD_SIGNIN = 'SIGNIN'

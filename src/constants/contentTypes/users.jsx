@@ -8,6 +8,9 @@ const content = {
   ID: 'users',
   label: 'Users',
   token: 'collection:users',
+  format: user.format,
+  fields: user.fields,
+  element: user,
 }
 
 content.extra = {
