@@ -31,7 +31,7 @@ const ContentSubFieldSection = props => {
   return (
     <>
       {data.map(i => (
-        <Table className={classes.subField} size="small">
+        <Table className={classes.subField} size="small" key={i.uid}>
           <TableBody>
             {CONTENT[contentType].fields.map(el => {
               return <ContentFieldView data={i[el.id]} {...el} key={el.id} />
@@ -51,7 +51,9 @@ const ContentFieldView = props => {
   return (
     <TableRow>
       <TableCell align="right">{label}</TableCell>
-      <TableCell className={type === 'content' && classes.subFieldWrapper}>
+      <TableCell
+        className={type === 'content' ? classes.subFieldWrapper : null}
+      >
         {['string', 'int', 'uid'].includes(type) ? (
           data
         ) : type === 'timestamp' ? (

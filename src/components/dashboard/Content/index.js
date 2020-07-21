@@ -56,7 +56,7 @@ const Content = () => {
           variant="outlined"
           onClick={() => setEditMode(!editMode)}
         >
-          {editMode ? 'Discard Edits' : 'Edit'}
+          {editMode ? 'Discard' : 'Edit'}
         </Button>
       </Paper>
       {editMode ? (
