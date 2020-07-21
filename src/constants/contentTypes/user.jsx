@@ -18,7 +18,7 @@ const content = {
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
     { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
-    { id: 'email', label: 'E-Mail', editable: true, type: 'string' },
+    { id: 'email', label: 'E-Mail', editable: false, type: 'string' },
     { id: 'darkUI', label: 'Dark Theme', editable: true, type: 'bool' },
     {
       id: 'messageTimeOut',
@@ -35,6 +35,14 @@ const content = {
       format: input => {
         const data = []
         Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
+        return data
+      },
+      reformat: input => {
+        const data = {}
+        input.map(el => {
+          const { uid, ...vals } = { ...el }
+          data[uid] = { ...vals }
+        })
         return data
       },
     },
