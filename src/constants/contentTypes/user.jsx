@@ -48,6 +48,7 @@ const content = {
         darkUI: false,
         messageTimeOut: 6,
         type: USER.CLIENT,
+        notifications: {},
       }
     },
     contentListStruct: data => {
@@ -64,10 +65,6 @@ const content = {
 
 content.extra = {
   icon: <PeopleIcon />,
-  adminURL: [
-    { type: 'uid', content: content },
-    { type: 'contentType', content: notification },
-  ],
 }
 
 const currentUserCrud = type => {
