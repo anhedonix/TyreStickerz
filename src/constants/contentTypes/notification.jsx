@@ -14,7 +14,7 @@ const content = {
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     { id: 'message', label: 'Message', editable: true, type: 'string' },
-    { id: 'read', label: 'Read?', editable: true, type: 'bool' },
+    { id: 'read', label: 'Read?', editable: false, type: 'bool' },
     { id: 'link', label: 'Link', editable: true, type: 'string' },
     { id: 'timestamp', label: 'Date/Time', editable: true, type: 'timestamp' },
   ],
