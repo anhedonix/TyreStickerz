@@ -12,7 +12,6 @@ export const initialState = {
     primary: false,
     secondary: false,
   },
-  notifications: [],
   reauth: {
     state: false,
     function: null,
