@@ -18,21 +18,21 @@ const ContentEditor = props => {
   const TableBg = props => <Paper square {...props} />
 
   return (
-    <Table component={TableBg}>
+    <Table>
       <TableBody>
         {CONTENT[contentType].fields.map(el => {
-          /* const render = ( */
-          /*   <ContentFieldEdit */
-          /*     contentType={contentType} */
-          /*     uid={contentId} */
-          /*     data={data[el.id]} */
-          /*     {...el} */
-          /*     key={el.id} */
-          /*     onChange={onChange} */
-          /*   /> */
-          /* ) */
+          const render = (
+            <ContentFieldEdit
+              contentType={contentType}
+              uid={contentId}
+              data={data[el.id]}
+              {...el}
+              key={el.id}
+              onChange={onChange}
+            />
+          )
 
-          return null
+          return render
         })}
       </TableBody>
     </Table>

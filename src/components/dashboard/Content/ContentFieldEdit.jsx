@@ -88,82 +88,80 @@ const ContentFieldView = props => {
     }
   }, [cData])
 
-  return null
-
-  // return editable ? (
-  //   <TableRow>
-  //     <TableCell align="right" style={{ borderBottom: 'none' }}>
-  //       {label}
-  //     </TableCell>
-  //     <TableCell
-  //       className={type === 'content' ? classes.subFieldWrapper : null}
-  //       style={{ borderBottom: 'none' }}
-  //     >
-  //       {['string', 'int', 'uid'].includes(type) ? (
-  //         <TextField
-  //           id={`${uid}${label}`}
-  //           value={cData}
-  //           onChange={e =>
-  //             setCData(
-  //               type === 'int' ? parseInt(e.target.value) : e.target.value
-  //             )
-  //           }
-  //           fullWidth
-  //         />
-  //       ) : type === 'timestamp' ? (
-  //         <MuiPickersUtilsProvider utils={MomentUtils}>
-  //           <DateTimePicker
-  //             value={cData.toDate()}
-  //             fullWidth
-  //             onChange={e =>
-  //               setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
-  //             }
-  //           />
-  //         </MuiPickersUtilsProvider>
-  //       ) : type === 'bool' ? (
-  //         data ? (
-  //           'true'
-  //         ) : (
-  //           'false'
-  //         )
-  //       ) : type === 'content' ? (
-  //         <ContentSubFieldSection
-  //           data={props.format(data)}
-  //           contentType={props.content.ID}
-  //           onChange={setCData}
-  //           reformat={props.reformat}
-  //         />
-  //       ) : null}
-  //     </TableCell>
-  //   </TableRow>
-  // ) : (
-  //   <TableRow>
-  //     <TableCell align="right" style={{ borderBottom: 'none' }}>
-  //       {label}
-  //     </TableCell>
-  //     <TableCell
-  //       className={type === 'content' ? classes.subFieldWrapper : null}
-  //       style={{ borderBottom: 'none' }}
-  //     >
-  //       {['string', 'int', 'uid'].includes(type) ? (
-  //         data
-  //       ) : type === 'timestamp' ? (
-  //         moment(data.toDate()).format('YYYY MM DD LT')
-  //       ) : type === 'bool' ? (
-  //         data ? (
-  //           'true'
-  //         ) : (
-  //           'false'
-  //         )
-  //       ) : type === 'content' ? (
-  //         <ContentSubFieldSection
-  //           data={props.format(data)}
-  //           contentType={props.content.ID}
-  //         />
-  //       ) : null}
-  //     </TableCell>
-  //   </TableRow>
-  // )
+  return editable ? (
+    <TableRow>
+      <TableCell align="right" style={{ borderBottom: 'none' }}>
+        {label}
+      </TableCell>
+      <TableCell
+        className={type === 'content' ? classes.subFieldWrapper : null}
+        style={{ borderBottom: 'none' }}
+      >
+        {['string', 'int', 'uid'].includes(type) ? (
+          <TextField
+            id={`${uid}${label}`}
+            value={cData}
+            onChange={e =>
+              setCData(
+                type === 'int' ? parseInt(e.target.value) : e.target.value
+              )
+            }
+            fullWidth
+          />
+        ) : type === 'timestamp' ? (
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DateTimePicker
+              value={cData.toDate()}
+              fullWidth
+              onChange={e =>
+                setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
+              }
+            />
+          </MuiPickersUtilsProvider>
+        ) : type === 'bool' ? (
+          data ? (
+            'true'
+          ) : (
+            'false'
+          )
+        ) : type === 'content' ? (
+          <ContentSubFieldSection
+            data={props.format(data)}
+            contentType={props.content.ID}
+            onChange={setCData}
+            reformat={props.reformat}
+          />
+        ) : null}
+      </TableCell>
+    </TableRow>
+  ) : (
+    <TableRow>
+      <TableCell align="right" style={{ borderBottom: 'none' }}>
+        {label}
+      </TableCell>
+      <TableCell
+        className={type === 'content' ? classes.subFieldWrapper : null}
+        style={{ borderBottom: 'none' }}
+      >
+        {['string', 'int', 'uid'].includes(type) ? (
+          data
+        ) : type === 'timestamp' ? (
+          moment(data.toDate()).format('YYYY MM DD LT')
+        ) : type === 'bool' ? (
+          data ? (
+            'true'
+          ) : (
+            'false'
+          )
+        ) : type === 'content' ? (
+          <ContentSubFieldSection
+            data={props.format(data)}
+            contentType={props.content.ID}
+          />
+        ) : null}
+      </TableCell>
+    </TableRow>
+  )
 }
 
 export default ContentFieldView

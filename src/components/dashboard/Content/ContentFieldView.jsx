@@ -48,33 +48,33 @@ const ContentFieldView = props => {
 
   const classes = useStyles()
 
-  return null
+  // return null
 
-  // return (
-  //   <TableRow>
-  //     <TableCell align="right">{label}</TableCell>
-  //     <TableCell
-  //       className={type === 'content' ? classes.subFieldWrapper : null}
-  //     >
-  //       {['string', 'int', 'uid'].includes(type) ? (
-  //         data
-  //       ) : type === 'timestamp' ? (
-  //         moment(data.toDate()).format('YYYY MM DD LT')
-  //       ) : type === 'bool' ? (
-  //         data ? (
-  //           'true'
-  //         ) : (
-  //           'false'
-  //         )
-  //       ) : type === 'content' ? (
-  //         <ContentSubFieldSection
-  //           data={props.format(data)}
-  //           contentType={props.content.ID}
-  //         />
-  //       ) : null}
-  //     </TableCell>
-  //   </TableRow>
-  // )
+  return (
+    <TableRow>
+      <TableCell align="right">{label}</TableCell>
+      <TableCell
+        className={type === 'content' ? classes.subFieldWrapper : null}
+      >
+        {['string', 'int', 'uid'].includes(type) ? (
+          data
+        ) : type === 'timestamp' ? (
+          moment(data.toDate()).format('YYYY MM DD LT')
+        ) : type === 'bool' ? (
+          data ? (
+            'true'
+          ) : (
+            'false'
+          )
+        ) : type === 'content' ? (
+          <ContentSubFieldSection
+            data={props.format(data)}
+            contentType={props.content.ID}
+          />
+        ) : null}
+      </TableCell>
+    </TableRow>
+  )
 }
 
 export default ContentFieldView
