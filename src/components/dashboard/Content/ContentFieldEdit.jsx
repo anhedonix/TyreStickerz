@@ -9,8 +9,11 @@ import TextField from '@material-ui/core/TextField'
 import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers'
 import firebase from 'firebase'
+import Avatar from '@material-ui/core/Avatar'
 
 import * as CONTENT from '../../../constants/contentTypes'
+import FileUploader from '../../shared/Uploader/FileUploader'
+import store from '../../../functions/store'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,6 +28,10 @@ const useStyles = makeStyles(theme => ({
   },
   subFieldWrapper: {
     paddingRight: '0',
+  },
+  avatarWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
   },
 }))
 
@@ -75,8 +82,21 @@ const ContentFieldView = props => {
   } = props
 
   const [cData, setCData] = useState(data)
+  const [filePath, setFilePath] = useState(null)
 
   const classes = useStyles()
+
+  useEffect(() => {
+    if (type === 'image' && cData !== null) {
+      store
+        .getFileUrl(cData)
+        .then(url => setFilePath(url))
+        .catch(err => console.log(err))
+    }
+    if (cData === null) {
+      setFilePath(null)
+    }
+  }, [cData])
 
   useEffect(() => {
     if (onChange) {
@@ -124,6 +144,28 @@ const ContentFieldView = props => {
           ) : (
             'false'
           )
+        ) : type === 'image' ? (
+          <div className={classes.avatarWrapper}>
+            <Avatar alt="User Avatar" src={filePath} />
+            <FileUploader
+              path={label}
+              text={cData ? `Change ${label}` : `Add ${label}`}
+              variant="outlined"
+              then={i => {
+                CONTENT[mainContentType].element.update(uid, null, { [id]: i })
+                setCData(i)
+              }}
+              drop={cData && cData}
+              /* className={classes.avatarButton} */
+              dropButton={cData}
+              dropThen={() => {
+                CONTENT[mainContentType].element.update(uid, null, {
+                  [id]: null,
+                })
+                setCData(null)
+              }}
+            />
+          </div>
         ) : type === 'content' ? (
           <ContentSubFieldSection
             data={props.format(data)}
