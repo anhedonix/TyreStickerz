@@ -48,9 +48,7 @@ const ContentFieldView = props => {
 
   const classes = useStyles()
 
-  // return null
-
-  return (
+  return data ? (
     <TableRow>
       <TableCell align="right">{label}</TableCell>
       <TableCell
@@ -74,7 +72,7 @@ const ContentFieldView = props => {
         ) : null}
       </TableCell>
     </TableRow>
-  )
+  ) : null
 }
 
 export default ContentFieldView

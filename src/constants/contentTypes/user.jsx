@@ -34,15 +34,19 @@ const content = {
       content: notification,
       format: input => {
         const data = []
-        Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
+        if (input) {
+          Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
+        }
         return data
       },
       reformat: input => {
         const data = {}
-        input.map(el => {
-          const { uid, ...vals } = { ...el }
-          data[uid] = { ...vals }
-        })
+        if (input) {
+          input.map(el => {
+            const { uid, ...vals } = { ...el }
+            data[uid] = { ...vals }
+          })
+        }
         return data
       },
     },
