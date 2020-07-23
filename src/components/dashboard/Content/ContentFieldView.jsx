@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import moment from 'moment'
+import Avatar from '@material-ui/core/Avatar'
+
 import { makeStyles } from '@material-ui/core/styles'
 import * as CONTENT from '../../../constants/contentTypes'
+import MainContext from '../../../states/mainState'
+import store from '../../../functions/store'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,10 +49,22 @@ const ContentSubFieldSection = props => {
 
 const ContentFieldView = props => {
   const { id, label, type, data } = props
+  const [cData, setCData] = useState()
 
   const classes = useStyles()
 
-  return data ? (
+  useEffect(() => {
+    if (type === 'image' && data) {
+      store
+        .getFileUrl(data)
+        .then(url => setCData(url))
+        .catch(err => console.log(err))
+    } else {
+      setCData(null)
+    }
+  }, [])
+
+  return (
     <TableRow>
       <TableCell align="right">{label}</TableCell>
       <TableCell
@@ -64,6 +80,8 @@ const ContentFieldView = props => {
           ) : (
             'false'
           )
+        ) : type === 'image' ? (
+          <Avatar alt="User Avatar" src={cData} />
         ) : type === 'content' ? (
           <ContentSubFieldSection
             data={props.format(data)}
@@ -72,7 +90,7 @@ const ContentFieldView = props => {
         ) : null}
       </TableCell>
     </TableRow>
-  ) : null
+  )
 }
 
 export default ContentFieldView
