@@ -24,6 +24,7 @@ const ContentEditor = props => {
           const render = (
             <ContentFieldEdit
               contentType={contentType}
+              mainContentType={contentType}
               uid={contentId}
               data={data[el.id]}
               {...el}
