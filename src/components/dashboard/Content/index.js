@@ -35,6 +35,7 @@ const Content = () => {
 
   useEffect(() => {
     setLoading(true)
+    setEditMode(false)
     if (contentType && contentId) {
       CONTENT[contentType].element.read(contentId).then(i => {
         setData(i)
