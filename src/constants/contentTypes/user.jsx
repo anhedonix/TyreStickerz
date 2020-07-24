@@ -15,10 +15,10 @@ const content = {
   },
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
-    { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
-    { id: 'avatarUrl', label: 'Avatar', editable: true, type: 'image' },
-    { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
     { id: 'email', label: 'E-Mail', editable: false, type: 'string' },
+    { id: 'avatarUrl', label: 'Avatar', editable: true, type: 'image' },
+    { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
+    { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
     { id: 'darkUI', label: 'Dark Theme', editable: false, type: 'bool' },
     {
       id: 'messageTimeOut',
