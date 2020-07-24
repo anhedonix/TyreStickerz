@@ -5,11 +5,15 @@ import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import moment from 'moment'
 import Avatar from '@material-ui/core/Avatar'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import CancelIcon from '@material-ui/icons/Cancel'
+import { green, red } from '@material-ui/core/colors'
 
 import { makeStyles } from '@material-ui/core/styles'
 import * as CONTENT from '../../../constants/contentTypes'
 import MainContext from '../../../states/mainState'
 import store from '../../../functions/store'
+import Switch from '@material-ui/core/Switch'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,7 +53,7 @@ const ContentSubFieldSection = props => {
 
 const ContentFieldView = props => {
   const { id, label, type, data } = props
-  const [cData, setCData] = useState()
+  const [imagePath, setImagePath] = useState()
 
   const classes = useStyles()
 
@@ -57,10 +61,10 @@ const ContentFieldView = props => {
     if (type === 'image' && data) {
       store
         .getFileUrl(data)
-        .then(url => setCData(url))
+        .then(url => setImagePath(url))
         .catch(err => console.log(err))
     } else {
-      setCData(null)
+      setImagePath(null)
     }
   }, [])
 
@@ -70,19 +74,19 @@ const ContentFieldView = props => {
       <TableCell
         className={type === 'content' ? classes.subFieldWrapper : null}
       >
-        {data ? (
+        {data !== undefined ? (
           ['string', 'int', 'uid'].includes(type) ? (
             data
           ) : type === 'timestamp' ? (
             moment(data.toDate()).format('YYYY MM DD LT')
           ) : type === 'bool' ? (
             data ? (
-              'true'
+              <CheckCircleIcon style={{ color: green[500] }} />
             ) : (
-              'false'
+              <CancelIcon style={{ color: red[500] }} />
             )
           ) : type === 'image' ? (
-            <Avatar alt="User Avatar" src={cData} />
+            <Avatar alt="User Avatar" src={imagePath} />
           ) : type === 'content' ? (
             <ContentSubFieldSection
               data={props.format(data)}
