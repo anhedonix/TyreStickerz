@@ -42,6 +42,7 @@ const Content = () => {
   useEffect(() => {
     setLoading(true)
     setEditMode(false)
+    setData()
     if (contentType && contentId) {
       CONTENT[contentType].element.read(contentId).then(i => {
         setData(i)
@@ -49,9 +50,23 @@ const Content = () => {
       })
     } else {
       setLoading(false)
-      setData()
     }
   }, [contentType, contentId])
+
+  const saveData = data => {
+    const xdata = {}
+    const fields = CONTENT[contentType].fields
+    for (var i = 0; i < fields.length; i++) {
+      if (fields[i].editable) {
+        xdata[fields[i].id] = data[fields[i].id]
+      }
+    }
+    CONTENT[contentType].element.update(contentId, null, xdata).then(() => {
+      setIsEdited(false)
+      setEditMode(false)
+      setData(cData)
+    })
+  }
 
   return loading ? (
     <Loader />
@@ -71,8 +86,8 @@ const Content = () => {
         {isEdited && (
           <Button
             className={classes.saveButton}
-            variant="outlined"
-            onClick={() => setEditMode(!editMode)}
+            variant="contained"
+            onClick={() => saveData(cData)}
           >
             Save
           </Button>
