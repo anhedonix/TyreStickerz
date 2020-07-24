@@ -15,10 +15,6 @@ const content = {
 
 content.extra = {
   icon: <PeopleIcon />,
-  adminURL: [
-    { type: 'contentType', content: content, token: 'users' },
-    { type: 'uid', content: user },
-  ],
 }
 
 const users = { ...content, ...crud(content) }

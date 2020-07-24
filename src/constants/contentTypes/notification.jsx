@@ -1,10 +1,12 @@
 import React from 'react'
 import { auth } from 'firebase/app'
 import PeopleIcon from '@material-ui/icons/People'
-import * as USER from '../../constants/user'
-import crud from '../../functions/crud'
 import { v4 as uuid } from 'uuid'
 import moment from 'moment'
+import * as firebase from 'firebase/app'
+
+import crud from '../../functions/crud'
+// import * as USER from '../../constants/user'
 import store from '../../functions/store'
 
 const content = {
@@ -14,7 +16,7 @@ const content = {
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     { id: 'message', label: 'Message', editable: true, type: 'string' },
-    { id: 'read', label: 'Read?', editable: true, type: 'bool' },
+    { id: 'read', label: 'Read?', editable: false, type: 'bool' },
     { id: 'link', label: 'Link', editable: true, type: 'string' },
     { id: 'timestamp', label: 'Date/Time', editable: true, type: 'timestamp' },
   ],
@@ -25,6 +27,15 @@ const content = {
         read: false,
         link: '',
         timestamp: moment().toDate(),
+      }
+    },
+    adminDefault: () => {
+      return {
+        uid: uuid(),
+        message: '',
+        read: false,
+        link: '',
+        timestamp: firebase.firestore.Timestamp.now(),
       }
     },
     contentListStruct: data => {
@@ -38,7 +49,6 @@ const content = {
 }
 content.extra = {
   icon: <PeopleIcon />,
-  adminURL: [{ type: 'contentType', content: content }],
 }
 
 /**

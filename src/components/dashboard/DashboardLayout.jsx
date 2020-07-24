@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import ContentMenu from './ContentMenu'
 import ContentPalette from './ContentPalette'
 import Content from './Content'
+import Router from 'next/router'
+import mainContext, { MainContext } from '../../states/mainState'
+import * as USER from '../../constants/user'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,12 +19,16 @@ const useStyles = makeStyles(theme => ({
 
 const DashboardLayout = props => {
   const classes = useStyles()
-  return (
+  const { state } = useContext(MainContext)
+
+  return [USER.DEV, USER.ADMIN].includes(state.userData.type) ? (
     <div className={classes.root}>
       <ContentMenu />
       <ContentPalette />
       <Content />
     </div>
+  ) : (
+    <div>You do not have access to this page</div>
   )
 }
 

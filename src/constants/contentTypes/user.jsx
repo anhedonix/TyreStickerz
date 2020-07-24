@@ -12,14 +12,14 @@ const content = {
   token: 'doc:users',
   extra: {
     icon: <PeopleIcon />,
-    adminURL: 'users:uid',
   },
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
+    { id: 'email', label: 'E-Mail', editable: false, type: 'string' },
+    { id: 'avatarUrl', label: 'Avatar', editable: true, type: 'image' },
     { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
     { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
-    { id: 'email', label: 'E-Mail', editable: true, type: 'string' },
-    { id: 'darkUI', label: 'Dark Theme', editable: true, type: 'bool' },
+    { id: 'darkUI', label: 'Dark Theme', editable: false, type: 'bool' },
     {
       id: 'messageTimeOut',
       label: 'Message Timeout (secs)',
@@ -34,7 +34,19 @@ const content = {
       content: notification,
       format: input => {
         const data = []
-        Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
+        if (input) {
+          Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
+        }
+        return data
+      },
+      reformat: input => {
+        const data = {}
+        if (input) {
+          input.map(el => {
+            const { uid, ...vals } = { ...el }
+            data[uid] = { ...vals }
+          })
+        }
         return data
       },
     },
@@ -48,6 +60,7 @@ const content = {
         darkUI: false,
         messageTimeOut: 6,
         type: USER.CLIENT,
+        notifications: {},
       }
     },
     contentListStruct: data => {
@@ -64,10 +77,6 @@ const content = {
 
 content.extra = {
   icon: <PeopleIcon />,
-  adminURL: [
-    { type: 'uid', content: content },
-    { type: 'contentType', content: notification },
-  ],
 }
 
 const currentUserCrud = type => {

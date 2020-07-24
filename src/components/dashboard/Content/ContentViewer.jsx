@@ -6,16 +6,17 @@ import * as CONTENT from '../../../constants/contentTypes'
 import ContentFieldView from './ContentFieldView'
 
 const ContentViewer = props => {
-  const { data, contentType, contentId } = props
+  const { data, contentType } = props
 
   return (
     <Table>
       <TableBody>
-        {contentType &&
-          contentId &&
-          CONTENT[contentType].fields.map(el => (
+        {CONTENT[contentType].fields.map(el => {
+          const Render = (
             <ContentFieldView data={data[el.id]} {...el} key={el.id} />
-          ))}
+          )
+          return Render
+        })}
       </TableBody>
     </Table>
   )

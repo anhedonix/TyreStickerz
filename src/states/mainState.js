@@ -6,13 +6,12 @@ import authentication from '../functions/user'
 export const initialState = {
   user: null,
   userData: {
-    type: USER.ANON,
+    type: null,
   },
   loading: {
     primary: false,
     secondary: false,
   },
-  notifications: [],
   reauth: {
     state: false,
     function: null,

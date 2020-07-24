@@ -228,11 +228,14 @@ store.readContentSnapshot = (contentType, setter, id = null) => {
         break
       }
       case 'doc': {
+        if (!id) {
+          reject({ message: 'No id provided' })
+        }
         const unsubscribe = firestore
           .collection(token)
           .doc(id)
           .onSnapshot(doc => {
-            setter(doc.data())
+            setter({ ...doc.data(), uid: id })
             resolve(unsubscribe)
           })
         break
@@ -245,7 +248,7 @@ store.readContentSnapshot = (contentType, setter, id = null) => {
           .collection(path[0])
           .doc(id)
           .onSnapshot(doc => {
-            setter(doc.data()[path[1]])
+            setter({ ...doc.data()[path[1]], uid: id })
             resolve(unsubscribe)
           })
         break
@@ -255,7 +258,11 @@ store.readContentSnapshot = (contentType, setter, id = null) => {
           .collection(path[0])
           .doc(path[1])
           .onSnapshot(doc => {
-            setter(doc.data()[path[2]])
+            if (id) {
+              setter({ ...doc.data()[path[2]][id], uid: id })
+            } else {
+              setter(doc.data()[path[2]])
+            }
             resolve(unsubscribe)
           })
         break

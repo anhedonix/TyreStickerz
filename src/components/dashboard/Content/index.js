@@ -16,16 +16,22 @@ const useStyles = makeStyles(theme => ({
   },
   contentToolbar: {
     padding: '0.5rem',
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
   editButton: {
-    marginLeft: 'auto',
     display: 'block',
+  },
+  saveButton: {
+    marginLeft: '1rem',
   },
 }))
 
 const Content = () => {
   const [editMode, setEditMode] = useState(false)
+  const [isEdited, setIsEdited] = useState(false)
   const [data, setData] = useState()
+  const [cData, setCData] = useState()
   const [loading, setLoading] = useState(true)
 
   const router = useRouter()
@@ -34,17 +40,35 @@ const Content = () => {
   const classes = useStyles()
 
   useEffect(() => {
+    let unsubscribe
     setLoading(true)
+    setEditMode(false)
+    setData()
     if (contentType && contentId) {
-      CONTENT[contentType].element.read(contentId).then(i => {
-        setData(i)
+      CONTENT[contentType].element.readSnap(setData, contentId).then(i => {
+        unsubscribe = i
         setLoading(false)
       })
     } else {
       setLoading(false)
-      setData()
     }
+    return unsubscribe
   }, [contentType, contentId])
+
+  const saveData = data => {
+    const xdata = {}
+    const fields = CONTENT[contentType].fields
+    for (var i = 0; i < fields.length; i++) {
+      if (fields[i].editable) {
+        xdata[fields[i].id] = data[fields[i].id]
+      }
+    }
+    CONTENT[contentType].element.update(contentId, null, xdata).then(() => {
+      setIsEdited(false)
+      setEditMode(false)
+      setData(cData)
+    })
+  }
 
   return loading ? (
     <Loader />
@@ -54,16 +78,30 @@ const Content = () => {
         <Button
           className={classes.editButton}
           variant="outlined"
-          onClick={() => setEditMode(!editMode)}
+          onClick={() => {
+            setEditMode(!editMode)
+            setIsEdited(false)
+          }}
         >
-          {editMode ? 'Discard Edits' : 'Edit'}
+          {editMode ? 'Discard' : 'Edit'}
         </Button>
+        {isEdited && (
+          <Button
+            className={classes.saveButton}
+            variant="contained"
+            onClick={() => saveData(cData)}
+          >
+            Save
+          </Button>
+        )}
       </Paper>
       {editMode ? (
         <ContentEditor
           data={data}
           contentType={contentType}
           contentId={contentId}
+          isEdited={setIsEdited}
+          currentData={setCData}
         />
       ) : (
         <ContentViewer

@@ -9,12 +9,14 @@ const NotificationsPopover = props => {
   const { personal, global } = props.data
 
   const calcHeight = () => {
-    const p = Object.keys(personal).length
-      ? Object.keys(personal).length * 81 + 40
-      : 0
-    const g = Object.keys(global).length
-      ? Object.keys(global).length * 81 + 40
-      : 0
+    const p =
+      personal && Object.keys(personal).length
+        ? Object.keys(personal).length * 81 + 40
+        : 0
+    const g =
+      global && Object.keys(global).length
+        ? Object.keys(global).length * 81 + 40
+        : 0
     return p + g
   }
 
