@@ -35,10 +35,6 @@ const content = {
 }
 content.extra = {
   icon: <NotificationsIcon />,
-  adminURL: [
-    { type: 'contentType', content: content, token: 'notifications_global' },
-    { type: 'uid', content: notif },
-  ],
 }
 
 const notifications_global = {
