@@ -10,6 +10,8 @@ import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers'
 import Avatar from '@material-ui/core/Avatar'
 import Switch from '@material-ui/core/Switch'
+import Button from '@material-ui/core/Button'
+import AddIcon from '@material-ui/icons/Add'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
@@ -49,6 +51,16 @@ const ContentSubFieldSection = props => {
     setCData(format(orig_data))
   }
 
+  const addNewElement = () => {
+    const xdata = CONTENT[contentType].format.adminDefault()
+    const ydata = [...cData, xdata]
+    setCData(ydata)
+  }
+
+  useEffect(() => {
+    console.log(cData)
+  }, [cData])
+
   return (
     <>
       {cData.map(i => (
@@ -70,6 +82,13 @@ const ContentSubFieldSection = props => {
           </TableBody>
         </Table>
       ))}
+      <Button
+        startIcon={<AddIcon />}
+        variant="contained"
+        onClick={addNewElement}
+      >
+        Add new {contentType}
+      </Button>
     </>
   )
 }
