@@ -139,6 +139,8 @@ const ContentFieldEdit = props => {
           <TextField
             id={`${uid}${label}`}
             value={cData}
+            variant="outlined"
+            size="small"
             onChange={e =>
               setCData(
                 type === 'int' ? parseInt(e.target.value) : e.target.value
