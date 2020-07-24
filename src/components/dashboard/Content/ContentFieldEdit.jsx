@@ -57,10 +57,6 @@ const ContentSubFieldSection = props => {
     setCData(ydata)
   }
 
-  useEffect(() => {
-    console.log(cData)
-  }, [cData])
-
   return (
     <>
       {cData.map(i => (
