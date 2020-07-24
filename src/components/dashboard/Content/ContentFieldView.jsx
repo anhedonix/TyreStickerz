@@ -70,23 +70,25 @@ const ContentFieldView = props => {
       <TableCell
         className={type === 'content' ? classes.subFieldWrapper : null}
       >
-        {['string', 'int', 'uid'].includes(type) ? (
-          data
-        ) : type === 'timestamp' ? (
-          moment(data.toDate()).format('YYYY MM DD LT')
-        ) : type === 'bool' ? (
-          data ? (
-            'true'
-          ) : (
-            'false'
-          )
-        ) : type === 'image' ? (
-          <Avatar alt="User Avatar" src={cData} />
-        ) : type === 'content' ? (
-          <ContentSubFieldSection
-            data={props.format(data)}
-            contentType={props.content.ID}
-          />
+        {data ? (
+          ['string', 'int', 'uid'].includes(type) ? (
+            data
+          ) : type === 'timestamp' ? (
+            moment(data.toDate()).format('YYYY MM DD LT')
+          ) : type === 'bool' ? (
+            data ? (
+              'true'
+            ) : (
+              'false'
+            )
+          ) : type === 'image' ? (
+            <Avatar alt="User Avatar" src={cData} />
+          ) : type === 'content' ? (
+            <ContentSubFieldSection
+              data={props.format(data)}
+              contentType={props.content.ID}
+            />
+          ) : null
         ) : null}
       </TableCell>
     </TableRow>
