@@ -8,13 +8,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers'
-import firebase from 'firebase'
 import Avatar from '@material-ui/core/Avatar'
 import Switch from '@material-ui/core/Switch'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
 import store from '../../../functions/store'
+import { firestore } from '../../../firebase/firebase'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   subField: {
-    marginBottom: '1rem',
+    marginBottom: '4rem',
   },
   subFieldWrapper: {
     paddingRight: '0',
@@ -37,13 +37,16 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ContentSubFieldSection = props => {
-  const { contentType, data, onChange, reformat } = props
+  const { contentType, contentId, data, onChange, format, reformat } = props
   const classes = useStyles()
 
-  const [cData, setCData] = useState(data)
+  const [cData, setCData] = useState(format(data))
 
-  const changeHandler = (id, value) => {
-    onChange(contentType, reformat(cData))
+  const changeHandler = (uid, id, value) => {
+    const orig_data = reformat([...cData])
+    orig_data[uid][id] = value
+    onChange(orig_data)
+    setCData(format(orig_data))
   }
 
   return (
@@ -53,12 +56,14 @@ const ContentSubFieldSection = props => {
           <TableBody>
             {CONTENT[contentType].fields.map(el => {
               return (
-                <ContentFieldView
+                <ContentFieldEdit
                   uid={i.uid}
                   data={i[el.id]}
                   {...el}
                   key={`${i.uid}${el.id}`}
+                  contentType={contentType}
                   onChange={changeHandler}
+                  subContent
                 />
               )
             })}
@@ -69,7 +74,7 @@ const ContentSubFieldSection = props => {
   )
 }
 
-const ContentFieldView = props => {
+const ContentFieldEdit = props => {
   const {
     uid,
     id,
@@ -78,8 +83,8 @@ const ContentFieldView = props => {
     data,
     editable,
     onChange,
-    contentType,
     mainContentType,
+    subContent,
   } = props
 
   const [cData, setCData] = useState(data)
@@ -97,12 +102,9 @@ const ContentFieldView = props => {
     if (cData === null) {
       setFilePath(null)
     }
-  }, [cData])
-
-  useEffect(() => {
     if (onChange) {
-      if (type === 'content') {
-        onChange(id, cData)
+      if (subContent) {
+        onChange(uid, id, cData)
       } else {
         onChange(id, cData)
       }
@@ -134,9 +136,7 @@ const ContentFieldView = props => {
             <DateTimePicker
               value={cData.toDate()}
               fullWidth
-              onChange={e =>
-                setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
-              }
+              onChange={e => setCData(firestore.Timestamp.fromDate(e.toDate()))}
             />
           </MuiPickersUtilsProvider>
         ) : type === 'bool' ? (
@@ -144,7 +144,6 @@ const ContentFieldView = props => {
             checked={cData}
             onChange={e => setCData(e.target.checked)}
             name={label}
-            /* disabled={!editable} */
           />
         ) : type === 'image' ? (
           <div className={classes.avatarWrapper}>
@@ -158,7 +157,6 @@ const ContentFieldView = props => {
                 setCData(i)
               }}
               drop={cData && cData}
-              /* className={classes.avatarButton} */
               dropButton={cData}
               dropThen={() => {
                 CONTENT[mainContentType].element.update(uid, null, {
@@ -170,9 +168,11 @@ const ContentFieldView = props => {
           </div>
         ) : type === 'content' ? (
           <ContentSubFieldSection
-            data={props.format(data)}
+            data={cData}
             contentType={props.content.ID}
+            contentId={props.id}
             onChange={setCData}
+            format={props.format}
             reformat={props.reformat}
           />
         ) : null}
@@ -204,4 +204,4 @@ const ContentFieldView = props => {
   )
 }
 
-export default ContentFieldView
+export default ContentFieldEdit
