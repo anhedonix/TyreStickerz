@@ -49,7 +49,6 @@ const content = {
 }
 content.extra = {
   icon: <PeopleIcon />,
-  adminURL: [{ type: 'contentType', content: content }],
 }
 
 /**
