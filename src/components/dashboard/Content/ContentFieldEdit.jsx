@@ -12,11 +12,11 @@ import Avatar from '@material-ui/core/Avatar'
 import Switch from '@material-ui/core/Switch'
 import Button from '@material-ui/core/Button'
 import AddIcon from '@material-ui/icons/Add'
+import * as firebase from 'firebase/app'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
 import store from '../../../functions/store'
-import { firestore } from '../../../firebase/firebase'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -155,7 +155,11 @@ const ContentFieldEdit = props => {
             <DateTimePicker
               value={cData.toDate()}
               fullWidth
-              onChange={e => setCData(firestore.Timestamp.fromDate(e.toDate()))}
+              inputVariant="outlined"
+              showTodayButton
+              onChange={e =>
+                setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
+              }
             />
           </MuiPickersUtilsProvider>
         ) : type === 'bool' ? (

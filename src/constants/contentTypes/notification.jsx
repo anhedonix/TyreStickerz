@@ -3,7 +3,7 @@ import { auth } from 'firebase/app'
 import PeopleIcon from '@material-ui/icons/People'
 import { v4 as uuid } from 'uuid'
 import moment from 'moment'
-import firebase from 'firebase'
+import * as firebase from 'firebase/app'
 
 import crud from '../../functions/crud'
 // import * as USER from '../../constants/user'
