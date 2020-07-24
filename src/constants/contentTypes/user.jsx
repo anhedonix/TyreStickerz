@@ -12,7 +12,6 @@ const content = {
   token: 'doc:users',
   extra: {
     icon: <PeopleIcon />,
-    adminURL: 'users:uid',
   },
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
