@@ -10,6 +10,10 @@ const ContentEditor = props => {
 
   const [cData, setCData] = useState({ ...data })
 
+  useEffect(() => {
+    setCData({ ...data })
+  }, [data])
+
   const onChange = (id, value) => {
     setCData({ ...cData, [id]: value })
   }
