@@ -17,7 +17,7 @@ import * as content from '../../../../constants/contentTypes'
 const useStyles = makeStyles(theme => ({
   root: {
     borderBottom: `1px dashed ${theme.palette.primary.main}`,
-    width: '100vw',
+    width: '100%',
     minWidth: '100%',
   },
   header: {
