@@ -20,7 +20,7 @@ const content = {
     { id: 'avatarUrl', label: 'Avatar', editable: true, type: 'image' },
     { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
     { id: 'email', label: 'E-Mail', editable: false, type: 'string' },
-    { id: 'darkUI', label: 'Dark Theme', editable: true, type: 'bool' },
+    { id: 'darkUI', label: 'Dark Theme', editable: false, type: 'bool' },
     {
       id: 'messageTimeOut',
       label: 'Message Timeout (secs)',
