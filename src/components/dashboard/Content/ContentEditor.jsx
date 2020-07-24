@@ -6,10 +6,9 @@ import * as CONTENT from '../../../constants/contentTypes'
 import ContentFieldEdit from './ContentFieldEdit'
 
 const ContentEditor = props => {
-  const { data, contentType, contentId } = props
+  const { data, contentType, contentId, isEdited, currentData } = props
 
   const [cData, setCData] = useState({ ...data })
-  const [edited, setEdited] = useState(false)
 
   const onChange = (id, value) => {
     setCData({ ...cData, [id]: value })
@@ -17,11 +16,11 @@ const ContentEditor = props => {
 
   useEffect(() => {
     if (!isEqual(cData, data)) {
-      setEdited(true)
+      isEdited(true)
     } else {
-      setEdited(false)
+      isEdited(false)
     }
-    console.log(cData)
+    currentData(cData)
   }, [cData])
 
   return (

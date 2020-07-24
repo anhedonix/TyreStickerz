@@ -16,16 +16,22 @@ const useStyles = makeStyles(theme => ({
   },
   contentToolbar: {
     padding: '0.5rem',
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
   editButton: {
-    marginLeft: 'auto',
     display: 'block',
+  },
+  saveButton: {
+    marginLeft: '1rem',
   },
 }))
 
 const Content = () => {
   const [editMode, setEditMode] = useState(false)
+  const [isEdited, setIsEdited] = useState(false)
   const [data, setData] = useState()
+  const [cData, setCData] = useState()
   const [loading, setLoading] = useState(true)
 
   const router = useRouter()
@@ -55,16 +61,30 @@ const Content = () => {
         <Button
           className={classes.editButton}
           variant="outlined"
-          onClick={() => setEditMode(!editMode)}
+          onClick={() => {
+            setEditMode(!editMode)
+            setIsEdited(false)
+          }}
         >
           {editMode ? 'Discard' : 'Edit'}
         </Button>
+        {isEdited && (
+          <Button
+            className={classes.saveButton}
+            variant="outlined"
+            onClick={() => setEditMode(!editMode)}
+          >
+            Save
+          </Button>
+        )}
       </Paper>
       {editMode ? (
         <ContentEditor
           data={data}
           contentType={contentType}
           contentId={contentId}
+          isEdited={setIsEdited}
+          currentData={setCData}
         />
       ) : (
         <ContentViewer
