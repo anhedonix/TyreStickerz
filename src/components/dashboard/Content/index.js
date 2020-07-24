@@ -40,17 +40,19 @@ const Content = () => {
   const classes = useStyles()
 
   useEffect(() => {
+    let unsubscribe
     setLoading(true)
     setEditMode(false)
     setData()
     if (contentType && contentId) {
-      CONTENT[contentType].element.read(contentId).then(i => {
-        setData(i)
+      CONTENT[contentType].element.readSnap(setData, contentId).then(i => {
+        unsubscribe = i
         setLoading(false)
       })
     } else {
       setLoading(false)
     }
+    return unsubscribe
   }, [contentType, contentId])
 
   const saveData = data => {
