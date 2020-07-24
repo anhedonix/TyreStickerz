@@ -10,6 +10,7 @@ import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers'
 import firebase from 'firebase'
 import Avatar from '@material-ui/core/Avatar'
+import Switch from '@material-ui/core/Switch'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
@@ -139,11 +140,12 @@ const ContentFieldView = props => {
             />
           </MuiPickersUtilsProvider>
         ) : type === 'bool' ? (
-          data ? (
-            'true'
-          ) : (
-            'false'
-          )
+          <Switch
+            checked={cData}
+            onChange={e => setCData(e.target.checked)}
+            name={label}
+            /* disabled={!editable} */
+          />
         ) : type === 'image' ? (
           <div className={classes.avatarWrapper}>
             <Avatar alt="User Avatar" src={filePath} />
@@ -190,11 +192,7 @@ const ContentFieldView = props => {
         ) : type === 'timestamp' ? (
           moment(data.toDate()).format('YYYY MM DD LT')
         ) : type === 'bool' ? (
-          data ? (
-            'true'
-          ) : (
-            'false'
-          )
+          <Switch checked={cData} onChange={() => {}} name={label} disabled />
         ) : type === 'content' ? (
           <ContentSubFieldSection
             data={props.format(data)}
