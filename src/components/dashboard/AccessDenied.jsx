@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-
 import NoEncryptionIcon from '@material-ui/icons/NoEncryption'
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
+import AccountDialogue from '../shared/User/AccountDialogue/AccountDialogue'
+import * as USER from '../../constants/user'
+import authentication from '../../functions/user'
+import { MainContext } from '../../states/mainState'
 
 const useStyles = makeStyles(theme => ({
   accesDeniedRoot: {
@@ -43,6 +46,63 @@ const useStyles = makeStyles(theme => ({
 
 const AccessDenied = () => {
   const classes = useStyles()
+
+  const [open, setOpen] = useState(false)
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+  const { state, dispatch } = useContext(MainContext)
+  const handleSubmit = parms => {
+    if (type === USER.AD_SIGNUP) {
+      authentication
+        .signUp(parms)
+        .then(() => {
+          setOpen(false)
+          dispatch({
+            type: 'newMsg',
+            payload: {
+              message: 'Sign Up Successful',
+              type: 'success',
+            },
+          })
+        })
+        .catch(e => {
+          dispatch({
+            type: 'newMsg',
+            payload: {
+              message: e.message,
+              type: 'error',
+            },
+          })
+        })
+    } else if (type === USER.AD_SIGNIN) {
+      authentication
+        .signIn(parms.email, parms.password)
+        .then(() => {
+          setOpen(false)
+          dispatch({
+            type: 'newMsg',
+            payload: {
+              message: 'Sign In Successful',
+              type: 'success',
+            },
+          })
+        })
+        .catch(e => {
+          dispatch({
+            type: 'newMsg',
+            payload: {
+              message: e.message,
+              type: 'error',
+            },
+          })
+        })
+    }
+  }
+
+  const [type, setType] = useState(USER.AD_SIGNIN)
+
   return (
     <div className={classes.accesDeniedRoot}>
       <div className={classes.warningIcon}>
@@ -52,9 +112,23 @@ const AccessDenied = () => {
       <p className={classes.message}>
         You have to be an Admin to access this page
       </p>
-      <Button variant="outlined" color="primary" style={{ margin: '32px' }}>
+      <Button
+        variant="outlined"
+        color="primary"
+        style={{ margin: '32px' }}
+        onClick={() => {
+          setType(USER.AD_SIGNIN)
+          setOpen(true)
+        }}
+      >
         Sign In
       </Button>
+      <AccountDialogue
+        open={open}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+        type={{ type, setType }}
+      />
     </div>
   )
 }
