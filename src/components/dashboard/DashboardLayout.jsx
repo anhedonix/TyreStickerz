@@ -24,13 +24,12 @@ const DashboardLayout = props => {
 
   return [USER.DEV, USER.ADMIN].includes(state.userData.type) ? (
     <div className={classes.root}>
-      {/* <ContentMenu />
+      <ContentMenu />
       <ContentPalette />
-      <Content /> */}
-      <AccessDenied />
+      <Content />
     </div>
   ) : (
-    <div>You do not have access to this page</div>
+    <AccessDenied />
   )
 }
 
