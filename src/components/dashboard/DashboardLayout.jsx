@@ -22,7 +22,7 @@ const DashboardLayout = props => {
   const classes = useStyles()
   const { state } = useContext(MainContext)
 
-  return [USER.DEV, USER.ADMIN].includes(state.userData.type) ? (
+  return [USER.DEV, USER.ADMIN].includes(state.userData.type) && state.user ? (
     <div className={classes.root}>
       <ContentMenu />
       <ContentPalette />

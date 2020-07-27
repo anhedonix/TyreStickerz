@@ -102,6 +102,7 @@ const AccessDenied = () => {
   }
 
   const [type, setType] = useState(USER.AD_SIGNIN)
+  console.log(state.user)
 
   return (
     <div className={classes.accesDeniedRoot}>
@@ -110,25 +111,31 @@ const AccessDenied = () => {
         <RadioButtonUncheckedIcon className={classes.circle} />
       </div>
       <p className={classes.message}>
-        You have to be an Admin to access this page
+        {state.user
+          ? 'You have to be an Admin to access this page'
+          : 'You do not have permission to access this content'}
       </p>
-      <Button
-        variant="outlined"
-        color="primary"
-        style={{ margin: '32px' }}
-        onClick={() => {
-          setType(USER.AD_SIGNIN)
-          setOpen(true)
-        }}
-      >
-        Sign In
-      </Button>
-      <AccountDialogue
-        open={open}
-        onClose={handleClose}
-        onSubmit={handleSubmit}
-        type={{ type, setType }}
-      />
+      {!state.user ? (
+        <>
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ margin: '32px' }}
+            onClick={() => {
+              setType(USER.AD_SIGNIN)
+              setOpen(true)
+            }}
+          >
+            Sign In
+          </Button>
+          <AccountDialogue
+            open={open}
+            onClose={handleClose}
+            onSubmit={handleSubmit}
+            type={{ type, setType }}
+          />
+        </>
+      ) : null}
     </div>
   )
 }
