@@ -6,6 +6,7 @@ import Content from './Content'
 import Router from 'next/router'
 import mainContext, { MainContext } from '../../states/mainState'
 import * as USER from '../../constants/user'
+import AccessDenied from './AccessDenied'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,9 +24,10 @@ const DashboardLayout = props => {
 
   return [USER.DEV, USER.ADMIN].includes(state.userData.type) ? (
     <div className={classes.root}>
-      <ContentMenu />
+      {/* <ContentMenu />
       <ContentPalette />
-      <Content />
+      <Content /> */}
+      <AccessDenied />
     </div>
   ) : (
     <div>You do not have access to this page</div>
