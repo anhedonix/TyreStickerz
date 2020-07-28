@@ -6,6 +6,7 @@ import List from '@material-ui/core/List'
 import * as CONTENT from '../../constants/contentTypes'
 import Loader from '../shared/Loading/Loading'
 import Swatch from './Swatch'
+import ContentPaletteToolbar from './Content/ContentPaletteToolbar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   list: {
-    padding: '0',
+    // padding: '0',
   },
 }))
 
@@ -26,13 +27,13 @@ const ContentPalette = () => {
   const [data, setData] = useState()
 
   const router = useRouter()
-  const { contentType } = router.query
+  const { contentType, create } = router.query
   const classes = useStyles()
 
   useEffect(() => {
     setLoading(true)
     let unsubscribe
-    if (contentType) {
+    if (contentType && !create) {
       const currentContent = CONTENT[contentType]
       currentContent.read().then(i => {
         setData(i.map(j => currentContent.format.contentListStruct(j)))
@@ -45,19 +46,22 @@ const ContentPalette = () => {
     return unsubscribe
   }, [contentType])
 
-  return (
+  return !create ? (
     <div className={classes.root}>
       {loading ? (
         <Loader />
       ) : (
-        <List className={classes.list}>
-          {data.map(i => (
-            <Swatch {...i} key={i.uid} />
-          ))}
-        </List>
+        <>
+          <ContentPaletteToolbar />
+          <List className={classes.list}>
+            {data.map(i => (
+              <Swatch {...i} key={i.uid} />
+            ))}
+          </List>
+        </>
       )}
     </div>
-  )
+  ) : null
 }
 
 export default ContentPalette
