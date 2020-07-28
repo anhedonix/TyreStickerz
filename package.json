@@ -1,81 +1,81 @@
 {
-  "name": "TyreStickerz",
-  "version": "0.0.2",
-  "private": true,
-  "variables": {
-    "primaryColor": "#ff4400",
-    "secondaryColor": "#ff2200"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start -p $PORT",
-    "start_local": "next start",
-    "storybook": "start-storybook -p 9009 -s public --ci",
-    "flow": "flow",
-    "build-storybook": "build-storybook"
-  },
-  "dependencies": {
-    "@date-io/moment": "^1.3.13",
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "@material-ui/pickers": "^3.2.10",
-    "@types/browserify": "^12.0.36",
-    "firebase": "^7.17.1",
-    "lodash": "^4.17.19",
-    "moment": "^2.27.0",
-    "next": "^9.5.0",
-    "prop-types": "^15.7.2",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-icons": "^3.9.0",
-    "react-moment": "^0.9.7",
-    "react-router-dom": "^5.2.0",
-    "react-scrollbars-custom": "^4.0.25",
-    "react-spring": "^8.0.27",
-    "react-swipeable-views": "^0.13.8",
-    "react-touch": "^0.4.4",
-    "typeface-roboto": "^0.0.75",
-    "uuid": "^8.3.0",
-    "validate.js": "^0.13.1",
-    "webpack": "^4.44.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@storybook/addon-actions": "^5.3.19",
-    "@storybook/addon-links": "^5.3.19",
-    "@storybook/addons": "^5.3.19",
-    "@storybook/react": "^5.3.19",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "dotenv": "^8.2.0",
-    "eslint": "^7.5.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.4",
-    "eslint-plugin-react-hooks": "^4.0.8",
-    "gh-pages": "^2.2.0",
-    "husky": "^4.2.5",
-    "import-js": "^4.0.2",
-    "javascript-typescript-langserver": "^2.11.3",
-    "lint-staged": "^10.2.11",
-    "lorem-ipsum": "^2.0.3",
-    "prettier": "^2.0.5",
-    "tern": "^0.24.3",
-    "tslint": "^6.1.2",
-    "typescript": "^3.9.7",
-    "typescript-language-server": "^0.4.0"
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,sass,md}": [
-      "./node_modules/.bin/prettier --write"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
+    "name": "TyreStickerz",
+    "version": "0.0.2",
+    "private": true,
+    "variables": {
+        "primaryColor": "#ff4400",
+        "secondaryColor": "#ff2200"
+    },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start -p $PORT",
+        "start_local": "next start",
+        "storybook": "start-storybook -p 9009 -s public --ci",
+        "flow": "flow",
+        "build-storybook": "build-storybook",
+        "update:packages": "rm -rf node_modules package-lock.json && npm update --save-dev && npm update --save"
+    },
+    "dependencies": {
+        "@date-io/moment": "^2.8.0",
+        "@material-ui/core": "^4.11.0",
+        "@material-ui/icons": "^4.9.1",
+        "@material-ui/lab": "^4.0.0-alpha.56",
+        "@material-ui/pickers": "^3.2.10",
+        "@types/browserify": "^12.0.36",
+        "firebase": "^7.17.1",
+        "lodash": "^4.17.19",
+        "moment": "^2.27.0",
+        "next": "^9.5.0",
+        "prop-types": "^15.7.2",
+        "react": "16.13.1",
+        "react-dom": "16.13.1",
+        "react-icons": "^3.10.0",
+        "react-moment": "^0.9.7",
+        "react-router-dom": "^5.2.0",
+        "react-scrollbars-custom": "^4.0.25",
+        "react-spring": "^8.0.27",
+        "react-swipeable-views": "^0.13.9",
+        "react-touch": "^0.4.4",
+        "typeface-roboto": "^0.0.75",
+        "uuid": "^8.3.0",
+        "validate.js": "^0.13.1",
+        "webpack": "^4.44.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.10.5",
+        "@storybook/addon-actions": "^5.3.19",
+        "@storybook/addon-links": "^5.3.19",
+        "@storybook/addons": "^5.3.19",
+        "@storybook/react": "^5.3.19",
+        "babel-eslint": "^10.1.0",
+        "babel-loader": "^8.1.0",
+        "dotenv": "^8.2.0",
+        "eslint": "^7.5.0",
+        "eslint-config-airbnb": "^18.2.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-jsx-a11y": "^6.3.1",
+        "eslint-plugin-react": "^7.20.4",
+        "eslint-plugin-react-hooks": "^4.0.8",
+        "gh-pages": "^3.1.0",
+        "husky": "^4.2.5",
+        "import-js": "^4.0.2",
+        "javascript-typescript-langserver": "^2.11.3",
+        "lint-staged": "^10.2.11",
+        "lorem-ipsum": "^2.0.3",
+        "prettier": "^2.0.5",
+        "tern": "^0.24.3",
+        "typescript": "^3.9.7",
+        "typescript-language-server": "^0.4.0"
+    },
+    "lint-staged": {
+        "src/**/*.{js,jsx,ts,tsx,json,css,sass,md}": [
+            "./node_modules/.bin/prettier --write"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
     }
-  }
 }
