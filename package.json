@@ -25,7 +25,7 @@
     "firebase": "^7.17.1",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
-    "next": "^9.4.4",
+    "next": "^9.5.0",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -37,9 +37,9 @@
     "react-swipeable-views": "^0.13.8",
     "react-touch": "^0.4.4",
     "typeface-roboto": "^0.0.75",
-    "uuid": "^8.2.0",
+    "uuid": "^8.3.0",
     "validate.js": "^0.13.1",
-    "webpack": "^4.41.5"
+    "webpack": "^4.44.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -54,7 +54,7 @@
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react": "^7.20.4",
     "eslint-plugin-react-hooks": "^4.0.8",
     "gh-pages": "^2.2.0",
     "husky": "^4.2.5",
