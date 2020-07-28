@@ -6,7 +6,7 @@ import notif from './notification'
 
 const content = {
   ID: 'notifications_global',
-  label: 'Notifications',
+  label: 'Global Notification',
   token: 'metaField:_meta/GlobalNotifications/notifications',
 
   fields: [
@@ -41,7 +41,7 @@ content.extra = {
 const notifications_global = {
   ...content,
   ...crud(content),
-  element: { ...crud(content) },
+  element: { ...crud(content), ...content },
 }
 
 export default notifications_global
