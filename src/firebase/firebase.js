@@ -19,7 +19,14 @@ if (!app.apps.length) {
 export default app.app()
 
 // export { analytics }
-export const auth = app.auth()
-export const firestore = app.firestore()
-export const storage = app.storage()
+
+const auth = app.auth()
+
+const firestore = app.firestore()
+firestore.enablePersistence()
+
+const storage = app.storage()
+
 // export const performance = app.performance()
+
+export { auth, firestore, storage }
