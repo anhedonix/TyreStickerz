@@ -102,7 +102,6 @@ const AccessDenied = () => {
   }
 
   const [type, setType] = useState(USER.AD_SIGNIN)
-  console.log(state.user)
 
   return (
     <div className={classes.accesDeniedRoot}>
