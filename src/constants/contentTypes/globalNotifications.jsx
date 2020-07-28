@@ -35,6 +35,7 @@ const content = {
 }
 content.extra = {
   icon: <NotificationsIcon />,
+  admin: ['create', 'update', 'delete'],
 }
 
 const notifications_global = {
