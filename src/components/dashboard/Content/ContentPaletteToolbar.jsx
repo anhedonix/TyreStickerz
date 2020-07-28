@@ -25,21 +25,25 @@ const ContentPaletteToolbar = props => {
   const [actions, setActions] = useState([])
 
   useEffect(() => {
-    setActions(CONTENT[contentType].extra.adminActions)
+    if (contentType) {
+      setActions(CONTENT[contentType].extra.adminActions)
+    } else {
+      setActions([])
+    }
   }, [contentType])
 
-  return (
+  return contentType ? (
     <Paper square className={classes.root}>
       {actions.includes('create') && (
         <Link
-          href="/dashboard/[contentType]/[create]"
+          href="/dashboard/[contentType]/[contentId]"
           as={`/dashboard/${contentType}/create`}
         >
           <Button>Create</Button>
         </Link>
       )}
     </Paper>
-  )
+  ) : null
 }
 
 export default ContentPaletteToolbar

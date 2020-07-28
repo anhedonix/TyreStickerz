@@ -19,6 +19,13 @@ const content = {
     { id: 'avatarUrl', label: 'Avatar', editable: true, type: 'image' },
     { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
     { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
+    {
+      id: 'type',
+      label: 'User Type',
+      editable: true,
+      type: 'stringList',
+      options: [...USER.TYPES],
+    },
     { id: 'darkUI', label: 'Dark Theme', editable: false, type: 'bool' },
     {
       id: 'messageTimeOut',

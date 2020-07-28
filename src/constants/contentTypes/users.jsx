@@ -16,6 +16,7 @@ const content = {
 content.extra = {
   icon: <PeopleIcon />,
   adminActions: ['create', 'update', 'delete'],
+  filters: { type: ['DEV', 'ADMIN', 'PREMIUM', 'CLIENT'] },
 }
 
 const users = { ...content, ...crud(content) }

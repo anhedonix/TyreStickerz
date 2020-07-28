@@ -25,15 +25,24 @@ const useStyles = makeStyles(theme => ({
 const ContentPalette = () => {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState()
+  const [create, setCreate] = useState(false)
 
   const router = useRouter()
-  const { contentType, create } = router.query
+  const { contentType, contentId } = router.query
   const classes = useStyles()
+
+  useEffect(() => {
+    if (contentId === 'create') {
+      setCreate(true)
+    } else {
+      setCreate(false)
+    }
+  }, [contentId])
 
   useEffect(() => {
     setLoading(true)
     let unsubscribe
-    if (contentType && !create) {
+    if (contentType && contentId !== 'create') {
       const currentContent = CONTENT[contentType]
       currentContent.read().then(i => {
         setData(i.map(j => currentContent.format.contentListStruct(j)))

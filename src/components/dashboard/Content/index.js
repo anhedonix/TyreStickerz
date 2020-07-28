@@ -44,11 +44,15 @@ const Content = () => {
     setLoading(true)
     setEditMode(false)
     setData()
-    if (contentType && contentId) {
+    if (contentType && contentId && contentId !== 'create') {
       CONTENT[contentType].element.readSnap(setData, contentId).then(i => {
         unsubscribe = i
         setLoading(false)
       })
+    } else if (contentType && contentId === 'create') {
+      setLoading(false)
+      setEditMode(true)
+      setData(CONTENT[contentType].element.format.default())
     } else {
       setLoading(false)
     }
@@ -71,7 +75,9 @@ const Content = () => {
   }
 
   return loading ? (
-    <Loader />
+    <div className={classes.root}>
+      <Loader />
+    </div>
   ) : data ? (
     <div className={classes.root}>
       <Paper square className={classes.contentToolbar}>

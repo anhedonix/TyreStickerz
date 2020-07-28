@@ -114,9 +114,6 @@ const ContentFieldEdit = props => {
         .then(url => setFilePath(url))
         .catch(err => console.log(err))
     }
-    if (cData === null) {
-      setFilePath(null)
-    }
     if (onChange) {
       if (subContent) {
         onChange(uid, id, cData)
@@ -208,7 +205,7 @@ const ContentFieldEdit = props => {
         className={type === 'content' ? classes.subFieldWrapper : null}
         style={{ borderBottom: 'none' }}
       >
-        {['string', 'int', 'uid'].includes(type) ? (
+        {['string', 'int', 'uid', 'stringList'].includes(type) ? (
           data
         ) : type === 'timestamp' ? (
           moment(data.toDate()).format('YYYY MM DD LT')
