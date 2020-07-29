@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add'
 import * as firebase from 'firebase/app'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import Slider from '@material-ui/core/Slider'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
@@ -37,6 +38,12 @@ const useStyles = makeStyles(theme => ({
   avatarWrapper: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  fieldWrapper: {
+    display: 'flex',
+  },
+  intFieldSlider: {
+    margin: '0 1rem',
   },
 }))
 
@@ -125,7 +132,7 @@ const ContentFieldEdit = props => {
     }
   }, [cData])
 
-  return editable && cData ? (
+  return editable && cData !== undefined ? (
     <TableRow>
       <TableCell align="right" style={{ borderBottom: 'none' }}>
         {label}
@@ -135,23 +142,50 @@ const ContentFieldEdit = props => {
         style={{ borderBottom: 'none' }}
       >
         {['string', 'int', 'uid'].includes(type) ? (
-          <TextField
-            id={`${uid}${label}`}
-            value={cData}
-            variant="outlined"
-            size="small"
-            onChange={e =>
-              setCData(
-                type === 'int' ? parseInt(e.target.value) : e.target.value
-              )
-            }
-            fullWidth
-          />
+          type === 'int' ? (
+            <div className={classes.fieldWrapper}>
+              <TextField
+                id={`${uid}${label}`}
+                value={cData}
+                variant="outlined"
+                size="small"
+                disabled
+                style={{ width: '80px' }}
+              />
+              <Slider
+                className={classes.intFieldSlider}
+                value={cData}
+                step={0.5}
+                marks
+                min={1.5}
+                max={12}
+                valueLabelDisplay="on"
+                onChange={(e, i) => {
+                  setCData(i)
+                }}
+              />
+            </div>
+          ) : (
+            <TextField
+              id={`${uid}${label}`}
+              value={cData}
+              variant="outlined"
+              size="small"
+              onChange={e => {
+                const xdata = e.target.value
+                setCData(xdata)
+              }}
+              fullWidth={type !== 'int'}
+              disabled={type === 'int'}
+            />
+          )
         ) : type === 'stringList' ? (
           <Select
             id={`${uid}${label}`}
             value={data}
             fullWidth
+            variant="outlined"
+            size="small"
             onChange={e => setCData(e.target.value)}
           >
             {props.options.map(el => (
