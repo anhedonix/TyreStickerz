@@ -104,7 +104,11 @@ const Content = () => {
           onClick={() => {
             setEditMode(!editMode)
             setIsEdited(false)
-            router.push('/dashboard/[contentType]', `/dashboard/${contentType}`)
+            contentId === 'create' &&
+              router.push(
+                '/dashboard/[contentType]',
+                `/dashboard/${contentType}`
+              )
           }}
         >
           {editMode ? 'Discard' : 'Edit'}
