@@ -359,9 +359,13 @@ store.updateContent = (
             const data = doc.data()
             const field = data[path[2]]
             let newField
-            const newData = {
-              [uuid()]: { ...payload },
-            }
+            const newData = !id
+              ? {
+                  [uuid()]: { ...payload },
+                }
+              : {
+                  [id]: { ...payload },
+                }
             newField = {
               ...field,
               ...newData,
@@ -458,7 +462,7 @@ store.deleteContent = (contentType, id = null, key = null) => {
               }
             }
             docRef
-              .set({ [path[2]]: newField }, { merge: true })
+              .set({ [path[2]]: newField }, { merge: false })
               .then(() => resolve(newField))
               .catch(reason => reject(reason))
           })

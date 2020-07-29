@@ -77,10 +77,10 @@ const content = {
     },
     contentListStruct: data => {
       return {
-        header: data.firstName + ' ' + data.lastName,
-        detail: data.uid,
-        meta1: data.type,
-        meta2: data.email,
+        detail: data.firstName + ' ' + data.lastName,
+        header: data.email,
+        meta1: undefined,
+        meta2: data.type,
         uid: data.uid,
       }
     },

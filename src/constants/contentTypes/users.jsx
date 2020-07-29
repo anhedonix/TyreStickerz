@@ -15,7 +15,7 @@ const content = {
 
 content.extra = {
   icon: <PeopleIcon />,
-  adminActions: ['update', 'delete'],
+  adminActions: ['update'],
   filters: {
     type: {
       id: 'type',

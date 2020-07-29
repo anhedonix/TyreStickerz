@@ -3,9 +3,11 @@ import { useRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
-import Link from 'next/Link'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import CachedIcon from '@material-ui/icons/Cached'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 
 import * as CONTENT from '../../../constants/contentTypes'
 
@@ -27,6 +29,8 @@ const ContentPaletteToolbar = props => {
   const router = useRouter()
   const { contentType, filter } = router.query
   const classes = useStyles()
+
+  const { setUpdate, deleteSelected, selected } = props
 
   const [actions, setActions] = useState([])
   const [filters, setFilters] = useState({})
@@ -79,14 +83,37 @@ const ContentPaletteToolbar = props => {
           )
         })}
       <div className={classes.grow} />
-      {actions.includes('create') && (
-        <Link
-          href="/dashboard/[contentType]/[contentId]"
-          as={`/dashboard/${contentType}/create`}
+      <ButtonGroup>
+        {actions.includes('create') && (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              router.push(
+                '/dashboard/[contentType]/[contentId]',
+                `/dashboard/${contentType}/create`
+              )
+            }}
+          >
+            Create
+          </Button>
+        )}
+        {selected.length > 0 && (
+          <Button
+            startIcon={<HighlightOffIcon />}
+            variant="outlined"
+            onClick={() => deleteSelected()}
+          >
+            Delete Selected
+          </Button>
+        )}
+        <Button
+          startIcon={<CachedIcon />}
+          variant="outlined"
+          onClick={() => setUpdate(true)}
         >
-          <Button variant="outlined">Create</Button>
-        </Link>
-      )}
+          Refresh
+        </Button>
+      </ButtonGroup>
     </Paper>
   ) : null
 }
