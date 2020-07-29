@@ -62,16 +62,33 @@ const Content = () => {
   const saveData = data => {
     const xdata = {}
     const fields = CONTENT[contentType].fields
-    for (var i = 0; i < fields.length; i++) {
-      if (fields[i].editable) {
-        xdata[fields[i].id] = data[fields[i].id]
+    if (contentId !== 'create') {
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i].editable) {
+          xdata[fields[i].id] = data[fields[i].id]
+        }
       }
+      CONTENT[contentType].element.update(contentId, null, xdata).then(() => {
+        setIsEdited(false)
+        setEditMode(false)
+        setData(cData)
+      })
+    } else {
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i].editable) {
+          xdata[fields[i].id] = data[fields[i].id]
+        }
+      }
+      CONTENT[contentType].element.create(xdata).then(result => {
+        setIsEdited(false)
+        setEditMode(false)
+        setData(cData)
+        router.push(
+          '/dashboard/[contentType]/[contentId]',
+          `/dashboard/${contentType}/${result}`
+        )
+      })
     }
-    CONTENT[contentType].element.update(contentId, null, xdata).then(() => {
-      setIsEdited(false)
-      setEditMode(false)
-      setData(cData)
-    })
   }
 
   return loading ? (
@@ -97,7 +114,7 @@ const Content = () => {
             variant="contained"
             onClick={() => saveData(cData)}
           >
-            Save
+            {contentId === 'create' ? 'Create' : 'Save'}
           </Button>
         )}
       </Paper>
