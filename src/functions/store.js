@@ -462,7 +462,7 @@ store.deleteContent = (contentType, id = null, key = null) => {
               }
             }
             docRef
-              .set({ [path[2]]: newField }, { merge: true })
+              .set({ [path[2]]: newField }, { merge: false })
               .then(() => resolve(newField))
               .catch(reason => reject(reason))
           })
