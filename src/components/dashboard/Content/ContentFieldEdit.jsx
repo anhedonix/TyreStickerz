@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     backgroundImage: `url('/Banners/DesignerBanner.png')`,
     backgroundSize: 'cover',
+    backgroundPosition: 'center center',
     width: '100%',
     height: '100%',
     display: 'flex',

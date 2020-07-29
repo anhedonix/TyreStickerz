@@ -56,6 +56,7 @@ const Content = () => {
       setData(CONTENT[contentType].element.format.default())
     } else {
       setLoading(false)
+      setData()
     }
     return unsubscribe
   }, [contentType, contentId])
@@ -123,13 +124,16 @@ const Content = () => {
                 className={classes.editButton}
                 variant="outlined"
                 onClick={() => {
-                  setEditMode(!editMode)
+                  setEditMode(false)
                   setIsEdited(false)
-                  contentId === 'create' &&
-                    router.push(
-                      '/dashboard/[contentType]',
-                      `/dashboard/${contentType}`
-                    )
+                  CONTENT[contentType]
+                    .delete(contentType, contentId)
+                    .then(() => {
+                      router.push(
+                        '/dashboard/[contentType]',
+                        `/dashboard/${contentType}`
+                      )
+                    })
                 }}
               >
                 Delete

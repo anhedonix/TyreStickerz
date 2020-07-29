@@ -31,6 +31,8 @@ const Swatch = props => {
   const router = useRouter()
   const { contentType, contentId } = router.query
   const classes = useStyles()
+
+  const { select, unselect } = props
   return (
     <>
       <ListItem
@@ -39,7 +41,17 @@ const Swatch = props => {
         selected={contentId === props.uid}
       >
         {CONTENT[contentType].extra.adminActions.includes('delete') && (
-          <Checkbox color="primary" className={classes.checkbox} />
+          <Checkbox
+            color="primary"
+            className={classes.checkbox}
+            onChange={e => {
+              if (e.target.checked) {
+                select(props.uid)
+              } else {
+                unselect(props.uid)
+              }
+            }}
+          />
         )}
         <Link
           href="/dashboard/[contentType]/[contentId]"
