@@ -6,6 +6,7 @@ import List from '@material-ui/core/List'
 import * as CONTENT from '../../constants/contentTypes'
 import Loader from '../shared/Loading/Loading'
 import Swatch from './Swatch'
+import ContentPaletteToolbar from './Content/ContentPaletteToolbar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,24 +18,33 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   list: {
-    padding: '0',
+    // padding: '0',
   },
 }))
 
 const ContentPalette = () => {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState()
+  const [create, setCreate] = useState(false)
 
   const router = useRouter()
-  const { contentType } = router.query
+  const { contentType, contentId, filter } = router.query
   const classes = useStyles()
+
+  useEffect(() => {
+    if (contentId === 'create') {
+      setCreate(true)
+    } else {
+      setCreate(false)
+    }
+  }, [contentId])
 
   useEffect(() => {
     setLoading(true)
     let unsubscribe
-    if (contentType) {
+    if (contentType && contentId !== 'create') {
       const currentContent = CONTENT[contentType]
-      currentContent.read().then(i => {
+      currentContent.read(null, filter).then(i => {
         setData(i.map(j => currentContent.format.contentListStruct(j)))
         setLoading(false)
       })
@@ -43,21 +53,24 @@ const ContentPalette = () => {
       setLoading(false)
     }
     return unsubscribe
-  }, [contentType])
+  }, [contentType, filter])
 
-  return (
+  return !create ? (
     <div className={classes.root}>
       {loading ? (
         <Loader />
       ) : (
-        <List className={classes.list}>
-          {data.map(i => (
-            <Swatch {...i} key={i.uid} />
-          ))}
-        </List>
+        <>
+          <ContentPaletteToolbar />
+          <List className={classes.list}>
+            {data.map(i => (
+              <Swatch {...i} key={i.uid} />
+            ))}
+          </List>
+        </>
       )}
     </div>
-  )
+  ) : null
 }
 
 export default ContentPalette

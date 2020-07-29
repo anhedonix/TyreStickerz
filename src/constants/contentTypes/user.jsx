@@ -1,6 +1,7 @@
 import React from 'react'
 import { auth } from 'firebase/app'
 import PeopleIcon from '@material-ui/icons/People'
+
 import * as USER from '../../constants/user'
 import notification from './notification'
 import store from '../../functions/store'
@@ -19,6 +20,13 @@ const content = {
     { id: 'avatarUrl', label: 'Avatar', editable: true, type: 'image' },
     { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
     { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
+    {
+      id: 'type',
+      label: 'User Type',
+      editable: true,
+      type: 'stringList',
+      options: [...USER.TYPES],
+    },
     { id: 'darkUI', label: 'Dark Theme', editable: false, type: 'bool' },
     {
       id: 'messageTimeOut',
@@ -54,6 +62,7 @@ const content = {
   format: {
     default: () => {
       return {
+        avatarUrl: null,
         firstName: '',
         lastName: '',
         email: '',

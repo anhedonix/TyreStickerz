@@ -75,7 +75,7 @@ const ContentFieldView = props => {
         className={type === 'content' ? classes.subFieldWrapper : null}
       >
         {data !== undefined ? (
-          ['string', 'int', 'uid'].includes(type) ? (
+          ['string', 'int', 'uid', 'stringList'].includes(type) ? (
             data
           ) : type === 'timestamp' ? (
             moment(data.toDate()).format('YYYY MM DD LT')

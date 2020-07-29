@@ -44,11 +44,15 @@ const Content = () => {
     setLoading(true)
     setEditMode(false)
     setData()
-    if (contentType && contentId) {
+    if (contentType && contentId && contentId !== 'create') {
       CONTENT[contentType].element.readSnap(setData, contentId).then(i => {
         unsubscribe = i
         setLoading(false)
       })
+    } else if (contentType && contentId === 'create') {
+      setLoading(false)
+      setEditMode(true)
+      setData(CONTENT[contentType].element.format.default())
     } else {
       setLoading(false)
     }
@@ -58,20 +62,39 @@ const Content = () => {
   const saveData = data => {
     const xdata = {}
     const fields = CONTENT[contentType].fields
-    for (var i = 0; i < fields.length; i++) {
-      if (fields[i].editable) {
-        xdata[fields[i].id] = data[fields[i].id]
+    if (contentId !== 'create') {
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i].editable) {
+          xdata[fields[i].id] = data[fields[i].id]
+        }
       }
+      CONTENT[contentType].element.update(contentId, null, xdata).then(() => {
+        setIsEdited(false)
+        setEditMode(false)
+        setData(cData)
+      })
+    } else {
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i].editable) {
+          xdata[fields[i].id] = data[fields[i].id]
+        }
+      }
+      CONTENT[contentType].element.create(xdata).then(result => {
+        setIsEdited(false)
+        setEditMode(false)
+        setData(cData)
+        router.push(
+          '/dashboard/[contentType]/[contentId]',
+          `/dashboard/${contentType}/${result}`
+        )
+      })
     }
-    CONTENT[contentType].element.update(contentId, null, xdata).then(() => {
-      setIsEdited(false)
-      setEditMode(false)
-      setData(cData)
-    })
   }
 
   return loading ? (
-    <Loader />
+    <div className={classes.root}>
+      <Loader />
+    </div>
   ) : data ? (
     <div className={classes.root}>
       <Paper square className={classes.contentToolbar}>
@@ -81,6 +104,7 @@ const Content = () => {
           onClick={() => {
             setEditMode(!editMode)
             setIsEdited(false)
+            router.push('/dashboard/[contentType]', `/dashboard/${contentType}`)
           }}
         >
           {editMode ? 'Discard' : 'Edit'}
@@ -91,7 +115,7 @@ const Content = () => {
             variant="contained"
             onClick={() => saveData(cData)}
           >
-            Save
+            {contentId === 'create' ? 'Create' : 'Save'}
           </Button>
         )}
       </Paper>

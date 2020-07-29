@@ -1,4 +1,4 @@
-import * as app from 'firebase/app'
+import * as firebase from 'firebase/app'
 import config from '../config/firebase.js'
 
 import 'firebase/analytics'
@@ -7,19 +7,43 @@ import 'firebase/firestore'
 import 'firebase/storage'
 import 'firebase/performance'
 
-// let analytics
+let app, analytics, auth, firestore, storage, performance
 
-if (!app.apps.length) {
-  app.initializeApp(config)
+if (!firebase.apps.length) {
+  firebase.initializeApp(config)
+
   // if (typeof window !== 'undefined') {
-  // if ('measurementId' in clientCredentials) analytics = app.analytics()
+  //   if ('measurementId' in config) {
+  //     analytics = firebase.analytics()
+  //     performance = firebase.performance()
+  //   }
   // }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //// Enable offline persistance
+  // firebase
+  //   .firestore()
+  //   .enablePersistence()
+  //   .catch(err => {
+  //     if (err.code === 'failed-precondition') {
+  //       console.log(
+  //         'Multiple tabs open, persistance of data only works on one tab at a time.'
+  //       )
+  //     } else if (err.code === 'unimplemented') {
+  //       console.log('Current browser does not support data persistance')
+  //     }
+  //   })
 }
 
-export default app.app()
+app = firebase.app()
 
-// export { analytics }
-export const auth = app.auth()
-export const firestore = app.firestore()
-export const storage = app.storage()
-// export const performance = app.performance()
+auth = firebase.auth()
+
+firestore = firebase.firestore()
+firestore.settings({ experimentalForceLongPolling: true })
+
+storage = firebase.storage()
+
+export default app
+
+export { auth, analytics, firestore, storage, performance }

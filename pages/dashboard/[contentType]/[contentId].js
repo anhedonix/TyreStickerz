@@ -3,7 +3,6 @@ import React from 'react'
 
 import { name } from '../../../package.json'
 import MainLayout from '../../../src/components/shared/Layout/MainLayout'
-import Designer from '../../../src/components/designer/editor'
 import DashboardLayout from '../../../src/components/dashboard/DashboardLayout'
 
 export default function designer() {
