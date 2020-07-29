@@ -79,8 +79,8 @@ const content = {
       return {
         detail: data.firstName + ' ' + data.lastName,
         header: data.email,
-        meta1: data.type,
-        meta2: undefined,
+        meta1: undefined,
+        meta2: data.type,
         uid: data.uid,
       }
     },
