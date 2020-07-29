@@ -1,6 +1,7 @@
 import React from 'react'
 import { auth } from 'firebase/app'
 import PeopleIcon from '@material-ui/icons/People'
+
 import * as USER from '../../constants/user'
 import notification from './notification'
 import store from '../../functions/store'
