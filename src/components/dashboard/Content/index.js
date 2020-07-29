@@ -1,5 +1,6 @@
 import react, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
@@ -98,30 +99,52 @@ const Content = () => {
   ) : data ? (
     <div className={classes.root}>
       <Paper square className={classes.contentToolbar}>
-        <Button
-          className={classes.editButton}
-          variant="outlined"
-          onClick={() => {
-            setEditMode(!editMode)
-            setIsEdited(false)
-            contentId === 'create' &&
-              router.push(
-                '/dashboard/[contentType]',
-                `/dashboard/${contentType}`
-              )
-          }}
-        >
-          {editMode ? 'Discard' : 'Edit'}
-        </Button>
-        {isEdited && (
-          <Button
-            className={classes.saveButton}
-            variant="contained"
-            onClick={() => saveData(cData)}
-          >
-            {contentId === 'create' ? 'Create' : 'Save'}
-          </Button>
-        )}
+        <ButtonGroup>
+          {CONTENT[contentType].extra.adminActions.includes('update') && (
+            <Button
+              className={classes.editButton}
+              variant="outlined"
+              onClick={() => {
+                setEditMode(!editMode)
+                setIsEdited(false)
+                contentId === 'create' &&
+                  router.push(
+                    '/dashboard/[contentType]',
+                    `/dashboard/${contentType}`
+                  )
+              }}
+            >
+              {editMode ? 'Discard' : 'Edit'}
+            </Button>
+          )}
+          {CONTENT[contentType].extra.adminActions.includes('delete') &&
+            contentId !== 'create' && (
+              <Button
+                className={classes.editButton}
+                variant="outlined"
+                onClick={() => {
+                  setEditMode(!editMode)
+                  setIsEdited(false)
+                  contentId === 'create' &&
+                    router.push(
+                      '/dashboard/[contentType]',
+                      `/dashboard/${contentType}`
+                    )
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          {isEdited && (
+            <Button
+              className={classes.saveButton}
+              variant="contained"
+              onClick={() => saveData(cData)}
+            >
+              {contentId === 'create' ? 'Create' : 'Save'}
+            </Button>
+          )}
+        </ButtonGroup>
       </Paper>
       {editMode ? (
         <ContentEditor
