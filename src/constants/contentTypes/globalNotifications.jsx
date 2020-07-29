@@ -1,7 +1,9 @@
 import React from 'react'
-import crud from '../../functions/crud'
 import moment from 'moment'
 import NotificationsIcon from '@material-ui/icons/Notifications'
+import * as firebase from 'firebase/app'
+
+import crud from '../../functions/crud'
 import notif from './notification'
 
 const content = {
@@ -20,7 +22,7 @@ const content = {
       return {
         message: '',
         link: '',
-        timestamp: moment().toDate(),
+        timestamp: firebase.firestore.Timestamp.now(),
       }
     },
     contentListStruct: data => {
