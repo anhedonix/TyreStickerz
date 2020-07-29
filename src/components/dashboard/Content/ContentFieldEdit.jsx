@@ -125,7 +125,7 @@ const ContentFieldEdit = props => {
     }
   }, [cData])
 
-  return editable ? (
+  return editable && cData ? (
     <TableRow>
       <TableCell align="right" style={{ borderBottom: 'none' }}>
         {label}
@@ -221,7 +221,9 @@ const ContentFieldEdit = props => {
         {['string', 'int', 'uid', 'stringList'].includes(type) ? (
           data
         ) : type === 'timestamp' ? (
-          moment(data.toDate()).format('YYYY MM DD LT')
+          data ? (
+            moment(data.toDate()).format('YYYY MM DD LT')
+          ) : null
         ) : type === 'bool' ? (
           <Switch checked={cData} onChange={() => {}} name={label} disabled />
         ) : type === 'content' ? (
