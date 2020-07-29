@@ -33,6 +33,9 @@ const content = {
       label: 'Message Timeout (secs)',
       editable: true,
       type: 'int',
+      min: 1.5,
+      max: 12,
+      step: 0.5,
     },
     {
       id: 'notifications',
