@@ -61,6 +61,7 @@ const content = {
   format: {
     default: () => {
       return {
+        avatarUrl: null,
         firstName: '',
         lastName: '',
         email: '',
