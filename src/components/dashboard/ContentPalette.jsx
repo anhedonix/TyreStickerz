@@ -79,6 +79,9 @@ const ContentPalette = () => {
       if (id < end) {
         deleteCascade(id + 1, end)
       } else {
+        if (selected.includes(contentId)) {
+          router.push('/dashboard/[contentType]', `/dashboard/${contentType}`)
+        }
         setUpdate(true)
         setSelected([])
       }
@@ -86,9 +89,6 @@ const ContentPalette = () => {
   }
 
   const deleteSelected = () => {
-    if (selected.includes(contentId)) {
-      router.push('/dashboard/[contentType]', `/dashboard/${contentType}`)
-    }
     deleteCascade(0, selected.length)
   }
 
