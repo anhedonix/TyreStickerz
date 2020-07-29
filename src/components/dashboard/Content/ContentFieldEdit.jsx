@@ -13,6 +13,8 @@ import Switch from '@material-ui/core/Switch'
 import Button from '@material-ui/core/Button'
 import AddIcon from '@material-ui/icons/Add'
 import * as firebase from 'firebase/app'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
@@ -145,6 +147,17 @@ const ContentFieldEdit = props => {
             }
             fullWidth
           />
+        ) : type === 'stringList' ? (
+          <Select
+            id={`${uid}${label}`}
+            value={data}
+            fullWidth
+            onChange={e => setCData(e.target.value)}
+          >
+            {props.options.map(el => (
+              <MenuItem value={el}>{el}</MenuItem>
+            ))}
+          </Select>
         ) : type === 'timestamp' ? (
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <DateTimePicker
