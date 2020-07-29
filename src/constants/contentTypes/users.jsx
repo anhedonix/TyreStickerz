@@ -16,7 +16,14 @@ const content = {
 content.extra = {
   icon: <PeopleIcon />,
   adminActions: ['update', 'delete'],
-  filters: { type: ['DEV', 'ADMIN', 'PREMIUM', 'CLIENT'] },
+  filters: {
+    type: {
+      id: 'type',
+      label: 'Type',
+      default: 'ALL',
+      options: ['DEV', 'ADMIN', 'PREMIUM', 'CLIENT', 'ALL'],
+    },
+  },
 }
 
 const users = { ...content, ...crud(content) }

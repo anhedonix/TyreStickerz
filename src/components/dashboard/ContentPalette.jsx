@@ -28,7 +28,7 @@ const ContentPalette = () => {
   const [create, setCreate] = useState(false)
 
   const router = useRouter()
-  const { contentType, contentId } = router.query
+  const { contentType, contentId, filter } = router.query
   const classes = useStyles()
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const ContentPalette = () => {
     let unsubscribe
     if (contentType && contentId !== 'create') {
       const currentContent = CONTENT[contentType]
-      currentContent.read().then(i => {
+      currentContent.read(null, filter).then(i => {
         setData(i.map(j => currentContent.format.contentListStruct(j)))
         setLoading(false)
       })
@@ -53,7 +53,7 @@ const ContentPalette = () => {
       setLoading(false)
     }
     return unsubscribe
-  }, [contentType])
+  }, [contentType, filter])
 
   return !create ? (
     <div className={classes.root}>
