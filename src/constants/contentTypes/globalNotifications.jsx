@@ -27,9 +27,9 @@ const content = {
     },
     contentListStruct: data => {
       return {
-        header: data.message.substring(0, 20) + '...',
-        detail: data.uid,
-        meta1: moment(data.timestamp.toDate()).format('YY MM DD LT'),
+        header: data.message.substring(0, 30) + '...',
+        // detail: data.uid,
+        detail: moment(data.timestamp.toDate()).format('YY MM DD LT'),
         uid: data.uid,
       }
     },
