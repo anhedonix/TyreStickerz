@@ -16,6 +16,7 @@ import * as firebase from 'firebase/app'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Slider from '@material-ui/core/Slider'
+import _ from 'lodash'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
@@ -155,10 +156,10 @@ const ContentFieldEdit = props => {
               <Slider
                 className={classes.intFieldSlider}
                 value={cData}
-                step={0.5}
+                step={props.step}
                 marks
-                min={1.5}
-                max={12}
+                min={props.min}
+                max={props.max}
                 valueLabelDisplay="on"
                 onChange={(e, i) => {
                   setCData(i)
