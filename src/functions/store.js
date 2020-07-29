@@ -359,9 +359,13 @@ store.updateContent = (
             const data = doc.data()
             const field = data[path[2]]
             let newField
-            const newData = {
-              [uuid()]: { ...payload },
-            }
+            const newData = !id
+              ? {
+                  [uuid()]: { ...payload },
+                }
+              : {
+                  [id]: { ...payload },
+                }
             newField = {
               ...field,
               ...newData,
