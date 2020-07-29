@@ -40,6 +40,7 @@ app = firebase.app()
 auth = firebase.auth()
 
 firestore = firebase.firestore()
+firestore.settings({ experimentalForceLongPolling: true })
 
 storage = firebase.storage()
 
