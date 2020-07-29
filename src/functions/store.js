@@ -111,8 +111,9 @@ store.createContent = (contentType, id = null, payload = null) => {
             const data = doc.data()
             const field = data[path[2]]
             let newField
+            const newUid = uuid()
             const newData = {
-              [uuid()]: { ...contentType.format.default(), ...payload },
+              [newUid]: { ...contentType.format.default(), ...payload },
             }
             newField = {
               ...field,
@@ -120,7 +121,7 @@ store.createContent = (contentType, id = null, payload = null) => {
             }
             docRef
               .set({ [path[2]]: { ...newField } }, { merge: true })
-              .then(() => resolve(newField))
+              .then(() => resolve(newUid))
               .catch(reason => reject(reason))
           })
           .catch(reason => reject(reason))
