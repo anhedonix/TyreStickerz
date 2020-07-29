@@ -141,7 +141,7 @@ store.createContent = (contentType, id = null, payload = null) => {
  * This function works well on arrays and objects. It is not designed for any
  * other types
  */
-store.readContent = (contentType, id = null) => {
+store.readContent = (contentType, id = null, filter = null) => {
   return new Promise((resolve, reject) => {
     const [access, token] = contentType.token.split(':')
     let path
@@ -150,15 +150,29 @@ store.readContent = (contentType, id = null) => {
     }
     switch (access) {
       case 'collection': {
-        firestore
-          .collection(token)
-          .get()
-          .then(docs => {
-            const data = []
-            docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
-            resolve(data)
-          })
-          .catch(reason => reject(reason))
+        if (!filter || filter.split(':')[1] === 'ALL') {
+          firestore
+            .collection(token)
+            .get()
+            .then(docs => {
+              const data = []
+              docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
+              resolve(data)
+            })
+            .catch(reason => reject(reason))
+        } else {
+          const [filterType, filterToken] = filter.split(':')
+          firestore
+            .collection(token)
+            .where(filterType, '==', filterToken)
+            .get()
+            .then(docs => {
+              const data = []
+              docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
+              resolve(data)
+            })
+            .catch(reason => reject(reason))
+        }
         break
       }
       case 'doc': {
