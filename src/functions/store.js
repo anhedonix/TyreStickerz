@@ -300,7 +300,8 @@ store.updateContent = (
   contentType,
   id = null,
   key = undefined,
-  payload = undefined
+  payload = undefined,
+  merge = true
 ) => {
   const [access, token] = contentType.token.split(':')
   let path
@@ -321,7 +322,7 @@ store.updateContent = (
         firestore
           .collection(token)
           .doc(id)
-          .set({ ...payload }, { merge: true })
+          .set({ ...payload }, { merge: merge })
           .then(() => resolve())
         break
       }

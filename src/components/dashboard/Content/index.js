@@ -61,24 +61,29 @@ const Content = () => {
     return unsubscribe
   }, [contentType, contentId])
 
-  const saveData = data => {
+  const saveData = () => {
     const xdata = {}
     const fields = CONTENT[contentType].fields
     if (contentId !== 'create') {
       for (var i = 0; i < fields.length; i++) {
         if (fields[i].editable) {
+          xdata[fields[i].id] = cData[fields[i].id]
+        } else {
           xdata[fields[i].id] = data[fields[i].id]
         }
       }
-      CONTENT[contentType].element.update(contentId, null, xdata).then(() => {
-        setIsEdited(false)
-        setEditMode(false)
-        setData(cData)
-      })
+      console.log(xdata)
+      CONTENT[contentType].element
+        .update(contentId, null, xdata, false)
+        .then(() => {
+          setIsEdited(false)
+          setEditMode(false)
+          setData(cData)
+        })
     } else {
       for (var i = 0; i < fields.length; i++) {
         if (fields[i].editable) {
-          xdata[fields[i].id] = data[fields[i].id]
+          xdata[fields[i].id] = cData[fields[i].id]
         }
       }
       CONTENT[contentType].element.create(xdata).then(result => {

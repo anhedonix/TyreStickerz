@@ -17,6 +17,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Slider from '@material-ui/core/Slider'
 import _ from 'lodash'
+import Paper from '@material-ui/core/Paper'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import IconButton from '@material-ui/core/IconButton'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
@@ -32,7 +35,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   subField: {
-    marginBottom: '4rem',
+    // marginBottom: '4rem',
+    // marginRight: '2rem',
   },
   subFieldWrapper: {
     paddingRight: '0',
@@ -46,6 +50,18 @@ const useStyles = makeStyles(theme => ({
   },
   intFieldSlider: {
     margin: '0 1rem',
+  },
+  subSectionElementWrapper: {
+    margin: '0 1rem 1rem 0',
+    padding: '1rem',
+    position: 'relative',
+  },
+  subFieldDelete: {
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.background.paper,
+    position: 'absolute',
+    top: '-0.8rem',
+    right: '-0.8rem',
   },
 }))
 
@@ -68,26 +84,48 @@ const ContentSubFieldSection = props => {
     setCData(ydata)
   }
 
+  const removeElement = id => {
+    const orig_data = reformat([...cData])
+    const keys = Object.keys(orig_data)
+    const xdata = {}
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i] !== id) {
+        xdata[keys[i]] = { ...orig_data[keys[i]] }
+      }
+    }
+    const ydata = format(xdata)
+    setCData(ydata)
+    onChange(xdata)
+  }
+
   return (
     <>
       {cData.map(i => (
-        <Table className={classes.subField} size="small" key={i.uid}>
-          <TableBody>
-            {CONTENT[contentType].fields.map(el => {
-              return (
-                <ContentFieldEdit
-                  uid={i.uid}
-                  data={i[el.id]}
-                  {...el}
-                  key={`${i.uid}${el.id}`}
-                  contentType={contentType}
-                  onChange={changeHandler}
-                  subContent
-                />
-              )
-            })}
-          </TableBody>
-        </Table>
+        <Paper className={classes.subSectionElementWrapper}>
+          <Table className={classes.subField} size="small" key={i.uid}>
+            <TableBody>
+              {CONTENT[contentType].fields.map(el => {
+                return (
+                  <ContentFieldEdit
+                    uid={i.uid}
+                    data={i[el.id]}
+                    {...el}
+                    key={`${i.uid}${el.id}`}
+                    contentType={contentType}
+                    onChange={changeHandler}
+                    subContent
+                  />
+                )
+              })}
+            </TableBody>
+          </Table>
+          <IconButton
+            className={classes.subFieldDelete}
+            onClick={() => removeElement(i.uid)}
+          >
+            <HighlightOffIcon />
+          </IconButton>
+        </Paper>
       ))}
       <Button
         startIcon={<AddIcon />}
@@ -171,14 +209,16 @@ const ContentFieldEdit = props => {
             <TextField
               id={`${uid}${label}`}
               value={cData}
-              variant="outlined"
+              variant="standard"
               size="small"
+              fullWidth
               onChange={e => {
                 const xdata = e.target.value
                 setCData(xdata)
               }}
-              fullWidth={type !== 'int'}
-              disabled={type === 'int'}
+              style={
+                type === 'uid' ? { fontFamily: 'monospace, monospace' } : null
+              }
             />
           )
         ) : type === 'stringList' ? (
@@ -186,7 +226,7 @@ const ContentFieldEdit = props => {
             id={`${uid}${label}`}
             value={data}
             fullWidth
-            variant="outlined"
+            variant="standard"
             size="small"
             onChange={e => setCData(e.target.value)}
           >
@@ -199,7 +239,7 @@ const ContentFieldEdit = props => {
             <DateTimePicker
               value={cData.toDate()}
               fullWidth
-              inputVariant="outlined"
+              inputVariant="standard"
               showTodayButton
               onChange={e =>
                 setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
@@ -252,7 +292,11 @@ const ContentFieldEdit = props => {
       </TableCell>
       <TableCell
         className={type === 'content' ? classes.subFieldWrapper : null}
-        style={{ borderBottom: 'none' }}
+        style={
+          type === 'uid'
+            ? { borderBottom: 'none', fontFamily: 'monospaced, monospaced' }
+            : { borderBottom: 'none' }
+        }
       >
         {['string', 'int', 'uid', 'stringList'].includes(type) ? (
           data
