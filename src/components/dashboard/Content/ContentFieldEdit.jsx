@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     margin: '0 1rem',
   },
   subSectionElementWrapper: {
-    margin: '1rem 1rem 1rem 0',
+    margin: '0 1rem 1rem 0',
     padding: '1rem',
     position: 'relative',
   },
@@ -84,11 +84,25 @@ const ContentSubFieldSection = props => {
     setCData(ydata)
   }
 
+  const removeElement = id => {
+    const orig_data = reformat([...cData])
+    const keys = Object.keys(orig_data)
+    const xdata = {}
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i] !== id) {
+        xdata[keys[i]] = { ...orig_data[keys[i]] }
+      }
+    }
+    const ydata = format(xdata)
+    setCData(ydata)
+    onChange(xdata)
+  }
+
   return (
     <>
       {cData.map(i => (
         <Paper className={classes.subSectionElementWrapper}>
-          <Table className={classes.subField} key={i.uid}>
+          <Table className={classes.subField} size="small" key={i.uid}>
             <TableBody>
               {CONTENT[contentType].fields.map(el => {
                 return (
@@ -105,7 +119,10 @@ const ContentSubFieldSection = props => {
               })}
             </TableBody>
           </Table>
-          <IconButton className={classes.subFieldDelete}>
+          <IconButton
+            className={classes.subFieldDelete}
+            onClick={() => removeElement(i.uid)}
+          >
             <HighlightOffIcon />
           </IconButton>
         </Paper>
