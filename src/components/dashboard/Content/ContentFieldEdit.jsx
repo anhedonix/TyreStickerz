@@ -53,7 +53,7 @@ const ContentSubFieldSection = props => {
   const { contentType, contentId, data, onChange, format, reformat } = props
   const classes = useStyles()
 
-  const [cData, setCData] = useState(format(data))
+  const [cData, setCData] = useState(format && data ? format(data) : data)
 
   const changeHandler = (uid, id, value) => {
     const orig_data = reformat([...cData])
