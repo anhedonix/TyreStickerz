@@ -217,7 +217,9 @@ const ContentFieldEdit = props => {
                 setCData(xdata)
               }}
               style={
-                type === 'uid' ? { fontFamily: 'monospace, monospace' } : null
+                type === 'uid'
+                  ? { fontFamily: '"Lucida Console", Monaco, monospace' }
+                  : null
               }
             />
           )
@@ -294,7 +296,10 @@ const ContentFieldEdit = props => {
         className={type === 'content' ? classes.subFieldWrapper : null}
         style={
           type === 'uid'
-            ? { borderBottom: 'none', fontFamily: 'monospaced, monospaced' }
+            ? {
+                borderBottom: 'none',
+                fontFamily: '"Lucida Console", Monaco, monospace',
+              }
             : { borderBottom: 'none' }
         }
       >

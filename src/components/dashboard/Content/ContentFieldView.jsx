@@ -73,6 +73,13 @@ const ContentFieldView = props => {
       <TableCell align="right">{label}</TableCell>
       <TableCell
         className={type === 'content' ? classes.subFieldWrapper : null}
+        style={
+          type === 'uid'
+            ? {
+                fontFamily: '"Lucida Console", Monaco, monospace',
+              }
+            : null
+        }
       >
         {data !== undefined ? (
           ['string', 'int', 'uid', 'stringList'].includes(type) ? (
