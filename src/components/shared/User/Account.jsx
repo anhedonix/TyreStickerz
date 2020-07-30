@@ -149,17 +149,17 @@ const Account = ({ CType = Button }) => {
               </ListItemIcon>
               Profile
             </MenuItem>
-            {state.userData.type === 'ADMIN' ||
-              (state.userData.type === 'DEV' && (
-                <Link href="/dashboard" as="/dashboard">
-                  <MenuItem>
-                    <ListItemIcon>
-                      <DashboardIcon />
-                    </ListItemIcon>
-                    Dashboard
-                  </MenuItem>
-                </Link>
-              ))}
+            {(state.userData.type === 'ADMIN' ||
+              state.userData.type === 'DEV') && (
+              <Link href="/dashboard" as="/dashboard">
+                <MenuItem>
+                  <ListItemIcon>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  Dashboard
+                </MenuItem>
+              </Link>
+            )}
             <Preferences />
             <MenuItem
               onClick={() => {
