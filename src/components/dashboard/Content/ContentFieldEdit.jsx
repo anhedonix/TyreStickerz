@@ -60,8 +60,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.main,
     backgroundColor: theme.palette.background.paper,
     position: 'absolute',
-    top: '-0.8rem',
-    right: '-0.8rem',
+    top: '-0.5rem',
+    right: '-0.5rem',
   },
 }))
 
@@ -101,8 +101,8 @@ const ContentSubFieldSection = props => {
   return (
     <>
       {cData.map(i => (
-        <Paper className={classes.subSectionElementWrapper}>
-          <Table className={classes.subField} size="small" key={i.uid}>
+        <Paper className={classes.subSectionElementWrapper} key={i.uid}>
+          <Table className={classes.subField} size="small">
             <TableBody>
               {CONTENT[contentType].fields.map(el => {
                 return (
