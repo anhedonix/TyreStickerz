@@ -171,14 +171,16 @@ const ContentFieldEdit = props => {
             <TextField
               id={`${uid}${label}`}
               value={cData}
-              variant="outlined"
+              variant="standard"
               size="small"
+              fullWidth
               onChange={e => {
                 const xdata = e.target.value
                 setCData(xdata)
               }}
-              fullWidth={type !== 'int'}
-              disabled={type === 'int'}
+              style={
+                type === 'uid' ? { fontFamily: 'monospace, monospace' } : null
+              }
             />
           )
         ) : type === 'stringList' ? (
@@ -186,7 +188,7 @@ const ContentFieldEdit = props => {
             id={`${uid}${label}`}
             value={data}
             fullWidth
-            variant="outlined"
+            variant="standard"
             size="small"
             onChange={e => setCData(e.target.value)}
           >
@@ -199,7 +201,7 @@ const ContentFieldEdit = props => {
             <DateTimePicker
               value={cData.toDate()}
               fullWidth
-              inputVariant="outlined"
+              inputVariant="standard"
               showTodayButton
               onChange={e =>
                 setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
@@ -252,7 +254,11 @@ const ContentFieldEdit = props => {
       </TableCell>
       <TableCell
         className={type === 'content' ? classes.subFieldWrapper : null}
-        style={{ borderBottom: 'none' }}
+        style={
+          type === 'uid'
+            ? { borderBottom: 'none', fontFamily: 'monospaced, monospaced' }
+            : { borderBottom: 'none' }
+        }
       >
         {['string', 'int', 'uid', 'stringList'].includes(type) ? (
           data
