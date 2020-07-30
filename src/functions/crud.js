@@ -32,8 +32,8 @@ const crud = type => {
      * @param {string} Key Item to be updated.
      * @param {Object} Payload the data that is to be stored.
      */
-    update: (uid, key, payload = undefined) =>
-      store.updateContent(type, uid, key, payload),
+    update: (uid, key, payload = undefined, merge = true) =>
+      store.updateContent(type, uid, key, payload, merge),
 
     /**
      * Create content
