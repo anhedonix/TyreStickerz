@@ -17,6 +17,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Slider from '@material-ui/core/Slider'
 import _ from 'lodash'
+import Paper from '@material-ui/core/Paper'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import IconButton from '@material-ui/core/IconButton'
 
 import * as CONTENT from '../../../constants/contentTypes'
 import FileUploader from '../../shared/Uploader/FileUploader'
@@ -32,7 +35,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   subField: {
-    marginBottom: '4rem',
+    // marginBottom: '4rem',
+    // marginRight: '2rem',
   },
   subFieldWrapper: {
     paddingRight: '0',
@@ -46,6 +50,18 @@ const useStyles = makeStyles(theme => ({
   },
   intFieldSlider: {
     margin: '0 1rem',
+  },
+  subSectionElementWrapper: {
+    margin: '1rem 1rem 1rem 0',
+    padding: '1rem',
+    position: 'relative',
+  },
+  subFieldDelete: {
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.background.paper,
+    position: 'absolute',
+    top: '-0.8rem',
+    right: '-0.8rem',
   },
 }))
 
@@ -71,23 +87,28 @@ const ContentSubFieldSection = props => {
   return (
     <>
       {cData.map(i => (
-        <Table className={classes.subField} size="small" key={i.uid}>
-          <TableBody>
-            {CONTENT[contentType].fields.map(el => {
-              return (
-                <ContentFieldEdit
-                  uid={i.uid}
-                  data={i[el.id]}
-                  {...el}
-                  key={`${i.uid}${el.id}`}
-                  contentType={contentType}
-                  onChange={changeHandler}
-                  subContent
-                />
-              )
-            })}
-          </TableBody>
-        </Table>
+        <Paper className={classes.subSectionElementWrapper}>
+          <Table className={classes.subField} key={i.uid}>
+            <TableBody>
+              {CONTENT[contentType].fields.map(el => {
+                return (
+                  <ContentFieldEdit
+                    uid={i.uid}
+                    data={i[el.id]}
+                    {...el}
+                    key={`${i.uid}${el.id}`}
+                    contentType={contentType}
+                    onChange={changeHandler}
+                    subContent
+                  />
+                )
+              })}
+            </TableBody>
+          </Table>
+          <IconButton className={classes.subFieldDelete}>
+            <HighlightOffIcon />
+          </IconButton>
+        </Paper>
       ))}
       <Button
         startIcon={<AddIcon />}
