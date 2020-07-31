@@ -30,7 +30,7 @@ const MainStateWrapper = props => {
               type: 'authData',
               payload: _.omit(d, ['uid']),
             })
-            // dispatch({ type: 'loading', payload: false })
+            dispatch({ type: 'loading', payload: false })
           })
           .then(unsub => (snap = unsub))
       } else {
