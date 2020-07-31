@@ -9,25 +9,30 @@ import ReAuth from '../components/shared/User/ReAuth/ReAuth'
 import ThemeContainer from '../config/theme'
 import * as content from '../constants/contentTypes'
 import firebase from '../firebase/firebase'
+import _ from 'lodash'
 
 const MainStateWrapper = props => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
     dispatch({ type: 'loading', payload: true })
+    let snap
     const authListner = firebase.auth().onAuthStateChanged(e => {
       dispatch({
         type: 'authChange',
         payload: e,
       })
       if (e) {
-        content.user.currentUser().readSnap(d => {
-          dispatch({
-            type: 'authData',
-            payload: d,
+        content.user
+          .currentUser()
+          .readSnap(d => {
+            dispatch({
+              type: 'authData',
+              payload: _.omit(d, ['uid']),
+            })
+            // dispatch({ type: 'loading', payload: false })
           })
-        }, e.uid)
-        dispatch({ type: 'loading', payload: false })
+          .then(unsub => (snap = unsub))
       } else {
         dispatch({
           type: 'authData',
@@ -36,8 +41,17 @@ const MainStateWrapper = props => {
         dispatch({ type: 'loading', payload: false })
       }
     })
-    return authListner
+    return () => {
+      if (snap) {
+        snap()
+      }
+      if (authListner) {
+        authListner()
+      }
+    }
   }, [])
+
+  return null
 
   return (
     <MainContext.Provider value={{ state, dispatch }}>

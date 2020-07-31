@@ -49,7 +49,7 @@ authentication.signUp = fields => {
         }
 
         userDocumentReference
-          .set(data, { merge: true })
+          .set(data, { merge: false })
           .then(() => {
             resolve(user)
           })

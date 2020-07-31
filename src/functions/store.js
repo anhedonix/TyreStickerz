@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { storage, firestore } from '../firebase/firebase'
 import * as CONTENT from '../constants/content'
+import _ from 'lodash'
 
 const store = {}
 
@@ -319,10 +320,11 @@ store.updateContent = (
         if (!id) {
           reject({ message: 'No id provided' })
         }
+        console.log('running')
         firestore
           .collection(token)
           .doc(id)
-          .set({ ...payload }, { merge: merge })
+          .set({ ..._.omit(payload, ['uid']) }, { merge: merge })
           .then(() => resolve())
         break
       }
