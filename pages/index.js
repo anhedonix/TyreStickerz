@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import React, { useState } from 'react'
-import Link from 'next/Link'
+import Link from 'next/link'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -8,7 +8,7 @@ import { name } from '../package.json'
 import MainLayout from '../src/components/shared/Layout/MainLayout'
 // import DesignerLinkBanner from '../public/Banners/DesignerLinkBanner.jpg'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   designerLinkCard: {
     margin: '100px 0 0 0',
     width: '500px',
@@ -44,14 +44,14 @@ export default function Home() {
     <div>
       <Head>
         <title>{name[0].toUpperCase() + name.substr(1).toLowerCase()}</title>
-        <link rel='icon' href='/favicon.ico' />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <MainLayout>
         <h1 className={classes.tittle}>
           Welcome to {name[0].toUpperCase() + name.substr(1).toLowerCase()}
         </h1>
-        <Link href='/designer'>
+        <Link href="/designer">
           <Paper
             className={classes.designerLinkCard}
             elevation={hover ? 24 : 10}
