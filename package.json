@@ -21,7 +21,8 @@
         "storybook": "start-storybook -p 9009 -s public --ci",
         "flow": "flow",
         "build-storybook": "build-storybook",
-        "node:refresh": "rm -rf node_modules package-lock.json && npm i"
+        "node:refresh": "rm -rf node_modules package-lock.json && npm i",
+        "heroku-postbuild": "npm run build"
     },
     "dependencies": {
         "@date-io/moment": "^1.3.13",
@@ -33,6 +34,7 @@
         "dotenv": "^8.2.0",
         "firebase": "^7.17.1",
         "lodash": "^4.17.19",
+        "lorem-ipsum": "^2.0.3",
         "moment": "^2.27.0",
         "next": "^9.5.0",
         "prop-types": "^15.7.2",
@@ -69,7 +71,6 @@
         "import-js": "^4.0.2",
         "javascript-typescript-langserver": "^2.11.3",
         "lint-staged": "^10.2.11",
-        "lorem-ipsum": "^2.0.3",
         "prettier": "^2.0.5",
         "tern": "^0.24.3",
         "typescript": "^3.9.7",
