@@ -51,8 +51,6 @@ const MainStateWrapper = props => {
     }
   }, [])
 
-  return null
-
   return (
     <MainContext.Provider value={{ state, dispatch }}>
       <ThemeContainer>
