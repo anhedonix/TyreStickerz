@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import React, { useContext, useState, useEffect } from 'react'
 import Switch from '@material-ui/core/Switch'
-import Link from 'next/Link'
+import Link from 'next/link'
 
 import { loremIpsum } from 'lorem-ipsum'
 
