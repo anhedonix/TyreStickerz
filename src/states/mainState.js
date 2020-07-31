@@ -66,7 +66,6 @@ export const reducer = (state, action) => {
     }
 
     case 'authData': {
-      authentication.saveUserInfo({ ...action.payload })
       return {
         ...state,
         userData: {
