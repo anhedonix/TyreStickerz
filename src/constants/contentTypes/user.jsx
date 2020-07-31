@@ -6,6 +6,7 @@ import * as USER from '../../constants/user'
 import notification from './notification'
 import store from '../../functions/store'
 import crud from '../../functions/crud'
+import authentication from '../../functions/user'
 
 const content = {
   ID: 'user',
@@ -17,7 +18,13 @@ const content = {
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     { id: 'email', label: 'E-Mail', editable: false, type: 'string' },
-    { id: 'avatarUrl', label: 'Avatar', editable: true, type: 'image' },
+    {
+      id: 'avatarUrl',
+      label: 'Avatar',
+      editable: true,
+      type: 'image',
+      path: 'Avatars',
+    },
     { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
     { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
     {
@@ -113,6 +120,10 @@ const currentUserCrud = type => {
        */
       update: (key, payload = undefined) =>
         store.updateContent(type, auth().currentUser.uid, key, payload),
+
+      delete: () => {
+        authentication.deleteAccount(uid)
+      },
     }
   } else {
     return {}
@@ -122,6 +133,7 @@ const currentUserCrud = type => {
 const user = {
   ...content,
   ...crud(content),
+  delete: id => authentication.deleteAccount(id),
   currentUser: () => currentUserCrud(content),
 }
 

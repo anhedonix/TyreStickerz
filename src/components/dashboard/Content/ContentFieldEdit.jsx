@@ -149,6 +149,7 @@ const ContentFieldEdit = props => {
     onChange,
     mainContentType,
     subContent,
+    path,
   } = props
 
   const [cData, setCData] = useState(data)
@@ -258,7 +259,7 @@ const ContentFieldEdit = props => {
           <div className={classes.avatarWrapper}>
             <Avatar alt="User Avatar" src={filePath} />
             <FileUploader
-              path={label}
+              path={path}
               text={cData ? `Change ${label}` : `Add ${label}`}
               variant="outlined"
               then={i => {

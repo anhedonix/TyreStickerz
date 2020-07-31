@@ -1,5 +1,7 @@
 import firebase, { analytics, auth, firestore } from 'firebase/app'
+import user from '../constants/contentTypes/user'
 import contentTypeUser from '../constants/contentTypes/user'
+import store from './store'
 
 const authentication = {}
 
@@ -193,9 +195,9 @@ authentication.resetPassword = emailAddress => {
   })
 }
 
-authentication.deleteAccount = () => {
+authentication.deleteAccount = (id = null) => {
   return new Promise((resolve, reject) => {
-    const uid = auth().currentUser.uid
+    const uid = id || auth().currentUser.uid
     if (!uid) {
       reject({
         code: 'data/no-uid',
@@ -204,21 +206,40 @@ authentication.deleteAccount = () => {
       return
     }
 
-    firestore()
-      .collection('users')
-      .doc(uid)
-      .delete()
-      .then(value =>
-        auth()
-          .currentUser.delete()
-          .then(value => {
-            resolve(value)
+    const userRef = firestore().collection('users').doc(uid)
+
+    userRef
+      .get()
+      .then(doc => {
+        const files = []
+        const data = doc.data()
+        for (var i = 0; i < user.fields.length; i++) {
+          if (['image', 'file'].includes(user.fields[i].type)) {
+            if (data[user.fields[i].id]) {
+              files.push(data[user.fields[i].id])
+            }
+          }
+        }
+        for (var i = 0; i < files.length; i++) {
+          store.dropFile(files[i])
+        }
+      })
+      .then(() => {
+        userRef
+          .delete()
+          .then(() => {
+            auth()
+              .currentUser.delete()
+              .then(value => {
+                resolve(value)
+                console.log('all deleted')
+              })
+              .catch(reason => {
+                reject(reason)
+              })
           })
-          .catch(reason => {
-            reject(reason)
-          })
-      )
-      .catch(reason => reject(reason))
+          .catch(reason => reject(reason))
+      })
   })
 }
 

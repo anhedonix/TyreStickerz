@@ -320,7 +320,6 @@ store.updateContent = (
         if (!id) {
           reject({ message: 'No id provided' })
         }
-        console.log('running')
         firestore
           .collection(token)
           .doc(id)

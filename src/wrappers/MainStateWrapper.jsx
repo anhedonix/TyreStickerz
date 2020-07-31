@@ -16,7 +16,7 @@ const MainStateWrapper = props => {
 
   useEffect(() => {
     dispatch({ type: 'loading', payload: true })
-    let snap
+    let snap = () => {}
     const authListner = firebase.auth().onAuthStateChanged(e => {
       dispatch({
         type: 'authChange',
@@ -30,10 +30,11 @@ const MainStateWrapper = props => {
               type: 'authData',
               payload: _.omit(d, ['uid']),
             })
-            // dispatch({ type: 'loading', payload: false })
+            dispatch({ type: 'loading', payload: false })
           })
           .then(unsub => (snap = unsub))
       } else {
+        snap()
         dispatch({
           type: 'authData',
           payload: null,
@@ -42,12 +43,7 @@ const MainStateWrapper = props => {
       }
     })
     return () => {
-      if (snap) {
-        snap()
-      }
-      if (authListner) {
-        authListner()
-      }
+      authListner()
     }
   }, [])
 
