@@ -232,7 +232,6 @@ authentication.deleteAccount = (id = null) => {
               .currentUser.delete()
               .then(value => {
                 resolve(value)
-                console.log('all deleted')
               })
               .catch(reason => {
                 reject(reason)
