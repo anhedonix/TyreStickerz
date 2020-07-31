@@ -1,7 +1,6 @@
 import React from 'react'
 import * as USER from '../constants/user'
 import { setLocal, getLocalBool } from '../functions/local'
-import authentication from '../functions/user'
 
 export const initialState = {
   user: null,
@@ -70,7 +69,6 @@ export const reducer = (state, action) => {
         ...state,
         userData: {
           type: USER.ANON,
-          ...state.userData,
           ...action.payload,
         },
       }
