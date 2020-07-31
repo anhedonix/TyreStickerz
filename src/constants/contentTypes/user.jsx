@@ -6,6 +6,7 @@ import * as USER from '../../constants/user'
 import notification from './notification'
 import store from '../../functions/store'
 import crud from '../../functions/crud'
+import authentication from '../../functions/user'
 
 const content = {
   ID: 'user',
@@ -119,6 +120,10 @@ const currentUserCrud = type => {
        */
       update: (key, payload = undefined) =>
         store.updateContent(type, auth().currentUser.uid, key, payload),
+
+      delete: () => {
+        authentication.deleteAccount(uid)
+      },
     }
   } else {
     return {}
@@ -128,6 +133,7 @@ const currentUserCrud = type => {
 const user = {
   ...content,
   ...crud(content),
+  delete: id => authentication.deleteAccount(id),
   currentUser: () => currentUserCrud(content),
 }
 
