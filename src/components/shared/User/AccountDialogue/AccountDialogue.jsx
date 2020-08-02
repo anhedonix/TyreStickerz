@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   banner: {
-    backgroundImage: `url(/Banners/AccountDialogueBanner.png)`,
+    backgroundImage: `url(/BGs/AccountDialogueBanner.png)`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'relative',

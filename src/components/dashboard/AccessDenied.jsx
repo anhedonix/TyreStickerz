@@ -66,6 +66,15 @@ const AccessDenied = () => {
               type: 'success',
             },
           })
+          dispatch({
+            type: 'newMsg',
+            payload: {
+              message:
+                'A verification email has been sent to you. ' +
+                'Please verify your email to gain full access to the site features.',
+              type: 'info',
+            },
+          })
         })
         .catch(e => {
           dispatch({

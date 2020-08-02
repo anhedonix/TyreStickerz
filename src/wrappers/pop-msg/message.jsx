@@ -11,6 +11,14 @@ function TransitionUp(props) {
   return <Slide {...props} direction="up" />
 }
 
+const MessageStructure = {
+  message: 'Message text', // Contents of the message
+  duration: 1, // Duration of the message
+  permanent: false, // Should the message wait till user action?
+  action: 'Action', // String to be shown in the action button
+  actionFunction: () => {}, // The function to be run when the action button is clicked
+}
+
 const Messages = () => {
   const { state, dispatch } = useContext(MainContext)
   const [open, setOpen] = useState(true)

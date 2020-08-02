@@ -318,9 +318,7 @@ authentication.changePassword = password => {
 
         userDocumentReference
           .update({
-            lastPasswordChange: firebase
-              .firestore()
-              .FieldValue.serverTimestamp(),
+            lastPasswordChange: firebase.firestore.Timestamp.now(),
           })
           .then(value => {
             resolve(value)
