@@ -44,6 +44,7 @@ export default function FormDialog() {
           payload: {
             message: 'Re-Authentication Successful',
             type: 'success',
+            duration: 1.5,
           },
         })
         state.reauth.function()
