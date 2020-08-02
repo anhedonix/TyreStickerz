@@ -2,6 +2,7 @@ import React from 'react'
 import * as USER from '../constants/user'
 import { setLocal, getLocalBool } from '../functions/local'
 import authentication from '../functions/user'
+import _ from 'lodash'
 
 export const initialState = {
   user: null,
@@ -66,7 +67,7 @@ export const reducer = (state, action) => {
     }
 
     case 'authData': {
-      if (action.payload) {
+      if (!_.isEmpty(action.payload)) {
         authentication.saveUserInfo({ ...action.payload })
       }
       return {
