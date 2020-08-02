@@ -27,7 +27,7 @@ import store from '../../../functions/store'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundImage: `url('/Banners/DesignerBanner.png')`,
+    backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     width: '100%',

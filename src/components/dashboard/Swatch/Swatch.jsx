@@ -11,7 +11,7 @@ import * as CONTENT from '../../../constants/contentTypes'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundImage: `url('/Banners/DesignerBanner.png')`,
+    backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: 'cover',
     display: 'flex',
     padding: '0',

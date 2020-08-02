@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: '1',
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundImage: `url('/Banners/DesignerBanner.png')`,
+    backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
   },
   breadCrumbs: {

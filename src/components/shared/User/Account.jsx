@@ -55,11 +55,21 @@ const Account = ({ CType = Button }) => {
         .signUp(parms)
         .then(() => {
           setOpen(false)
+          setOpenProfile(false)
           dispatch({
             type: 'newMsg',
             payload: {
               message: 'Sign Up Successful',
               type: 'success',
+            },
+          })
+          dispatch({
+            type: 'newMsg',
+            payload: {
+              message:
+                'A verification email has been sent to you. ' +
+                'Please verify your email to gain full access to the site features.',
+              type: 'info',
             },
           })
         })
@@ -77,6 +87,7 @@ const Account = ({ CType = Button }) => {
         .signIn(parms.email, parms.password)
         .then(() => {
           setOpen(false)
+          setOpenProfile(false)
           dispatch({
             type: 'newMsg',
             payload: {
@@ -95,6 +106,8 @@ const Account = ({ CType = Button }) => {
           })
         })
     }
+    setOpen(false)
+    setOpenProfile(false)
   }
 
   // component body

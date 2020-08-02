@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { name } from '../package.json'
 import MainLayout from '../src/components/shared/Layout/MainLayout'
-// import DesignerLinkBanner from '../public/Banners/DesignerLinkBanner.jpg'
 
 const useStyles = makeStyles(theme => ({
   designerLinkCard: {
@@ -14,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     width: '500px',
     height: '250px',
     display: 'flex',
-    backgroundImage: `url('/Banners/TyreStickersBanner.jpg')`,
+    backgroundImage: `url('/BGs/TyreStickersBanner.jpg')`,
     backgroundSize: 'cover',
     backgroundPositionY: '-100px',
     cursor: 'pointer',
