@@ -55,6 +55,7 @@ const Account = ({ CType = Button }) => {
         .signUp(parms)
         .then(() => {
           setOpen(false)
+          setOpenProfile(false)
           dispatch({
             type: 'newMsg',
             payload: {
@@ -77,6 +78,7 @@ const Account = ({ CType = Button }) => {
         .signIn(parms.email, parms.password)
         .then(() => {
           setOpen(false)
+          setOpenProfile(false)
           dispatch({
             type: 'newMsg',
             payload: {
