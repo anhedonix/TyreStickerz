@@ -10,7 +10,7 @@ import AccessDenied from './AccessDenied'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundImage: `url('/Banners/DesignerBanner.png')`,
+    backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: 'cover',
     width: '100%',
     height: '100%',
