@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
 import IconButton from '@material-ui/core/IconButton'
@@ -8,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
 import Button from '@material-ui/core/Button'
+import packageVars from '../../../../../package.json'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -26,7 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const TnC = (Component = Button) => {
+const TnC = props => {
   const [open, setOpen] = useState(false)
   const classes = useStyles()
 
@@ -36,13 +38,13 @@ const TnC = (Component = Button) => {
 
   return (
     <>
-      <Component
+      <props.Component
         color="primary"
         style={{ minWidth: '0' }}
         onClick={() => setOpen(true)}
       >
         T&C
-      </Component>
+      </props.Component>
       <Dialog
         fullScreen
         open={open}
@@ -69,17 +71,18 @@ const TnC = (Component = Button) => {
             <strong>Terms and Conditions</strong>
           </h2>
 
-          <p>Welcome to Nocturn!</p>
+          <p>Welcome to {packageVars.name}!</p>
 
           <p>
             These terms and conditions outline the rules and regulations for the
-            use of Nocturn's Website, located at Nocturn.com.
+            use of {packageVars.name}'s Website, located at {packageVars.name}
+            .com.
           </p>
 
           <p>
             By accessing this website we assume you accept these terms and
-            conditions. Do not continue to use Nocturn if you do not agree to
-            take all of the terms and conditions stated on this page.
+            conditions. Do not continue to use {packageVars.name} if you do not
+            agree to take all of the terms and conditions stated on this page.
           </p>
 
           <p>
@@ -105,8 +108,9 @@ const TnC = (Component = Button) => {
           </h3>
 
           <p>
-            We employ the use of cookies. By accessing Nocturn, you agreed to
-            use cookies in agreement with the Nocturn's Privacy Policy.
+            We employ the use of cookies. By accessing {packageVars.name}, you
+            agreed to use cookies in agreement with the {packageVars.name}'s
+            Privacy Policy.
           </p>
 
           <p>
@@ -122,19 +126,22 @@ const TnC = (Component = Button) => {
           </h3>
 
           <p>
-            Unless otherwise stated, Nocturn and/or its licensors own the
-            intellectual property rights for all material on Nocturn. All
-            intellectual property rights are reserved. You may access this from
-            Nocturn for your own personal use subjected to restrictions set in
-            these terms and conditions.
+            Unless otherwise stated, {packageVars.name} and/or its licensors own
+            the intellectual property rights for all material on{' '}
+            {packageVars.name}. All intellectual property rights are reserved.
+            You may access this from
+            {packageVars.name} for your own personal use subjected to
+            restrictions set in these terms and conditions.
           </p>
 
           <p>You must not:</p>
           <ul>
-            <li>Republish material from Nocturn</li>
-            <li>Sell, rent or sub-license material from Nocturn</li>
-            <li>Reproduce, duplicate or copy material from Nocturn</li>
-            <li>Redistribute content from Nocturn</li>
+            <li>Republish material from {packageVars.name}</li>
+            <li>Sell, rent or sub-license material from {packageVars.name}</li>
+            <li>
+              Reproduce, duplicate or copy material from {packageVars.name}
+            </li>
+            <li>Redistribute content from {packageVars.name}</li>
           </ul>
 
           <p>This Agreement shall begin on the date hereof.</p>
@@ -142,20 +149,21 @@ const TnC = (Component = Button) => {
           <p>
             Parts of this website offer an opportunity for users to post and
             exchange opinions and information in certain areas of the website.
-            Nocturn does not filter, edit, publish or review Comments prior to
-            their presence on the website. Comments do not reflect the views and
-            opinions of Nocturn,its agents and/or affiliates. Comments reflect
-            the views and opinions of the person who post their views and
-            opinions. To the extent permitted by applicable laws, Nocturn shall
-            not be liable for the Comments or for any liability, damages or
-            expenses caused and/or suffered as a result of any use of and/or
-            posting of and/or appearance of the Comments on this website.
+            {packageVars.name} does not filter, edit, publish or review Comments
+            prior to their presence on the website. Comments do not reflect the
+            views and opinions of {packageVars.name},its agents and/or
+            affiliates. Comments reflect the views and opinions of the person
+            who post their views and opinions. To the extent permitted by
+            applicable laws, {packageVars.name} shall not be liable for the
+            Comments or for any liability, damages or expenses caused and/or
+            suffered as a result of any use of and/or posting of and/or
+            appearance of the Comments on this website.
           </p>
 
           <p>
-            Nocturn reserves the right to monitor all Comments and to remove any
-            Comments which can be considered inappropriate, offensive or causes
-            breach of these Terms and Conditions.
+            {packageVars.name} reserves the right to monitor all Comments and to
+            remove any Comments which can be considered inappropriate, offensive
+            or causes breach of these Terms and Conditions.
           </p>
 
           <p>You warrant and represent that:</p>
@@ -182,9 +190,9 @@ const TnC = (Component = Button) => {
           </ul>
 
           <p>
-            You hereby grant Nocturn a non-exclusive license to use, reproduce,
-            edit and authorize others to use, reproduce and edit any of your
-            Comments in any and all forms, formats or media.
+            You hereby grant {packageVars.name} a non-exclusive license to use,
+            reproduce, edit and authorize others to use, reproduce and edit any
+            of your Comments in any and all forms, formats or media.
           </p>
 
           <h3>
@@ -242,8 +250,9 @@ const TnC = (Component = Button) => {
             that: (a) the link would not make us look unfavorably to ourselves
             or to our accredited businesses; (b) the organization does not have
             any negative records with us; (c) the benefit to us from the
-            visibility of the hyperlink compensates the absence of Nocturn; and
-            (d) the link is in the context of general resource information.
+            visibility of the hyperlink compensates the absence of{' '}
+            {packageVars.name}; and (d) the link is in the context of general
+            resource information.
           </p>
 
           <p>
@@ -257,9 +266,9 @@ const TnC = (Component = Button) => {
           <p>
             If you are one of the organizations listed in paragraph 2 above and
             are interested in linking to our website, you must inform us by
-            sending an e-mail to Nocturn. Please include your name, your
-            organization name, contact information as well as the URL of your
-            site, a list of any URLs from which you intend to link to our
+            sending an e-mail to {packageVars.name}. Please include your name,
+            your organization name, contact information as well as the URL of
+            your site, a list of any URLs from which you intend to link to our
             Website, and a list of the URLs on our site to which you would like
             to link. Wait 2-3 weeks for a response.
           </p>
@@ -277,8 +286,8 @@ const TnC = (Component = Button) => {
           </ul>
 
           <p>
-            No use of Nocturn's logo or other artwork will be allowed for
-            linking absent a trademark license agreement.
+            No use of {packageVars.name}'s logo or other artwork will be allowed
+            for linking absent a trademark license agreement.
           </p>
 
           <h3>
@@ -387,6 +396,14 @@ const TnC = (Component = Button) => {
       </Dialog>
     </>
   )
+}
+
+TnC.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+}
+
+TnC.defaultProps = {
+  Component: Button,
 }
 
 export default TnC

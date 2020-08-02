@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import Dialog from '@material-ui/core/Dialog'
 import IconButton from '@material-ui/core/IconButton'
@@ -8,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import Slide from '@material-ui/core/Slide'
 import Button from '@material-ui/core/Button'
+import packageVars from '../../../../../package.json'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -26,7 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const PrivacyPolicy = (Component = Button) => {
+const PrivacyPolicy = props => {
   const [open, setOpen] = useState(false)
   const classes = useStyles()
 
@@ -36,13 +38,13 @@ const PrivacyPolicy = (Component = Button) => {
 
   return (
     <>
-      <Component
+      <props.Component
         color="primary"
         style={{ minWidth: '0' }}
         onClick={() => setOpen(true)}
       >
         Privacy Policy
-      </Component>
+      </props.Component>
       <Dialog
         fullScreen
         open={open}
@@ -65,13 +67,14 @@ const PrivacyPolicy = (Component = Button) => {
           </Toolbar>
         </AppBar>
         <div className={classes.body}>
-          <h1>Privacy Policy for Nocturn</h1>
+          <h1>Privacy Policy for {packageVars.name}</h1>
 
           <p>
-            At Nocturn, accessible from Nocturn.com, one of our main priorities
-            is the privacy of our visitors. This Privacy Policy document
-            contains types of information that is collected and recorded by
-            Nocturn and how we use it.
+            At {packageVars.name}, accessible from {packageVars.name}.com, one
+            of our main priorities is the privacy of our visitors. This Privacy
+            Policy document contains types of information that is collected and
+            recorded by
+            {packageVars.name} and how we use it.
           </p>
 
           <p>
@@ -82,9 +85,9 @@ const PrivacyPolicy = (Component = Button) => {
           <p>
             This Privacy Policy applies only to our online activities and is
             valid for visitors to our website with regards to the information
-            that they shared and/or collect in Nocturn. This policy is not
-            applicable to any information collected offline or via channels
-            other than this website.
+            that they shared and/or collect in {packageVars.name}. This policy
+            is not applicable to any information collected offline or via
+            channels other than this website.
           </p>
 
           <h2>Consent</h2>
@@ -137,61 +140,62 @@ const PrivacyPolicy = (Component = Button) => {
           <h2>Log Files</h2>
 
           <p>
-            Nocturn follows a standard procedure of using log files. These files
-            log visitors when they visit websites. All hosting companies do this
-            and a part of hosting services' analytics. The information collected
-            by log files include internet protocol (IP) addresses, browser type,
-            Internet Service Provider (ISP), date and time stamp, referring/exit
-            pages, and possibly the number of clicks. These are not linked to
-            any information that is personally identifiable. The purpose of the
-            information is for analyzing trends, administering the site,
-            tracking users' movement on the website, and gathering demographic
-            information.
+            {packageVars.name} follows a standard procedure of using log files.
+            These files log visitors when they visit websites. All hosting
+            companies do this and a part of hosting services' analytics. The
+            information collected by log files include internet protocol (IP)
+            addresses, browser type, Internet Service Provider (ISP), date and
+            time stamp, referring/exit pages, and possibly the number of clicks.
+            These are not linked to any information that is personally
+            identifiable. The purpose of the information is for analyzing
+            trends, administering the site, tracking users' movement on the
+            website, and gathering demographic information.
           </p>
 
           <h2>Cookies and Web Beacons</h2>
 
           <p>
-            Like any other website, Nocturn uses 'cookies'. These cookies are
-            used to store information including visitors' preferences, and the
-            pages on the website that the visitor accessed or visited. The
-            information is used to optimize the users' experience by customizing
-            our web page content based on visitors' browser type and/or other
-            information.
+            Like any other website, {packageVars.name} uses 'cookies'. These
+            cookies are used to store information including visitors'
+            preferences, and the pages on the website that the visitor accessed
+            or visited. The information is used to optimize the users'
+            experience by customizing our web page content based on visitors'
+            browser type and/or other information.
           </p>
 
           <h2>Advertising Partners Privacy Policies</h2>
 
           <p>
             You may consult this list to find the Privacy Policy for each of the
-            advertising partners of Nocturn.
+            advertising partners of {packageVars.name}.
           </p>
 
           <p>
             Third-party ad servers or ad networks uses technologies like
             cookies, JavaScript, or Web Beacons that are used in their
-            respective advertisements and links that appear on Nocturn, which
-            are sent directly to users' browser. They automatically receive your
-            IP address when this occurs. These technologies are used to measure
-            the effectiveness of their advertising campaigns and/or to
-            personalize the advertising content that you see on websites that
-            you visit.
+            respective advertisements and links that appear on{' '}
+            {packageVars.name}, which are sent directly to users' browser. They
+            automatically receive your IP address when this occurs. These
+            technologies are used to measure the effectiveness of their
+            advertising campaigns and/or to personalize the advertising content
+            that you see on websites that you visit.
           </p>
 
           <p>
-            Note that Nocturn has no access to or control over these cookies
-            that are used by third-party advertisers.
+            Note that {packageVars.name} has no access to or control over these
+            cookies that are used by third-party advertisers.
           </p>
 
           <h2>Third Party Privacy Policies</h2>
 
           <p>
-            Nocturn's Privacy Policy does not apply to other advertisers or
-            websites. Thus, we are advising you to consult the respective
-            Privacy Policies of these third-party ad servers for more detailed
-            information. It may include their practices and instructions about
-            how to opt-out of certain options. You may find a complete list of
-            these Privacy Policies and their links here: Privacy Policy Links.
+            {packageVars.name}'s Privacy Policy does not apply to other
+            advertisers or websites. Thus, we are advising you to consult the
+            respective Privacy Policies of these third-party ad servers for more
+            detailed information. It may include their practices and
+            instructions about how to opt-out of certain options. You may find a
+            complete list of these Privacy Policies and their links here:
+            Privacy Policy Links.
           </p>
 
           <p>
@@ -273,16 +277,25 @@ const PrivacyPolicy = (Component = Button) => {
           </p>
 
           <p>
-            Nocturn does not knowingly collect any Personal Identifiable
-            Information from children under the age of 13. If you think that
-            your child provided this kind of information on our website, we
-            strongly encourage you to contact us immediately and we will do our
-            best efforts to promptly remove such information from our records.
+            {packageVars.name} does not knowingly collect any Personal
+            Identifiable Information from children under the age of 13. If you
+            think that your child provided this kind of information on our
+            website, we strongly encourage you to contact us immediately and we
+            will do our best efforts to promptly remove such information from
+            our records.
           </p>
         </div>
       </Dialog>
     </>
   )
+}
+
+PrivacyPolicy.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+}
+
+PrivacyPolicy.defaultProps = {
+  Component: Button,
 }
 
 export default PrivacyPolicy
