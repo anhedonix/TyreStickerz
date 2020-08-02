@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const PrivacyPolicy = () => {
+const PrivacyPolicy = (Component = Button) => {
   const [open, setOpen] = useState(false)
   const classes = useStyles()
 
@@ -36,13 +36,13 @@ const PrivacyPolicy = () => {
 
   return (
     <>
-      <Button
+      <Component
         color="primary"
         style={{ minWidth: '0' }}
         onClick={() => setOpen(true)}
       >
         Privacy Policy
-      </Button>
+      </Component>
       <Dialog
         fullScreen
         open={open}

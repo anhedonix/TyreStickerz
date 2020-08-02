@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const TnC = () => {
+const TnC = (Component = Button) => {
   const [open, setOpen] = useState(false)
   const classes = useStyles()
 
@@ -36,13 +36,13 @@ const TnC = () => {
 
   return (
     <>
-      <Button
+      <Component
         color="primary"
         style={{ minWidth: '0' }}
         onClick={() => setOpen(true)}
       >
         T&C
-      </Button>
+      </Component>
       <Dialog
         fullScreen
         open={open}
