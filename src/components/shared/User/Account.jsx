@@ -106,6 +106,8 @@ const Account = ({ CType = Button }) => {
           })
         })
     }
+    setOpen(false)
+    setOpenProfile(false)
   }
 
   // component body
