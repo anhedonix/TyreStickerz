@@ -135,3 +135,5 @@ sketch
 .tern-port
 .zcompdump
 .env 
+logs.pdf
+logs.tex
