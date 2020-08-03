@@ -34,12 +34,13 @@ git log --graph --pretty="format:\hyperref[sec:%H]{%h - \textbf{%s} %D}%n \\ %an
 #+BEGIN_SRC python :var input=Graph-Logs :cache yes :wrap SRC latex :exports results
   input = input.replace("*", "+")
   input = input.replace("\\ ", "\\textbackslash ")
-  out = "\\begin{Verbatim}[commandchars=\\\\\{\}]\n"
+  input = input.replace("\|", "\\textbackslash|")
+  out = "\\begin{small}\n\\begin{Verbatim}[commandchars=\\\\\{\}]\n"
   data = []
   for line in input.splitlines():
     cline = str(line.strip()) + "\\\\"
     data.append(str(cline))
-  out = out + "\n".join(data)+ "\n\\end{Verbatim}\n\\newpage"
+  out = out + "\n".join(data)+ "\n\\end{Verbatim}\n\\end{small}\n\\newpage"
   return out
 #+END_SRC
 
