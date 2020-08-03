@@ -1,0 +1,58 @@
+#+author: Saddles India - Tyrestickerz
+#+email: vfxteam@saddlesindia.com
+#+title: Logs
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage{fancyvrb}
+#+LATEX_HEADER: \newenvironment{xnopagebreak}{\par\nobreak\penalty0}{\par\xdef\tpd{\the\prevdepth}\egroup\prevdepth=\tpd}
+#+LATEX_HEADER: \setlength{\parindent}{0em}
+#+LATEX_HEADER: \renewcommand{\familydefault}{\sfdefault}
+#+LATEX_HEADER: \DeclareUnicodeCharacter{2192}{\bullet}
+#+LATEX_HEADER: \usepackage[margin=2cm]{geometry}
+#+LATEX_HEADER: \usepackage{inconsolata}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+OPTIONS: toc:nil
+#+LATEX_CLASS_OPTIONS: [titlepage,a4paper,10pt]
+
+#+NAME: Detailed-Logs
+#+BEGIN_SRC shell :results output replace raw drawer :wrap EXAMPLE :cache yes :exports none
+git log --abbrev-commit --decorate --stat --pretty="format:  \end{Verbatim}%n}%n\\\\%n"\
+"\item\section{{\color{red}\texttt{%H}} - {\color{orange}\texttt{%t}}}\label{sec:%H}\\\\%n"\
+"{\color{black}%aD ~} {\color{gray} ( %ar ) }{\color{black} %d }\\\\%n"\
+"Author ~ { \color{black} \textbf{%an} }%n"\
+"{%n \color{gray}%n \\\\{ \color{black} \textbf{%s} }%n"\
+"\begin{Verbatim}%B" --all &&
+echo "  \\\\end{Verbatim}\n}"
+#+END_SRC
+
+#+NAME: Graph-Logs
+#+BEGIN_SRC shell :results output replace raw drawer :wrap EXAMPLE :cache yes :exports none
+git log --graph --pretty="format:\hyperref[sec:%H]{%h - \textbf{%s} %D}%n \\ %an - %ad" --date=format:%y/%m/%d-%H:%M --all &&
+#+END_SRC
+
+#+NAME: Graph-Logs-Formatter
+#+BEGIN_SRC python :var input=Graph-Logs :cache yes :wrap SRC latex :exports results
+  input = input.replace("*", "+")
+  input = input.replace("\\ ", "\\textbackslash ")
+  input = input.replace("\|", "\\textbackslash|")
+  out = "\\begin{small}\n\\begin{Verbatim}[commandchars=\\\\\{\}]\n"
+  data = []
+  for line in input.splitlines():
+    cline = str(line.strip()) + "\\\\"
+    data.append(str(cline))
+  out = out + "\n".join(data)+ "\n\\end{Verbatim}\n\\end{small}\n\\newpage"
+  return out
+#+END_SRC
+
+
+#+NAME: Detailed-Logs-Formatter
+#+BEGIN_SRC python :var input=Detailed-Logs :cache yes :wrap SRC latex :exports results
+  input = input.replace("*", ".")
+  out = "\\begin{itemize}\n"
+  for line in input.splitlines()[3:]:
+    cline = str(line.strip())
+    if cline and cline[0] != "#":
+      out = str(out) + "\n" + str(cline)
+  out = out + "\n\\end{itemize}"
+  return out
+#+END_SRC
