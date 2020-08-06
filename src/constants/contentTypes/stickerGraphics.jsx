@@ -7,87 +7,47 @@ import notification from './notification'
 import store from '../../functions/store'
 import crud from '../../functions/crud'
 import authentication from '../../functions/user'
+import stickerCategories from './stickerCategories'
 
 const content = {
-  ID: 'user',
-  label: 'User',
-  token: 'doc:users',
-  extra: {
-    icon: <PeopleIcon />,
-  },
+  ID: 'sticker_graphics',
+  label: 'Sticker Graphics',
+  token: 'doc:StickerGraphics',
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
-    { id: 'email', label: 'E-Mail', editable: false, type: 'string' },
     {
-      id: 'avatarUrl',
-      label: 'Avatar',
+      id: 'image',
+      label: 'Image',
       editable: true,
       type: 'image',
-      path: 'Avatars',
+      path: 'Stickers/Graphics',
     },
-    { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
-    { id: 'lastName', label: 'Last Name', editable: true, type: 'string' },
+    { id: 'name', label: 'Name', editable: true, type: 'string' },
+    { id: 'description', label: 'Description', editable: true, type: 'string' },
     {
-      id: 'type',
-      label: 'User Type',
+      id: 'category',
+      label: 'Category',
       editable: true,
-      type: 'stringList',
-      options: [...USER.TYPES],
-    },
-    { id: 'darkUI', label: 'Dark Theme', editable: false, type: 'bool' },
-    {
-      id: 'messageTimeOut',
-      label: 'Message Timeout (secs)',
-      editable: true,
-      type: 'int',
-      min: 1.5,
-      max: 12,
-      step: 0.5,
-    },
-    {
-      id: 'notifications',
-      label: 'Notifications',
-      editable: true,
-      type: 'content',
-      content: notification,
-      format: input => {
-        const data = []
-        if (input) {
-          Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
-        }
-        return data
-      },
-      reformat: input => {
-        const data = {}
-        if (input) {
-          input.map(el => {
-            const { uid, ...vals } = { ...el }
-            data[uid] = { ...vals }
-          })
-        }
-        return data
-      },
+      type: 'metaList',
+      options: stickerCategories,
     },
   ],
   format: {
     default: () => {
       return {
-        avatarUrl: null,
-        firstName: '',
-        lastName: '',
-        email: '',
-        darkUI: false,
-        messageTimeOut: 6,
-        type: USER.CLIENT,
-        notifications: {},
+        image: null,
+        name: '',
+        description: '',
+        category: null,
       }
     },
     contentListStruct: data => {
       return {
-        detail: data.firstName + ' ' + data.lastName,
-        header: data.email,
+        detail: data.description,
+        header: data.name,
         meta1: undefined,
-        meta2: data.type,
+        meta2: data.category,
+        suffix: { type: 'image', value: data.image },
         uid: data.uid,
       }
     },
@@ -98,43 +58,9 @@ content.extra = {
   icon: <PhotoLibraryIcon />,
 }
 
-const currentUserCrud = type => {
-  if (auth() && auth().currentUser) {
-    const uid = auth().currentUser.uid
-    return {
-      /**
-       * Read current user
-       */
-      read: () => store.readContent(type, uid),
-
-      /**
-       * Read user snapshot.
-       * @param {Function} SetterFunction Function to run with data
-       */
-      readSnap: fn => store.readContentSnapshot(type, fn, uid),
-
-      /**
-       * Update user
-       * @param {string} Key Item to be updated.
-       * @param {Object} Payload the data that is to be stored.
-       */
-      update: (key, payload = undefined) =>
-        store.updateContent(type, auth().currentUser.uid, key, payload),
-
-      delete: () => {
-        authentication.deleteAccount(uid)
-      },
-    }
-  } else {
-    return {}
-  }
-}
-
-const user = {
+const sticker_graphics = {
   ...content,
   ...crud(content),
-  delete: id => authentication.deleteAccount(id),
-  currentUser: () => currentUserCrud(content),
 }
 
-export default user
+export default sticker_graphics
