@@ -7,7 +7,7 @@ import stickerCategories from './stickerCategories'
 const content = {
   ID: 'sticker_graphics',
   label: 'Sticker Graphics',
-  token: 'collection:StickerGraphics',
+  token: 'doc:StickerGraphics',
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     {

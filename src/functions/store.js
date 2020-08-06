@@ -180,12 +180,24 @@ store.readContent = (contentType, id = null, filter = null) => {
         break
       }
       case 'doc': {
-        firestore
-          .collection(token)
-          .doc(id)
-          .get()
-          .then(doc => resolve({ ...doc.data(), uid: id }))
-          .catch(reason => reject(reason))
+        if (id) {
+          firestore
+            .collection(token)
+            .doc(id)
+            .get()
+            .then(doc => resolve({ ...doc.data(), uid: id }))
+            .catch(reason => reject(reason))
+        } else {
+          firestore
+            .collection(token)
+            .get()
+            .then(docs => {
+              const data = []
+              docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
+              resolve(data)
+            })
+            .catch(reason => reject(reason))
+        }
         break
       }
       case 'field': {
