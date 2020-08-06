@@ -58,7 +58,10 @@ store.createContent = (contentType, id = null, payload = null) => {
   return new Promise((resolve, reject) => {
     switch (access) {
       case 'collection': {
-        reject({ message: 'Cannot set values on a collection data.' })
+        firestore
+          .collection(token)
+          .add({ ...contentType.format.default(), payload })
+          .then(() => resolve())
         break
       }
 
