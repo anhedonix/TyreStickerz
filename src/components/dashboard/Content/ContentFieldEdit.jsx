@@ -247,7 +247,7 @@ const ContentFieldEdit = props => {
         ) : type === 'metaList' ? (
           <Select
             id={`${uid}${label}`}
-            value={data}
+            value={options.length > 0 ? data : ''}
             fullWidth
             variant="standard"
             size="small"
