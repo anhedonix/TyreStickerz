@@ -198,20 +198,24 @@ store.readContent = (contentType, id = null, filter = null) => {
         break
       }
       case 'metaField': {
-        firestore
-          .collection(path[0])
-          .doc(path[1])
+        const metaRef = firestore.collection(path[0]).doc(path[1])
+
+        metaRef
           .get()
           .then(doc => {
-            const data = []
-            const c_doc = doc.data()[path[2]]
-            if (!id) {
-              Object.keys(c_doc).map(key =>
-                data.push({ ...c_doc[key], uid: key })
-              )
-              resolve(data)
+            if (doc.data()) {
+              const data = []
+              const c_doc = doc.data()[path[2]]
+              if (!id) {
+                Object.keys(c_doc).map(key =>
+                  data.push({ ...c_doc[key], uid: key })
+                )
+                resolve(data)
+              } else {
+                resolve({ ...c_doc[id], uid: id })
+              }
             } else {
-              resolve({ ...c_doc[id], uid: id })
+              metaRef.set({ [path[2]]: {} })
             }
           })
           .catch(reason => reject(reason))
