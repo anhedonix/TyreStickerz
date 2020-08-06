@@ -1,18 +1,13 @@
 import React from 'react'
-import { auth } from 'firebase/app'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 
-import * as USER from '../../constants/user'
-import notification from './notification'
-import store from '../../functions/store'
 import crud from '../../functions/crud'
-import authentication from '../../functions/user'
 import stickerCategories from './stickerCategories'
 
 const content = {
   ID: 'sticker_graphics',
   label: 'Sticker Graphics',
-  token: 'doc:StickerGraphics',
+  token: 'collection:StickerGraphics',
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     {
@@ -29,7 +24,15 @@ const content = {
       label: 'Category',
       editable: true,
       type: 'metaList',
-      options: stickerCategories,
+      options: async () => {
+        const data = []
+        await stickerCategories.read(null).then(el =>
+          el.map(i => {
+            data.push({ id: i.uid, name: i.name, detail: i.description })
+          })
+        )
+        return data
+      },
     },
   ],
   format: {
@@ -38,7 +41,7 @@ const content = {
         image: null,
         name: '',
         description: '',
-        category: null,
+        category: '',
       }
     },
     contentListStruct: data => {
@@ -56,11 +59,13 @@ const content = {
 
 content.extra = {
   icon: <PhotoLibraryIcon />,
+  adminActions: ['create', 'update', 'delete'],
 }
 
 const sticker_graphics = {
   ...content,
   ...crud(content),
+  element: { ...crud(content), ...content },
 }
 
 export default sticker_graphics
