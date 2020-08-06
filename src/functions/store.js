@@ -60,8 +60,8 @@ store.createContent = (contentType, id = null, payload = null) => {
       case 'collection': {
         firestore
           .collection(token)
-          .add({ ...contentType.format.default(), payload })
-          .then(() => resolve())
+          .add({ ...contentType.format.default(), ...payload })
+          .then(doc => doc.get().then(i => console.log(i)))
         break
       }
 
@@ -72,8 +72,8 @@ store.createContent = (contentType, id = null, payload = null) => {
         firestore
           .collection(token)
           .doc(id)
-          .set({ ...contentType.format.default(), payload }, { merge: true })
-          .then(() => resolve())
+          .set({ ...contentType.format.default(), ...payload }, { merge: true })
+          .then(doc => doc.get().then(i => resolve(i.id)))
         break
       }
 
