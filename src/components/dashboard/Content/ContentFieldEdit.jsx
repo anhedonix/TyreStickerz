@@ -154,6 +154,7 @@ const ContentFieldEdit = props => {
 
   const [cData, setCData] = useState(data)
   const [filePath, setFilePath] = useState(null)
+  const [options, setOptions] = useState([])
 
   const classes = useStyles()
 
@@ -163,6 +164,8 @@ const ContentFieldEdit = props => {
         .getFileUrl(cData)
         .then(url => setFilePath(url))
         .catch(err => console.log(err))
+    } else if (type === 'metaList') {
+      props.options().then(i => setOptions(i))
     }
     if (onChange) {
       if (subContent) {
@@ -234,7 +237,24 @@ const ContentFieldEdit = props => {
             onChange={e => setCData(e.target.value)}
           >
             {props.options.map(el => (
-              <MenuItem value={el}>{el}</MenuItem>
+              <MenuItem value={el} key={el}>
+                {el}
+              </MenuItem>
+            ))}
+          </Select>
+        ) : type === 'metaList' ? (
+          <Select
+            id={`${uid}${label}`}
+            value={data || options[0] ? options[0].id : ''}
+            fullWidth
+            variant="standard"
+            size="small"
+            onChange={e => setCData(e.target.value)}
+          >
+            {options.map(el => (
+              <MenuItem value={el.id} key={el.id}>
+                {el.name} : {el.detail}
+              </MenuItem>
             ))}
           </Select>
         ) : type === 'timestamp' ? (
