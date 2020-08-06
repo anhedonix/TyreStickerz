@@ -145,7 +145,6 @@ const ContentFieldEdit = props => {
     label,
     type,
     data,
-    editable,
     onChange,
     mainContentType,
     subContent,
@@ -154,6 +153,7 @@ const ContentFieldEdit = props => {
 
   const [cData, setCData] = useState(data)
   const [filePath, setFilePath] = useState(null)
+  const [editable, setEditable] = useState(props.editable)
   const [options, setOptions] = useState([])
 
   const classes = useStyles()
@@ -164,6 +164,8 @@ const ContentFieldEdit = props => {
         .getFileUrl(cData)
         .then(url => setFilePath(url))
         .catch(err => console.log(err))
+    } else if (type === 'image' && uid === 'create') {
+      setEditable(false)
     } else if (type === 'metaList') {
       props.options().then(i => setOptions(i))
     }
@@ -245,7 +247,7 @@ const ContentFieldEdit = props => {
         ) : type === 'metaList' ? (
           <Select
             id={`${uid}${label}`}
-            value={data || options[0] ? options[0].id : ''}
+            value={data}
             fullWidth
             variant="standard"
             size="small"
