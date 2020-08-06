@@ -254,7 +254,7 @@ const ContentFieldEdit = props => {
             onChange={e => setCData(e.target.value)}
           >
             {options.map(el => (
-              <MenuItem value={el.id} key={el.id}>
+              <MenuItem value={`${el.id}:${el.name}`} key={el.id}>
                 {el.name} : {el.detail}
               </MenuItem>
             ))}

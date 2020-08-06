@@ -48,8 +48,7 @@ const content = {
       return {
         detail: data.description,
         header: data.name,
-        meta1: undefined,
-        meta2: data.category,
+        meta2: data.category.split(':')[1],
         suffix: { type: 'image', value: data.image },
         uid: data.uid,
       }
