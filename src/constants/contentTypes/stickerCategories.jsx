@@ -33,7 +33,7 @@ const content = {
 }
 content.extra = {
   icon: <CategoryIcon />,
-  adminActions: ['create', 'update', 'delete'],
+  adminActions: ['create', 'update'],
 }
 
 const sticker_categories = {

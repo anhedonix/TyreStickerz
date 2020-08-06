@@ -89,7 +89,7 @@ const ContentPalette = () => {
   }
 
   const deleteSelected = () => {
-    deleteCascade(0, selected.length)
+    deleteCascade(0, selected.length - 1)
   }
 
   return !create ? (
