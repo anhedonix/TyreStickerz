@@ -73,7 +73,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         userData: {
-          type: USER.ANON,
+          ...state.userData,
           ...action.payload,
         },
       }
