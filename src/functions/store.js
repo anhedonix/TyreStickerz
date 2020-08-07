@@ -5,6 +5,70 @@ import _ from 'lodash'
 
 const store = {}
 
+/**
+ * Fucntion for uploading files
+ *
+ * @param {File} File type to be worked on from constants/comment.
+ * @param {string} path User/Main content ID that holds the values
+ * @param {function} Function that runs for each state change.
+ *
+ * @return {string} Resolves to path of the file
+ */
+store.uploadFile = (file, path, progressFunction) => {
+  return new Promise((resolve, reject) => {
+    const fileNameArray = file.name.split('.')
+    const fileExtension = fileNameArray[fileNameArray.length - 1]
+    const fullPath = `${path}/${uuid()}.${fileExtension}`
+    const fileRef = storage.ref().child(fullPath)
+    const uploadTask = fileRef.put(file)
+    uploadTask.on(
+      'state_changed',
+      i => {
+        const progress = (i.bytesTransferred / i.totalBytes) * 100
+        progressFunction(progress ? progress : 0)
+      },
+      e => reject(e),
+      () => resolve(fullPath)
+    )
+  })
+}
+
+/**
+ * Fucntion for deleting files
+ *
+ * @param {string} path file that is to be deleted.
+ *
+ * @return {string} Success message
+ */
+store.dropFile = path => {
+  return new Promise((resolve, reject) => {
+    storage
+      .ref()
+      .child(path)
+      .delete()
+      .then(() => resolve('success'))
+      .catch(err => reject(err))
+  })
+}
+
+/**
+ * Fucntion for getting the given file's URL
+ *
+ * @param {string} path The path for which accessable url needs to be provided
+ *
+ * @return {string} Resolves to path of the file
+ */
+store.getFileUrl = path => {
+  return new Promise((resolve, reject) => {
+    storage
+      .ref()
+      .child(path)
+      .getDownloadURL()
+      .then(url => resolve(url))
+      .catch(e => reject(e))
+  })
+}
+
 store.getDoc = (collection, id) => {
   return new Promise((resolve, reject) => {
     const docRef = firestore
@@ -58,19 +122,29 @@ store.createContent = (contentType, id = null, payload = null) => {
   return new Promise((resolve, reject) => {
     switch (access) {
       case 'collection': {
-        reject({ message: 'Cannot set values on a collection data.' })
+        firestore
+          .collection(token)
+          .add({ ...contentType.format.default(), ...payload })
+          .then(doc => doc.get().then(i => console.log(i)))
         break
       }
 
       case 'doc': {
-        if (!id) {
-          reject({ message: 'No id provided' })
+        if (id) {
+          firestore
+            .collection(token)
+            .doc(id)
+            .set(
+              { ...contentType.format.default(), ...payload },
+              { merge: true }
+            )
+            .then(doc => doc.get().then(i => resolve(i.id)))
+        } else {
+          firestore
+            .collection(token)
+            .add({ ...contentType.format.default(), ...payload })
+            .then(doc => doc.get().then(i => resolve(i.id)))
         }
-        firestore
-          .collection(token)
-          .doc(id)
-          .set({ ...contentType.format.default(), payload }, { merge: true })
-          .then(() => resolve())
         break
       }
 
@@ -177,12 +251,24 @@ store.readContent = (contentType, id = null, filter = null) => {
         break
       }
       case 'doc': {
-        firestore
-          .collection(token)
-          .doc(id)
-          .get()
-          .then(doc => resolve({ ...doc.data(), uid: id }))
-          .catch(reason => reject(reason))
+        if (id) {
+          firestore
+            .collection(token)
+            .doc(id)
+            .get()
+            .then(doc => resolve({ ...doc.data(), uid: id }))
+            .catch(reason => reject(reason))
+        } else {
+          firestore
+            .collection(token)
+            .get()
+            .then(docs => {
+              const data = []
+              docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
+              resolve(data)
+            })
+            .catch(reason => reject(reason))
+        }
         break
       }
       case 'field': {
@@ -198,20 +284,24 @@ store.readContent = (contentType, id = null, filter = null) => {
         break
       }
       case 'metaField': {
-        firestore
-          .collection(path[0])
-          .doc(path[1])
+        const metaRef = firestore.collection(path[0]).doc(path[1])
+
+        metaRef
           .get()
           .then(doc => {
-            const data = []
-            const c_doc = doc.data()[path[2]]
-            if (!id) {
-              Object.keys(c_doc).map(key =>
-                data.push({ ...c_doc[key], uid: key })
-              )
-              resolve(data)
+            if (doc.data()) {
+              const data = []
+              const c_doc = doc.data()[path[2]]
+              if (!id) {
+                Object.keys(c_doc).map(key =>
+                  data.push({ ...c_doc[key], uid: key })
+                )
+                resolve(data)
+              } else {
+                resolve({ ...c_doc[id], uid: id })
+              }
             } else {
-              resolve({ ...c_doc[id], uid: id })
+              metaRef.set({ [path[2]]: {} })
             }
           })
           .catch(reason => reject(reason))
@@ -410,12 +500,34 @@ store.deleteContent = (contentType, id = null, key = null) => {
       }
 
       case 'doc': {
-        if (!id) {
-          reject({ message: 'No id provided' })
+        if (!key) {
+          reject({ message: 'No key provided' })
+        }
+        const fileFields = []
+        for (var i = 0; i < contentType.fields.length; i++) {
+          if (['image', 'file'].includes(contentType.fields[i].type)) {
+            fileFields.push(contentType.fields[i].id)
+          }
         }
         firestore
           .collection(token)
-          .doc(id)
+          .doc(key)
+          .get()
+          .then(doc => {
+            const files = []
+            const cData = doc.data()
+            for (var i = 0; i < fileFields.length; i++) {
+              if (cData[fileFields[i]]) {
+                files.push(cData[fileFields[i]])
+              }
+            }
+            for (var i = 0; i < files.length; i++) {
+              store.dropFile(files[i])
+            }
+          })
+        firestore
+          .collection(token)
+          .doc(key)
           .delete()
           .then(() => resolve())
           .catch(reason => reject(reason))
@@ -472,70 +584,6 @@ store.deleteContent = (contentType, id = null, key = null) => {
         break
       }
     }
-  })
-}
-
-/**
- * Fucntion for uploading files
- *
- * @param {File} File type to be worked on from constants/comment.
- * @param {string} path User/Main content ID that holds the values
- * @param {function} Function that runs for each state change.
- *
- * @return {string} Resolves to path of the file
- */
-store.uploadFile = (file, path, progressFunction) => {
-  return new Promise((resolve, reject) => {
-    const fileNameArray = file.name.split('.')
-    const fileExtension = fileNameArray[fileNameArray.length - 1]
-    const fullPath = `${path}/${uuid()}.${fileExtension}`
-    const fileRef = storage.ref().child(fullPath)
-    const uploadTask = fileRef.put(file)
-    uploadTask.on(
-      'state_changed',
-      i => {
-        const progress = (i.bytesTransferred / i.totalBytes) * 100
-        progressFunction(progress ? progress : 0)
-      },
-      e => reject(e),
-      () => resolve(fullPath)
-    )
-  })
-}
-
-/**
- * Fucntion for deleting files
- *
- * @param {string} path file that is to be deleted.
- *
- * @return {string} Success message
- */
-store.dropFile = path => {
-  return new Promise((resolve, reject) => {
-    storage
-      .ref()
-      .child(path)
-      .delete()
-      .then(() => resolve('success'))
-      .catch(err => reject(err))
-  })
-}
-
-/**
- * Fucntion for getting the given file's URL
- *
- * @param {string} path The path for which accessable url needs to be provided
- *
- * @return {string} Resolves to path of the file
- */
-store.getFileUrl = path => {
-  return new Promise((resolve, reject) => {
-    storage
-      .ref()
-      .child(path)
-      .getDownloadURL()
-      .then(url => resolve(url))
-      .catch(e => reject(e))
   })
 }
 

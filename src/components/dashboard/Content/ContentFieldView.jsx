@@ -84,6 +84,8 @@ const ContentFieldView = props => {
         {data !== undefined ? (
           ['string', 'int', 'uid', 'stringList'].includes(type) ? (
             data
+          ) : type === 'metaList' ? (
+            data.split(':')[1]
           ) : type === 'timestamp' ? (
             moment(data.toDate()).format('YYYY MM DD LT')
           ) : type === 'bool' ? (

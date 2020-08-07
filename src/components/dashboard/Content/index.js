@@ -72,7 +72,6 @@ const Content = () => {
           xdata[fields[i].id] = data[fields[i].id]
         }
       }
-      console.log(xdata)
       CONTENT[contentType].element
         .update(contentId, null, xdata, false)
         .then(() => {
@@ -88,7 +87,6 @@ const Content = () => {
       }
       CONTENT[contentType].element.create(xdata).then(result => {
         setIsEdited(false)
-        setEditMode(false)
         setData(cData)
         router.push(
           '/dashboard/[contentType]/[contentId]',
@@ -120,7 +118,7 @@ const Content = () => {
                   )
               }}
             >
-              {editMode ? 'Discard' : 'Edit'}
+              {editMode ? 'Exit' : 'Edit'}
             </Button>
           )}
           {CONTENT[contentType].extra.adminActions.includes('delete') &&
