@@ -9,6 +9,7 @@ const content = {
   token: 'doc:Environments',
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
+    { id: 'name', label: 'Name', editable: true, type: 'string' },
     {
       id: 'px',
       label: 'Positive X-Axis',
@@ -57,18 +58,34 @@ const content = {
       format: '.exr',
       path: 'Environments',
     },
-    { id: 'name', label: 'Name', editable: true, type: 'string' },
+    {
+      id: 'pano',
+      label: 'Pano',
+      editable: true,
+      type: 'file',
+      format: '.exr',
+      path: 'Environments',
+    },
+    {
+      id: 'pano_thumb',
+      label: 'Pano Thumbnail',
+      editable: true,
+      type: 'image',
+      path: 'Environments',
+    },
   ],
   format: {
     default: () => {
       return {
+        name: '',
         px: null,
         py: null,
         pz: null,
         nx: null,
         ny: null,
         nz: null,
-        name: '',
+        pano: null,
+        pano_thumb: null,
       }
     },
     contentListStruct: data => {
