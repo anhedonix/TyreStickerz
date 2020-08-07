@@ -90,7 +90,7 @@ const ContentFieldView = props => {
         }
       >
         {data !== undefined ? (
-          ['string', 'int', 'uid', 'stringList'].includes(type) ? (
+          ['string', 'int', 'uid', 'stringList', 'file'].includes(type) ? (
             data
           ) : type === 'metaList' ? (
             data.split(':')[1]

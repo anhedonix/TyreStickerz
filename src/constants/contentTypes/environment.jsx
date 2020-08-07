@@ -1,11 +1,10 @@
 import React from 'react'
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
+import PanoramaIcon from '@material-ui/icons/Panorama'
 
 import crud from '../../functions/crud'
-import * as stickerCategories from './../stickerCategories'
 
 const content = {
-  ID: 'environment_map',
+  ID: 'environment',
   label: 'Environment',
   token: 'doc:Environments',
   fields: [
@@ -16,7 +15,7 @@ const content = {
       editable: true,
       type: 'file',
       format: '.exr',
-      path: 'Environments/:uid/px',
+      path: 'Environments',
     },
     {
       id: 'py',
@@ -24,7 +23,7 @@ const content = {
       editable: true,
       type: 'file',
       format: '.exr',
-      path: 'Environments/:uid/py',
+      path: 'Environments',
     },
     {
       id: 'pz',
@@ -32,7 +31,7 @@ const content = {
       editable: true,
       type: 'file',
       format: '.exr',
-      path: 'Environments/:uid/pz',
+      path: 'Environments',
     },
     {
       id: 'nx',
@@ -40,7 +39,7 @@ const content = {
       editable: true,
       type: 'file',
       format: '.exr',
-      path: 'Environments/:uid/px',
+      path: 'Environments',
     },
     {
       id: 'ny',
@@ -48,7 +47,7 @@ const content = {
       editable: true,
       type: 'file',
       format: '.exr',
-      path: 'Environments/:uid/py',
+      path: 'Environments',
     },
     {
       id: 'nz',
@@ -56,17 +55,20 @@ const content = {
       editable: true,
       type: 'file',
       format: '.exr',
-      path: 'Environments/:uid/pz',
+      path: 'Environments',
     },
     { id: 'name', label: 'Name', editable: true, type: 'string' },
   ],
   format: {
     default: () => {
       return {
-        image: null,
+        px: null,
+        py: null,
+        pz: null,
+        nx: null,
+        ny: null,
+        nz: null,
         name: '',
-        description: '',
-        category: '',
       }
     },
     contentListStruct: data => {
@@ -82,7 +84,7 @@ const content = {
 }
 
 content.extra = {
-  icon: <PhotoLibraryIcon />,
+  icon: <PanoramaIcon />,
   adminActions: ['create', 'update', 'delete'],
 }
 
