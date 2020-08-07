@@ -323,6 +323,7 @@ const ContentFieldEdit = props => {
               ></div>
               <FileUploader
                 path={path}
+                folder={uid}
                 text={cData ? `Change ${label}` : `Add ${label}`}
                 variant="outlined"
                 then={i => {
