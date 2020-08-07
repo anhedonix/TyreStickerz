@@ -44,6 +44,7 @@ const FileUploader = props => {
     drop = undefined,
     dropButton = false,
     dropThen = () => {},
+    folder = undefined,
   } = props
   const classes = useStyles()
   const [progress, setProgress] = useState(0)
@@ -59,13 +60,15 @@ const FileUploader = props => {
         onChange={e => {
           if (e.target.files.length) {
             setRunning(true)
-            store.uploadFile(e.target.files[0], path, setProgress).then(res => {
-              if (drop) {
-                store.dropFile(drop)
-              }
-              then(res)
-              setRunning(false)
-            })
+            store
+              .uploadFile(e.target.files[0], path, setProgress, folder)
+              .then(res => {
+                if (drop) {
+                  store.dropFile(drop)
+                }
+                then(res)
+                setRunning(false)
+              })
           }
         }}
       />

@@ -166,18 +166,20 @@ const ContentFieldEdit = props => {
   const [cData, setCData] = useState(data)
   const [filePath, setFilePath] = useState(null)
   const [editable, setEditable] = useState(props.editable)
+  const [enabled, setEnabled] = useState(true)
   const [options, setOptions] = useState([])
 
   const classes = useStyles()
 
   useEffect(() => {
-    if (['image', 'avatar'].includes(type) && cData !== null) {
+    if (['image', 'avatar'].includes(type) && cData !== null && cData) {
       store
         .getFileUrl(cData)
         .then(url => setFilePath(url))
         .catch(err => console.log(err))
-    } else if (['image', 'avatar'].includes(type) && uid === 'create') {
+    } else if (['image', 'avatar', 'file'].includes(type) && uid === 'create') {
       setEditable(false)
+      setEnabled(false)
     } else if (type === 'metaList') {
       props.options().then(i => setOptions(i))
     }
@@ -190,195 +192,227 @@ const ContentFieldEdit = props => {
     }
   }, [cData])
 
-  return editable && cData !== undefined ? (
-    <TableRow>
-      <TableCell align="right" style={{ borderBottom: 'none' }}>
-        {label}
-      </TableCell>
-      <TableCell
-        className={type === 'content' ? classes.subFieldWrapper : null}
-        style={{ borderBottom: 'none' }}
-      >
-        {['string', 'int', 'uid'].includes(type) ? (
-          type === 'int' ? (
-            <div className={classes.fieldWrapper}>
+  return enabled ? (
+    editable && cData !== undefined ? (
+      <TableRow>
+        <TableCell align="right" style={{ borderBottom: 'none' }}>
+          {label}
+        </TableCell>
+        <TableCell
+          className={type === 'content' ? classes.subFieldWrapper : null}
+          style={{ borderBottom: 'none' }}
+        >
+          {['string', 'int', 'uid'].includes(type) ? (
+            type === 'int' ? (
+              <div className={classes.fieldWrapper}>
+                <TextField
+                  id={`${uid}${label}`}
+                  value={cData}
+                  variant="outlined"
+                  size="small"
+                  disabled
+                  style={{ width: '80px' }}
+                />
+                <Slider
+                  className={classes.intFieldSlider}
+                  value={cData}
+                  step={props.step}
+                  marks
+                  min={props.min}
+                  max={props.max}
+                  valueLabelDisplay="on"
+                  onChange={(e, i) => {
+                    setCData(i)
+                  }}
+                />
+              </div>
+            ) : (
               <TextField
                 id={`${uid}${label}`}
                 value={cData}
-                variant="outlined"
+                variant="standard"
                 size="small"
-                disabled
-                style={{ width: '80px' }}
+                fullWidth
+                onChange={e => {
+                  const xdata = e.target.value
+                  setCData(xdata)
+                }}
+                style={
+                  type === 'uid'
+                    ? { fontFamily: '"Lucida Console", Monaco, monospace' }
+                    : null
+                }
               />
-              <Slider
-                className={classes.intFieldSlider}
-                value={cData}
-                step={props.step}
-                marks
-                min={props.min}
-                max={props.max}
-                valueLabelDisplay="on"
-                onChange={(e, i) => {
+            )
+          ) : type === 'stringList' ? (
+            <Select
+              id={`${uid}${label}`}
+              value={data}
+              fullWidth
+              variant="standard"
+              size="small"
+              onChange={e => setCData(e.target.value)}
+            >
+              {props.options.map(el => (
+                <MenuItem value={el} key={el}>
+                  {el}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : type === 'metaList' ? (
+            <Select
+              id={`${uid}${label}`}
+              value={options.length > 0 ? data : ''}
+              fullWidth
+              variant="standard"
+              size="small"
+              onChange={e => setCData(e.target.value)}
+            >
+              {options.map(el => (
+                <MenuItem value={`${el.id}:${el.name}`} key={el.id}>
+                  {el.name} : {el.detail}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : type === 'timestamp' ? (
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <DateTimePicker
+                value={cData.toDate()}
+                fullWidth
+                inputVariant="standard"
+                showTodayButton
+                onChange={e =>
+                  setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
+                }
+              />
+            </MuiPickersUtilsProvider>
+          ) : type === 'bool' ? (
+            <Switch
+              checked={cData}
+              onChange={e => setCData(e.target.checked)}
+              name={label}
+            />
+          ) : type === 'avatar' ? (
+            <div className={classes.imageWrapper}>
+              <Avatar alt="type" src={filePath} />
+              <FileUploader
+                path={path}
+                text={cData ? `Change ${label}` : `Add ${label}`}
+                variant="outlined"
+                then={i => {
+                  CONTENT[mainContentType].element.update(uid, null, {
+                    [id]: i,
+                  })
                   setCData(i)
+                }}
+                drop={cData && cData}
+                dropButton={cData}
+                dropThen={() => {
+                  CONTENT[mainContentType].element.update(uid, null, {
+                    [id]: null,
+                  })
+                  setCData(null)
                 }}
               />
             </div>
-          ) : (
-            <TextField
-              id={`${uid}${label}`}
-              value={cData}
-              variant="standard"
-              size="small"
-              fullWidth
-              onChange={e => {
-                const xdata = e.target.value
-                setCData(xdata)
-              }}
-              style={
-                type === 'uid'
-                  ? { fontFamily: '"Lucida Console", Monaco, monospace' }
-                  : null
-              }
+          ) : type === 'image' ? (
+            <div className={classes.imageWrapper}>
+              <div
+                className={classes.image}
+                style={{ backgroundImage: `url('${filePath}')` }}
+              ></div>
+              <FileUploader
+                path={path}
+                folder={uid}
+                text={cData ? `Change ${label}` : `Add ${label}`}
+                variant="outlined"
+                then={i => {
+                  CONTENT[mainContentType].element.update(uid, null, {
+                    [id]: i,
+                  })
+                  setCData(i)
+                }}
+                drop={cData && cData}
+                dropButton={cData}
+                dropThen={() => {
+                  CONTENT[mainContentType].element.update(uid, null, {
+                    [id]: null,
+                  })
+                  setCData(null)
+                }}
+              />
+            </div>
+          ) : type === 'file' ? (
+            <div className={classes.imageWrapper}>
+              <div>{cData}</div>
+              <FileUploader
+                folder={uid}
+                path={path}
+                type={props.format}
+                text={cData ? `Change ${label}` : `Add ${label}`}
+                variant="outlined"
+                then={i => {
+                  CONTENT[mainContentType].element.update(uid, null, {
+                    [id]: i,
+                  })
+                  setCData(i)
+                }}
+                drop={cData && cData}
+                dropButton={cData}
+                dropThen={() => {
+                  CONTENT[mainContentType].element.update(uid, null, {
+                    [id]: null,
+                  })
+                  setCData(null)
+                }}
+              />
+            </div>
+          ) : type === 'content' ? (
+            <ContentSubFieldSection
+              data={cData}
+              contentType={props.content.ID}
+              contentId={props.id}
+              onChange={setCData}
+              format={props.format}
+              reformat={props.reformat}
             />
-          )
-        ) : type === 'stringList' ? (
-          <Select
-            id={`${uid}${label}`}
-            value={data}
-            fullWidth
-            variant="standard"
-            size="small"
-            onChange={e => setCData(e.target.value)}
-          >
-            {props.options.map(el => (
-              <MenuItem value={el} key={el}>
-                {el}
-              </MenuItem>
-            ))}
-          </Select>
-        ) : type === 'metaList' ? (
-          <Select
-            id={`${uid}${label}`}
-            value={options.length > 0 ? data : ''}
-            fullWidth
-            variant="standard"
-            size="small"
-            onChange={e => setCData(e.target.value)}
-          >
-            {options.map(el => (
-              <MenuItem value={`${el.id}:${el.name}`} key={el.id}>
-                {el.name} : {el.detail}
-              </MenuItem>
-            ))}
-          </Select>
-        ) : type === 'timestamp' ? (
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <DateTimePicker
-              value={cData.toDate()}
-              fullWidth
-              inputVariant="standard"
-              showTodayButton
-              onChange={e =>
-                setCData(firebase.firestore.Timestamp.fromDate(e.toDate()))
-              }
+          ) : null}
+        </TableCell>
+      </TableRow>
+    ) : (
+      <TableRow>
+        <TableCell align="right" style={{ borderBottom: 'none' }}>
+          {label}
+        </TableCell>
+        <TableCell
+          className={type === 'content' ? classes.subFieldWrapper : null}
+          style={
+            type === 'uid'
+              ? {
+                  borderBottom: 'none',
+                  fontFamily: '"Lucida Console", Monaco, monospace',
+                }
+              : { borderBottom: 'none' }
+          }
+        >
+          {['string', 'int', 'uid', 'stringList'].includes(type) ? (
+            data
+          ) : type === 'timestamp' ? (
+            data ? (
+              moment(data.toDate()).format('YYYY MM DD LT')
+            ) : null
+          ) : type === 'bool' ? (
+            <Switch checked={cData} onChange={() => {}} name={label} disabled />
+          ) : type === 'content' ? (
+            <ContentSubFieldSection
+              data={props.format(data)}
+              contentType={props.content.ID}
             />
-          </MuiPickersUtilsProvider>
-        ) : type === 'bool' ? (
-          <Switch
-            checked={cData}
-            onChange={e => setCData(e.target.checked)}
-            name={label}
-          />
-        ) : type === 'avatar' ? (
-          <div className={classes.imageWrapper}>
-            <Avatar alt="type" src={filePath} />
-            <FileUploader
-              path={path}
-              text={cData ? `Change ${label}` : `Add ${label}`}
-              variant="outlined"
-              then={i => {
-                CONTENT[mainContentType].element.update(uid, null, { [id]: i })
-                setCData(i)
-              }}
-              drop={cData && cData}
-              dropButton={cData}
-              dropThen={() => {
-                CONTENT[mainContentType].element.update(uid, null, {
-                  [id]: null,
-                })
-                setCData(null)
-              }}
-            />
-          </div>
-        ) : type === 'image' ? (
-          <div className={classes.imageWrapper}>
-            <div
-              className={classes.image}
-              style={{ backgroundImage: `url('${filePath}')` }}
-            ></div>
-            <FileUploader
-              path={path}
-              text={cData ? `Change ${label}` : `Add ${label}`}
-              variant="outlined"
-              then={i => {
-                CONTENT[mainContentType].element.update(uid, null, { [id]: i })
-                setCData(i)
-              }}
-              drop={cData && cData}
-              dropButton={cData}
-              dropThen={() => {
-                CONTENT[mainContentType].element.update(uid, null, {
-                  [id]: null,
-                })
-                setCData(null)
-              }}
-            />
-          </div>
-        ) : type === 'content' ? (
-          <ContentSubFieldSection
-            data={cData}
-            contentType={props.content.ID}
-            contentId={props.id}
-            onChange={setCData}
-            format={props.format}
-            reformat={props.reformat}
-          />
-        ) : null}
-      </TableCell>
-    </TableRow>
-  ) : (
-    <TableRow>
-      <TableCell align="right" style={{ borderBottom: 'none' }}>
-        {label}
-      </TableCell>
-      <TableCell
-        className={type === 'content' ? classes.subFieldWrapper : null}
-        style={
-          type === 'uid'
-            ? {
-                borderBottom: 'none',
-                fontFamily: '"Lucida Console", Monaco, monospace',
-              }
-            : { borderBottom: 'none' }
-        }
-      >
-        {['string', 'int', 'uid', 'stringList'].includes(type) ? (
-          data
-        ) : type === 'timestamp' ? (
-          data ? (
-            moment(data.toDate()).format('YYYY MM DD LT')
-          ) : null
-        ) : type === 'bool' ? (
-          <Switch checked={cData} onChange={() => {}} name={label} disabled />
-        ) : type === 'content' ? (
-          <ContentSubFieldSection
-            data={props.format(data)}
-            contentType={props.content.ID}
-          />
-        ) : null}
-      </TableCell>
-    </TableRow>
-  )
+          ) : null}
+        </TableCell>
+      </TableRow>
+    )
+  ) : null
 }
 
 export default ContentFieldEdit

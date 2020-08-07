@@ -34,10 +34,10 @@ const useStyles = makeStyles(theme => ({
   imageWrapper: {
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center center',
+    backgroundPosition: 'center left',
     display: 'block',
     minWidth: '200px',
-    minHeight: '60px',
+    minHeight: '80px',
   },
 }))
 
@@ -90,7 +90,7 @@ const ContentFieldView = props => {
         }
       >
         {data !== undefined ? (
-          ['string', 'int', 'uid', 'stringList'].includes(type) ? (
+          ['string', 'int', 'uid', 'stringList', 'file'].includes(type) ? (
             data
           ) : type === 'metaList' ? (
             data.split(':')[1]
@@ -105,10 +105,13 @@ const ContentFieldView = props => {
           ) : type === 'avatar' ? (
             <Avatar alt={`${type}`} src={imagePath} />
           ) : type === 'image' ? (
-            <div
-              className={classes.imageWrapper}
-              style={{ backgroundImage: `url('${imagePath}')` }}
-            ></div>
+            <>
+              <div
+                className={classes.imageWrapper}
+                style={{ backgroundImage: `url('${imagePath}')` }}
+              ></div>
+              {data}
+            </>
           ) : type === 'content' ? (
             <ContentSubFieldSection
               data={props.format(data)}

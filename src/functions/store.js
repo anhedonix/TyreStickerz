@@ -14,11 +14,13 @@ const store = {}
  *
  * @return {string} Resolves to path of the file
  */
-store.uploadFile = (file, path, progressFunction) => {
+store.uploadFile = (file, path, progressFunction, folder = undefined) => {
   return new Promise((resolve, reject) => {
     const fileNameArray = file.name.split('.')
     const fileExtension = fileNameArray[fileNameArray.length - 1]
-    const fullPath = `${path}/${uuid()}.${fileExtension}`
+    const fullPath = !folder
+      ? `${path}/${uuid()}.${fileExtension}`
+      : `${path}/${folder}/${file.name}`
     const fileRef = storage.ref().child(fullPath)
     const uploadTask = fileRef.put(file)
     uploadTask.on(
@@ -505,7 +507,9 @@ store.deleteContent = (contentType, id = null, key = null) => {
         }
         const fileFields = []
         for (var i = 0; i < contentType.fields.length; i++) {
-          if (['image', 'file'].includes(contentType.fields[i].type)) {
+          if (
+            ['image', 'file', 'avatar'].includes(contentType.fields[i].type)
+          ) {
             fileFields.push(contentType.fields[i].id)
           }
         }
