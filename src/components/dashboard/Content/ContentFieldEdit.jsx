@@ -41,6 +41,10 @@ const useStyles = makeStyles(theme => ({
   subFieldWrapper: {
     paddingRight: '0',
   },
+  imageWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   avatarWrapper: {
     display: 'flex',
     flexDirection: 'row',
@@ -62,6 +66,14 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: '-0.5rem',
     right: '-0.5rem',
+  },
+  image: {
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    display: 'block',
+    minWidth: '200px',
+    minHeight: '60px',
   },
 }))
 
@@ -159,12 +171,12 @@ const ContentFieldEdit = props => {
   const classes = useStyles()
 
   useEffect(() => {
-    if (type === 'image' && cData !== null) {
+    if (['image', 'avatar'].includes(type) && cData !== null) {
       store
         .getFileUrl(cData)
         .then(url => setFilePath(url))
         .catch(err => console.log(err))
-    } else if (type === 'image' && uid === 'create') {
+    } else if (['image', 'avatar'].includes(type) && uid === 'create') {
       setEditable(false)
     } else if (type === 'metaList') {
       props.options().then(i => setOptions(i))
@@ -277,9 +289,33 @@ const ContentFieldEdit = props => {
             onChange={e => setCData(e.target.checked)}
             name={label}
           />
+        ) : type === 'avatar' ? (
+          <div className={classes.imageWrapper}>
+            <Avatar alt="type" src={filePath} />
+            <FileUploader
+              path={path}
+              text={cData ? `Change ${label}` : `Add ${label}`}
+              variant="outlined"
+              then={i => {
+                CONTENT[mainContentType].element.update(uid, null, { [id]: i })
+                setCData(i)
+              }}
+              drop={cData && cData}
+              dropButton={cData}
+              dropThen={() => {
+                CONTENT[mainContentType].element.update(uid, null, {
+                  [id]: null,
+                })
+                setCData(null)
+              }}
+            />
+          </div>
         ) : type === 'image' ? (
-          <div className={classes.avatarWrapper}>
-            <Avatar alt="User Avatar" src={filePath} />
+          <div className={classes.imageWrapper}>
+            <div
+              className={classes.image}
+              style={{ backgroundImage: `url('${filePath}')` }}
+            ></div>
             <FileUploader
               path={path}
               text={cData ? `Change ${label}` : `Add ${label}`}
