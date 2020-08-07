@@ -507,7 +507,9 @@ store.deleteContent = (contentType, id = null, key = null) => {
         }
         const fileFields = []
         for (var i = 0; i < contentType.fields.length; i++) {
-          if (['image', 'file'].includes(contentType.fields[i].type)) {
+          if (
+            ['image', 'file', 'avatar'].includes(contentType.fields[i].type)
+          ) {
             fileFields.push(contentType.fields[i].id)
           }
         }
