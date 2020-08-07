@@ -2,7 +2,7 @@ import React from 'react'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 
 import crud from '../../functions/crud'
-import stickerCategories from './stickerCategories'
+import * as stickerCategories from './../stickerCategories'
 
 const content = {
   ID: 'sticker_graphics',
@@ -23,16 +23,8 @@ const content = {
       id: 'category',
       label: 'Category',
       editable: true,
-      type: 'metaList',
-      options: async () => {
-        const data = []
-        await stickerCategories.read(null).then(el =>
-          el.map(i => {
-            data.push({ id: i.uid, name: i.name, detail: i.description })
-          })
-        )
-        return data
-      },
+      type: 'stringList',
+      options: [...stickerCategories.TYPES],
     },
   ],
   format: {
@@ -48,7 +40,7 @@ const content = {
       return {
         detail: data.description,
         header: data.name,
-        meta2: data.category.split(':')[1],
+        meta2: data.category,
         suffix: { type: 'image', value: data.image },
         uid: data.uid,
       }

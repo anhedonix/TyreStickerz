@@ -22,7 +22,7 @@ const content = {
       id: 'avatarUrl',
       label: 'Avatar',
       editable: true,
-      type: 'image',
+      type: 'avatar',
       path: 'Avatars',
     },
     { id: 'firstName', label: 'First Name', editable: true, type: 'string' },
