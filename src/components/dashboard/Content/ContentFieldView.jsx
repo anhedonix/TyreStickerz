@@ -35,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center left',
+    backgroundColor: 'black',
     display: 'block',
     minWidth: '200px',
     minHeight: '80px',
