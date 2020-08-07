@@ -31,6 +31,14 @@ const useStyles = makeStyles(theme => ({
   subFieldWrapper: {
     paddingRight: '0',
   },
+  imageWrapper: {
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    display: 'block',
+    minWidth: '200px',
+    minHeight: '60px',
+  },
 }))
 
 const ContentSubFieldSection = props => {
@@ -58,7 +66,7 @@ const ContentFieldView = props => {
   const classes = useStyles()
 
   useEffect(() => {
-    if (type === 'image' && data) {
+    if (['image', 'avatar'].includes(type) && data) {
       store
         .getFileUrl(data)
         .then(url => setImagePath(url))
@@ -94,8 +102,13 @@ const ContentFieldView = props => {
             ) : (
               <CancelIcon style={{ color: red[500] }} />
             )
+          ) : type === 'avatar' ? (
+            <Avatar alt={`${type}`} src={imagePath} />
           ) : type === 'image' ? (
-            <Avatar alt="User Avatar" src={imagePath} />
+            <div
+              className={classes.imageWrapper}
+              style={{ backgroundImage: `url('${imagePath}')` }}
+            ></div>
           ) : type === 'content' ? (
             <ContentSubFieldSection
               data={props.format(data)}
