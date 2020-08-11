@@ -291,6 +291,9 @@ store.readContent = (contentType, id = null, filter = null) => {
         metaRef
           .get()
           .then(doc => {
+            if (!doc.exists) {
+              metaRef.set({})
+            }
             if (doc.data()) {
               const data = []
               const c_doc = doc.data()[path[2]]
@@ -304,6 +307,23 @@ store.readContent = (contentType, id = null, filter = null) => {
               }
             } else {
               metaRef.set({ [path[2]]: {} })
+            }
+          })
+          .catch(reason => reject(reason))
+        break
+      }
+
+      case 'defaults': {
+        const metaRef = firestore.collection(path[0]).doc(path[1])
+
+        metaRef
+          .get()
+          .then(doc => {
+            if (!doc.exists) {
+              metaRef.set({})
+            }
+            if (doc.data()) {
+              resolve(doc.data())
             }
           })
           .catch(reason => reject(reason))
@@ -370,6 +390,20 @@ store.readContentSnapshot = (contentType, setter, id = null) => {
               setter({ ...doc.data()[path[2]][id], uid: id })
             } else {
               setter(doc.data()[path[2]])
+            }
+            resolve(unsubscribe)
+          })
+        break
+      }
+      case 'defaults': {
+        const unsubscribe = firestore
+          .collection(path[0])
+          .doc(path[1])
+          .onSnapshot(doc => {
+            if (id) {
+              setter({ ...doc.data(), uid: id })
+            } else {
+              setter(doc.data())
             }
             resolve(unsubscribe)
           })
@@ -466,6 +500,25 @@ store.updateContent = (
             }
             docRef
               .set({ [path[2]]: { ...newField } }, { merge: true })
+              .then(() => resolve(newField))
+              .catch(reason => reject(reason))
+          })
+          .catch(reason => reject(reason))
+        break
+      }
+      case 'defaults': {
+        const docRef = firestore.collection(path[0]).doc(path[1])
+        docRef
+          .get()
+          .then(doc => {
+            const data = doc.data()
+            const field = data
+            const newField = {
+              ...field,
+              ...payload,
+            }
+            docRef
+              .set({ ...newField }, { merge: true })
               .then(() => resolve(newField))
               .catch(reason => reject(reason))
           })

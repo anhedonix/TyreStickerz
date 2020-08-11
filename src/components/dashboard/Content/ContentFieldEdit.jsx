@@ -204,7 +204,7 @@ const ContentFieldEdit = props => {
   }, [cData])
 
   return enabled ? (
-    editable && cData !== undefined ? (
+    editable ? (
       <TableRow>
         <TableCell align="right" style={{ borderBottom: 'none' }}>
           {label}
@@ -218,7 +218,7 @@ const ContentFieldEdit = props => {
               <div className={classes.fieldWrapper}>
                 <TextField
                   id={`${uid}${label}`}
-                  value={cData}
+                  value={cData || ''}
                   variant="outlined"
                   size="small"
                   disabled
@@ -226,7 +226,7 @@ const ContentFieldEdit = props => {
                 />
                 <Slider
                   className={classes.intFieldSlider}
-                  value={cData}
+                  value={cData || 0}
                   step={props.step}
                   marks
                   min={props.min}
@@ -240,7 +240,7 @@ const ContentFieldEdit = props => {
             ) : (
               <TextField
                 id={`${uid}${label}`}
-                value={cData}
+                value={cData || ''}
                 variant="standard"
                 size="small"
                 fullWidth
@@ -258,7 +258,7 @@ const ContentFieldEdit = props => {
           ) : type === 'stringList' ? (
             <Select
               id={`${uid}${label}`}
-              value={data}
+              value={data ? data : ''}
               fullWidth
               variant="standard"
               size="small"
@@ -288,7 +288,7 @@ const ContentFieldEdit = props => {
           ) : type === 'timestamp' ? (
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
-                value={cData.toDate()}
+                value={cData && cData.toDate()}
                 fullWidth
                 inputVariant="standard"
                 showTodayButton
@@ -299,7 +299,7 @@ const ContentFieldEdit = props => {
             </MuiPickersUtilsProvider>
           ) : type === 'bool' ? (
             <Switch
-              checked={cData}
+              checked={cData || ''}
               onChange={e => setCData(e.target.checked)}
               name={label}
             />
@@ -317,7 +317,7 @@ const ContentFieldEdit = props => {
                   setCData(i)
                 }}
                 drop={cData && cData}
-                dropButton={cData}
+                dropButton={cData && cData}
                 dropThen={() => {
                   CONTENT[mainContentType].element.update(uid, null, {
                     [id]: null,
@@ -344,7 +344,7 @@ const ContentFieldEdit = props => {
                   setCData(i)
                 }}
                 drop={cData && cData}
-                dropButton={cData}
+                dropButton={cData && cData}
                 dropThen={() => {
                   CONTENT[props.contentType].element.update(uid, null, {
                     [id]: null,
@@ -355,7 +355,7 @@ const ContentFieldEdit = props => {
             </div>
           ) : type === 'file' ? (
             <div className={classes.imageWrapper}>
-              <div>{cData}</div>
+              <div>{cData || ''}</div>
               <FileUploader
                 folder={props.mainContentId}
                 path={path}
@@ -372,8 +372,8 @@ const ContentFieldEdit = props => {
                   )
                   setCData(i)
                 }}
-                drop={cData && cData}
-                dropButton={cData}
+                drop={(cData && cData) || ''}
+                dropButton={cData || ''}
                 dropThen={() => {
                   CONTENT[props.contentType].element.update(
                     props.mainContentId,
@@ -389,7 +389,7 @@ const ContentFieldEdit = props => {
           ) : type === 'content' ? (
             uid !== 'create' ? (
               <ContentSubFieldSection
-                data={cData}
+                data={cData || ''}
                 contentType={props.content.ID}
                 contentId={props.id}
                 onChange={setCData}

@@ -24,7 +24,7 @@ const crud = type => {
      * @param {Function} SetterFunction Function to run with data
      * @param {string} UID ID that has to be used.
      */
-    readSnap: (fn, uid) => store.readContentSnapshot(type, fn, uid),
+    readSnap: (fn, uid = null) => store.readContentSnapshot(type, fn, uid),
 
     /**
      * Create content

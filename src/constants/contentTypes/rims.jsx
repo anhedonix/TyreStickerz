@@ -1,6 +1,6 @@
 import React from 'react'
 import { auth } from 'firebase/app'
-import AdjustIcon from '@material-ui/icons/Adjust'
+import FilterTiltShiftIcon from '@material-ui/icons/FilterTiltShift'
 
 import * as USER from '../../constants/user'
 import model from './rim_model'
@@ -75,7 +75,7 @@ const content = {
 }
 
 content.extra = {
-  icon: <AdjustIcon />,
+  icon: <FilterTiltShiftIcon />,
   adminActions: ['create', 'update', 'delete'],
 }
 

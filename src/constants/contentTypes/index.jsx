@@ -1,5 +1,6 @@
 import user from './user'
 import users from './users'
+import defaults from './defaults'
 import notification from './notification'
 import notifications_global from './globalNotifications'
 import sticker_graphics from './stickerGraphics'
@@ -10,6 +11,7 @@ import rims from './rims'
 export {
   user,
   users,
+  defaults,
   notification,
   notifications_global,
   sticker_graphics,

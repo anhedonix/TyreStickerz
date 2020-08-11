@@ -52,7 +52,12 @@ const Content = () => {
     setLoading(true)
     setEditMode(false)
     setData()
-    if (contentType && contentId && contentId !== 'create') {
+
+    if (contentType && contentType === 'defaults') {
+      setLoading(false)
+      setEditMode(false)
+      CONTENT.defaults.readSnap(setData)
+    } else if (contentType && contentId && contentId !== 'create') {
       CONTENT[contentType].element.readSnap(setData, contentId).then(i => {
         unsubscribe = i
         setLoading(false)
@@ -71,7 +76,7 @@ const Content = () => {
   const saveData = () => {
     const xdata = {}
     const fields = CONTENT[contentType].fields
-    if (contentId !== 'create') {
+    if (contentId !== 'create' || contentId !== 'default') {
       for (var i = 0; i < fields.length; i++) {
         if (fields[i].editable) {
           xdata[fields[i].id] = cData[fields[i].id]
@@ -81,6 +86,13 @@ const Content = () => {
       }
       CONTENT[contentType].element
         .update(contentId, null, xdata, false)
+        .then(() => {
+          setIsEdited(false)
+          setEditMode(false)
+        })
+    } else if (contentId === 'default') {
+      CONTENT[contentType].element
+        .update(contentId, null, cData, true)
         .then(() => {
           setIsEdited(false)
           setEditMode(false)
