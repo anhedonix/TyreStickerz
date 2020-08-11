@@ -27,12 +27,13 @@ echo "  \\\\end{Verbatim}\n}"
 
 #+NAME: Graph-Logs
 #+BEGIN_SRC shell :results output replace raw drawer :wrap EXAMPLE :cache yes :exports none
-git log --graph --pretty="format:\hyperref[sec:%H]{%h - \textbf{%s} %D}%n \\ %an - %ad" --date=format:%y/%m/%d-%H:%M --all &&
+  git log --graph --pretty="format:\hyperref[sec:%H]{%h - \textbf{%s} %D}%n \\ %an - %ad" --date=format:%y/%m/%d-%H:%M --all &&
 #+END_SRC
 
 #+NAME: Graph-Logs-Formatter
 #+BEGIN_SRC python :var input=Graph-Logs :cache yes :wrap SRC latex :exports results
   input = input.replace("*", "+")
+  input = input.replace("_", "\_")
   input = input.replace("\\ ", "\\textbackslash ")
   input = input.replace("\|", "\\textbackslash|")
   out = "\\begin{small}\n\\begin{Verbatim}[commandchars=\\\\\{\}]\n"
@@ -48,6 +49,7 @@ git log --graph --pretty="format:\hyperref[sec:%H]{%h - \textbf{%s} %D}%n \\ %an
 #+NAME: Detailed-Logs-Formatter
 #+BEGIN_SRC python :var input=Detailed-Logs :cache yes :wrap SRC latex :exports results
   input = input.replace("*", ".")
+  input = input.replace("_", "\_")
   out = "\\begin{itemize}\n"
   for line in input.splitlines()[3:]:
     cline = str(line.strip())

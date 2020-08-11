@@ -44,7 +44,7 @@ const ContentPalette = () => {
   useEffect(() => {
     setLoading(true)
     let unsubscribe
-    if (contentType && contentId !== 'create') {
+    if (contentType && contentType !== 'defaults' && contentId !== 'create') {
       const currentContent = CONTENT[contentType]
       currentContent.read(null, filter).then(i => {
         setData(i.map(j => currentContent.format.contentListStruct(j)))
@@ -92,7 +92,7 @@ const ContentPalette = () => {
     deleteCascade(0, selected.length - 1)
   }
 
-  return !create ? (
+  return !create && contentType !== 'defaults' ? (
     <div className={classes.root}>
       {loading ? (
         <Loader />

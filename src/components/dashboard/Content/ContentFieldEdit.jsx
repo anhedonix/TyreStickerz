@@ -78,7 +78,16 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ContentSubFieldSection = props => {
-  const { contentType, contentId, data, onChange, format, reformat } = props
+  const {
+    contentType,
+    contentId,
+    data,
+    onChange,
+    format,
+    reformat,
+    mainContentType,
+    mainContentId,
+  } = props
   const classes = useStyles()
 
   const [cData, setCData] = useState(format && data ? format(data) : data)
@@ -126,6 +135,8 @@ const ContentSubFieldSection = props => {
                     contentType={contentType}
                     onChange={changeHandler}
                     subContent
+                    mainContentType={mainContentType}
+                    mainContentId={mainContentId}
                   />
                 )
               })}
@@ -193,7 +204,7 @@ const ContentFieldEdit = props => {
   }, [cData])
 
   return enabled ? (
-    editable && cData !== undefined ? (
+    editable ? (
       <TableRow>
         <TableCell align="right" style={{ borderBottom: 'none' }}>
           {label}
@@ -207,7 +218,7 @@ const ContentFieldEdit = props => {
               <div className={classes.fieldWrapper}>
                 <TextField
                   id={`${uid}${label}`}
-                  value={cData}
+                  value={cData || ''}
                   variant="outlined"
                   size="small"
                   disabled
@@ -215,7 +226,7 @@ const ContentFieldEdit = props => {
                 />
                 <Slider
                   className={classes.intFieldSlider}
-                  value={cData}
+                  value={cData || 0}
                   step={props.step}
                   marks
                   min={props.min}
@@ -229,7 +240,7 @@ const ContentFieldEdit = props => {
             ) : (
               <TextField
                 id={`${uid}${label}`}
-                value={cData}
+                value={cData || ''}
                 variant="standard"
                 size="small"
                 fullWidth
@@ -247,7 +258,7 @@ const ContentFieldEdit = props => {
           ) : type === 'stringList' ? (
             <Select
               id={`${uid}${label}`}
-              value={data}
+              value={data ? data : ''}
               fullWidth
               variant="standard"
               size="small"
@@ -277,7 +288,7 @@ const ContentFieldEdit = props => {
           ) : type === 'timestamp' ? (
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
-                value={cData.toDate()}
+                value={cData && cData.toDate()}
                 fullWidth
                 inputVariant="standard"
                 showTodayButton
@@ -288,7 +299,7 @@ const ContentFieldEdit = props => {
             </MuiPickersUtilsProvider>
           ) : type === 'bool' ? (
             <Switch
-              checked={cData}
+              checked={cData || ''}
               onChange={e => setCData(e.target.checked)}
               name={label}
             />
@@ -306,7 +317,7 @@ const ContentFieldEdit = props => {
                   setCData(i)
                 }}
                 drop={cData && cData}
-                dropButton={cData}
+                dropButton={cData && cData}
                 dropThen={() => {
                   CONTENT[mainContentType].element.update(uid, null, {
                     [id]: null,
@@ -327,15 +338,15 @@ const ContentFieldEdit = props => {
                 text={cData ? `Change ${label}` : `Add ${label}`}
                 variant="outlined"
                 then={i => {
-                  CONTENT[mainContentType].element.update(uid, null, {
+                  CONTENT[props.contentType].element.update(uid, null, {
                     [id]: i,
                   })
                   setCData(i)
                 }}
                 drop={cData && cData}
-                dropButton={cData}
+                dropButton={cData && cData}
                 dropThen={() => {
-                  CONTENT[mainContentType].element.update(uid, null, {
+                  CONTENT[props.contentType].element.update(uid, null, {
                     [id]: null,
                   })
                   setCData(null)
@@ -344,38 +355,52 @@ const ContentFieldEdit = props => {
             </div>
           ) : type === 'file' ? (
             <div className={classes.imageWrapper}>
-              <div>{cData}</div>
+              <div>{cData || ''}</div>
               <FileUploader
-                folder={uid}
+                folder={props.mainContentId}
                 path={path}
                 type={props.format}
                 text={cData ? `Change ${label}` : `Add ${label}`}
                 variant="outlined"
                 then={i => {
-                  CONTENT[mainContentType].element.update(uid, null, {
-                    [id]: i,
-                  })
+                  CONTENT[props.contentType].element.update(
+                    props.mainContentId,
+                    uid,
+                    {
+                      [id]: i,
+                    }
+                  )
                   setCData(i)
                 }}
-                drop={cData && cData}
-                dropButton={cData}
+                drop={(cData && cData) || ''}
+                dropButton={cData || ''}
                 dropThen={() => {
-                  CONTENT[mainContentType].element.update(uid, null, {
-                    [id]: null,
-                  })
+                  CONTENT[props.contentType].element.update(
+                    props.mainContentId,
+                    uid,
+                    {
+                      [id]: null,
+                    }
+                  )
                   setCData(null)
                 }}
               />
             </div>
           ) : type === 'content' ? (
-            <ContentSubFieldSection
-              data={cData}
-              contentType={props.content.ID}
-              contentId={props.id}
-              onChange={setCData}
-              format={props.format}
-              reformat={props.reformat}
-            />
+            uid !== 'create' ? (
+              <ContentSubFieldSection
+                data={cData || ''}
+                contentType={props.content.ID}
+                contentId={props.id}
+                onChange={setCData}
+                format={props.format}
+                reformat={props.reformat}
+                mainContentType={props.mainContentType}
+                mainContentId={props.uid}
+              />
+            ) : (
+              `Create content to edit ${id}`
+            )
           ) : null}
         </TableCell>
       </TableRow>

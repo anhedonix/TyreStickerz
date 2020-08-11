@@ -24,7 +24,7 @@ const crud = type => {
      * @param {Function} SetterFunction Function to run with data
      * @param {string} UID ID that has to be used.
      */
-    readSnap: (fn, uid) => store.readContentSnapshot(type, fn, uid),
+    readSnap: (fn, uid = null) => store.readContentSnapshot(type, fn, uid),
 
     /**
      * Create content
@@ -40,7 +40,7 @@ const crud = type => {
      * @param {string} UID optional ID that has to be used.
      * @param {string} Key Item to be updated.
      */
-    delete: (uid, key) => store.deleteContent(type, uid, key),
+    delete: (uid, key = null) => store.deleteContent(type, uid, key),
   }
 }
 

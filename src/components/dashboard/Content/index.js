@@ -4,6 +4,11 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
 import ContentEditor from './ContentEditor'
 import ContentViewer from './ContentViewer'
@@ -35,6 +40,8 @@ const Content = () => {
   const [cData, setCData] = useState()
   const [loading, setLoading] = useState(true)
 
+  const [confirmDelete, setConfirmDelete] = useState(false)
+
   const router = useRouter()
   const { contentType, contentId } = router.query
 
@@ -45,7 +52,12 @@ const Content = () => {
     setLoading(true)
     setEditMode(false)
     setData()
-    if (contentType && contentId && contentId !== 'create') {
+
+    if (contentType && contentType === 'defaults') {
+      setLoading(false)
+      setEditMode(false)
+      CONTENT.defaults.readSnap(setData)
+    } else if (contentType && contentId && contentId !== 'create') {
       CONTENT[contentType].element.readSnap(setData, contentId).then(i => {
         unsubscribe = i
         setLoading(false)
@@ -64,7 +76,7 @@ const Content = () => {
   const saveData = () => {
     const xdata = {}
     const fields = CONTENT[contentType].fields
-    if (contentId !== 'create') {
+    if (contentId !== 'create' || contentId !== 'default') {
       for (var i = 0; i < fields.length; i++) {
         if (fields[i].editable) {
           xdata[fields[i].id] = cData[fields[i].id]
@@ -74,6 +86,13 @@ const Content = () => {
       }
       CONTENT[contentType].element
         .update(contentId, null, xdata, false)
+        .then(() => {
+          setIsEdited(false)
+          setEditMode(false)
+        })
+    } else if (contentId === 'default') {
+      CONTENT[contentType].element
+        .update(contentId, null, cData, true)
         .then(() => {
           setIsEdited(false)
           setEditMode(false)
@@ -123,20 +142,52 @@ const Content = () => {
           )}
           {CONTENT[contentType].extra.adminActions.includes('delete') &&
             contentId !== 'create' && (
+              <Dialog
+                open={confirmDelete}
+                onClose={() => setConfirmDelete(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {'Are you sure you want to delete ' + contentType + '?'}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    This action cannot be undone, the data will be permenantaly
+                    deleted, are you sure you want to continue?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setConfirmDelete(false)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setConfirmDelete(false)
+                      setEditMode(false)
+                      setIsEdited(false)
+                      CONTENT[contentType].delete(contentId).then(() => {
+                        router.push(
+                          '/dashboard/[contentType]',
+                          `/dashboard/${contentType}`
+                        )
+                      })
+                    }}
+                    color="primary"
+                    autoFocus
+                  >
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            )}
+          {CONTENT[contentType].extra.adminActions.includes('delete') &&
+            contentId !== 'create' && (
               <Button
                 className={classes.editButton}
                 variant="outlined"
                 onClick={() => {
-                  setEditMode(false)
-                  setIsEdited(false)
-                  CONTENT[contentType]
-                    .delete(contentType, contentId)
-                    .then(() => {
-                      router.push(
-                        '/dashboard/[contentType]',
-                        `/dashboard/${contentType}`
-                      )
-                    })
+                  setConfirmDelete(true)
                 }}
               >
                 Delete
