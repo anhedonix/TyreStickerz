@@ -129,14 +129,12 @@ const Content = () => {
                 onClick={() => {
                   setEditMode(false)
                   setIsEdited(false)
-                  CONTENT[contentType]
-                    .delete(contentType, contentId)
-                    .then(() => {
-                      router.push(
-                        '/dashboard/[contentType]',
-                        `/dashboard/${contentType}`
-                      )
-                    })
+                  CONTENT[contentType].delete(contentId).then(() => {
+                    router.push(
+                      '/dashboard/[contentType]',
+                      `/dashboard/${contentType}`
+                    )
+                  })
                 }}
               >
                 Delete

@@ -40,7 +40,7 @@ const crud = type => {
      * @param {string} UID optional ID that has to be used.
      * @param {string} Key Item to be updated.
      */
-    delete: (uid, key) => store.deleteContent(type, uid, key),
+    delete: (uid, key = null) => store.deleteContent(type, uid, key),
   }
 }
 

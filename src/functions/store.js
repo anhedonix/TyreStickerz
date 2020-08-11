@@ -437,7 +437,7 @@ store.updateContent = (
               }
             }
             docRef
-              .set({ [path[1]]: newData }, { merge: true })
+              .set({ [path[1]]: newData }, { merge: merge })
               .then(() => resolve(newData))
               .catch(reason => reject(reason))
           })
@@ -476,6 +476,76 @@ store.updateContent = (
   })
 }
 
+const collectFiles = (contentType, id, key) => {
+  return new Promise((resolve, reject) => {
+    const [access, token] = contentType.token.split(':')
+    let path, sub
+    if (token) {
+      path = token.split('/')
+    } else {
+      path = null
+    }
+    const fileFields = []
+    for (var i = 0; i < contentType.fields.length; i++) {
+      if (['image', 'file', 'avatar'].includes(contentType.fields[i].type)) {
+        fileFields.push(contentType.fields[i].id)
+      } else if (['content'].includes(contentType.fields[i].type)) {
+        sub = collectFiles(contentType.fields[i].content, id, key)
+      }
+    }
+    switch (access) {
+      case 'collection': {
+        reject({ message: 'Cannot Delete collections.' })
+        break
+      }
+
+      case 'doc': {
+        firestore
+          .collection(path[0])
+          .doc(id)
+          .get()
+          .then(doc => {
+            const files = []
+            const cData = doc.data()
+            for (var i = 0; i < fileFields.length; i++) {
+              if (cData[fileFields[i]]) {
+                files.push(cData[fileFields[i]])
+              }
+            }
+            if (sub) {
+              sub.then(f => resolve([...f, ...files]))
+            } else {
+              resolve(files)
+            }
+          })
+      }
+
+      case 'field': {
+        const docRef = firestore.collection(path[0]).doc(id)
+        docRef
+          .get()
+          .then(doc => {
+            const data = doc.data()[path[1]]
+            const files = []
+            Object.keys(data).map(k => {
+              if (data[k]) {
+                for (var i = 0; i < fileFields.length; i++) {
+                  Object.keys(data[k]).map(l => {
+                    if (fileFields.includes(l)) {
+                      files.push(data[k][l])
+                    }
+                  })
+                }
+              }
+            })
+            resolve(files)
+          })
+          .catch(reason => reject(reason))
+        break
+      }
+    }
+  })
+}
 /**
  * Fucntion for removing elements from the database.
  *
@@ -502,39 +572,15 @@ store.deleteContent = (contentType, id = null, key = null) => {
       }
 
       case 'doc': {
-        if (!key) {
-          reject({ message: 'No key provided' })
-        }
-        const fileFields = []
-        for (var i = 0; i < contentType.fields.length; i++) {
-          if (
-            ['image', 'file', 'avatar'].includes(contentType.fields[i].type)
-          ) {
-            fileFields.push(contentType.fields[i].id)
-          }
-        }
-        firestore
-          .collection(token)
-          .doc(key)
-          .get()
-          .then(doc => {
-            const files = []
-            const cData = doc.data()
-            for (var i = 0; i < fileFields.length; i++) {
-              if (cData[fileFields[i]]) {
-                files.push(cData[fileFields[i]])
-              }
-            }
-            for (var i = 0; i < files.length; i++) {
-              store.dropFile(files[i])
-            }
-          })
-        firestore
-          .collection(token)
-          .doc(key)
-          .delete()
-          .then(() => resolve())
-          .catch(reason => reject(reason))
+        collectFiles(contentType, id, key).then(files => {
+          files.map(f => store.dropFile(f))
+          firestore
+            .collection(path[0])
+            .doc(id)
+            .delete()
+            .then(() => resolve())
+            .catch(reason => reject(reason))
+        })
         break
       }
 

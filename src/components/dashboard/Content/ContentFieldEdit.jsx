@@ -78,7 +78,16 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ContentSubFieldSection = props => {
-  const { contentType, contentId, data, onChange, format, reformat } = props
+  const {
+    contentType,
+    contentId,
+    data,
+    onChange,
+    format,
+    reformat,
+    mainContentType,
+    mainContentId,
+  } = props
   const classes = useStyles()
 
   const [cData, setCData] = useState(format && data ? format(data) : data)
@@ -126,6 +135,8 @@ const ContentSubFieldSection = props => {
                     contentType={contentType}
                     onChange={changeHandler}
                     subContent
+                    mainContentType={mainContentType}
+                    mainContentId={mainContentId}
                   />
                 )
               })}
@@ -327,7 +338,7 @@ const ContentFieldEdit = props => {
                 text={cData ? `Change ${label}` : `Add ${label}`}
                 variant="outlined"
                 then={i => {
-                  CONTENT[mainContentType].element.update(uid, null, {
+                  CONTENT[props.contentType].element.update(uid, null, {
                     [id]: i,
                   })
                   setCData(i)
@@ -335,7 +346,7 @@ const ContentFieldEdit = props => {
                 drop={cData && cData}
                 dropButton={cData}
                 dropThen={() => {
-                  CONTENT[mainContentType].element.update(uid, null, {
+                  CONTENT[props.contentType].element.update(uid, null, {
                     [id]: null,
                   })
                   setCData(null)
@@ -346,36 +357,50 @@ const ContentFieldEdit = props => {
             <div className={classes.imageWrapper}>
               <div>{cData}</div>
               <FileUploader
-                folder={uid}
+                folder={props.mainContentId}
                 path={path}
                 type={props.format}
                 text={cData ? `Change ${label}` : `Add ${label}`}
                 variant="outlined"
                 then={i => {
-                  CONTENT[mainContentType].element.update(uid, null, {
-                    [id]: i,
-                  })
+                  CONTENT[props.contentType].element.update(
+                    props.mainContentId,
+                    uid,
+                    {
+                      [id]: i,
+                    }
+                  )
                   setCData(i)
                 }}
                 drop={cData && cData}
                 dropButton={cData}
                 dropThen={() => {
-                  CONTENT[mainContentType].element.update(uid, null, {
-                    [id]: null,
-                  })
+                  CONTENT[props.contentType].element.update(
+                    props.mainContentId,
+                    uid,
+                    {
+                      [id]: null,
+                    }
+                  )
                   setCData(null)
                 }}
               />
             </div>
           ) : type === 'content' ? (
-            <ContentSubFieldSection
-              data={cData}
-              contentType={props.content.ID}
-              contentId={props.id}
-              onChange={setCData}
-              format={props.format}
-              reformat={props.reformat}
-            />
+            uid !== 'create' ? (
+              <ContentSubFieldSection
+                data={cData}
+                contentType={props.content.ID}
+                contentId={props.id}
+                onChange={setCData}
+                format={props.format}
+                reformat={props.reformat}
+                mainContentType={props.mainContentType}
+                mainContentId={props.uid}
+              />
+            ) : (
+              `Create content to edit ${id}`
+            )
           ) : null}
         </TableCell>
       </TableRow>
