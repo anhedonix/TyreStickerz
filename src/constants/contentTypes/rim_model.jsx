@@ -18,7 +18,7 @@ const content = {
       editable: true,
       type: 'file',
       format: '.glb',
-      path: 'Models',
+      path: 'Models/Rims',
     },
   ],
   format: {

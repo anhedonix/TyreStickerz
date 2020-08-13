@@ -1,16 +1,15 @@
 import React from 'react'
 import { auth } from 'firebase/app'
-import FilterTiltShiftIcon from '@material-ui/icons/FilterTiltShift'
+import AlbumIcon from '@material-ui/icons/Album'
 
-import * as USER from '../../constants/user'
-import model from './rim_model'
 import crud from '../../functions/crud'
 import * as RIMSIZES from '../../constants/rim'
+import rims from './rims'
 
 const content = {
-  ID: 'rims',
-  label: 'Rims',
-  token: 'doc:Rims',
+  ID: 'wheel',
+  label: 'Wheel',
+  token: 'doc:Wheels',
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     { id: 'name', label: 'Name', editable: true, type: 'string' },
@@ -29,37 +28,28 @@ const content = {
       options: [...RIMSIZES.TYPES],
     },
     {
-      id: 'bolts',
-      label: 'Bolt Pattern',
+      id: 'tyre',
+      label: 'Tyre',
       editable: true,
-      type: 'int',
-      min: 4,
-      max: 5,
-      step: 1,
+      type: 'file',
+      format: '.glb',
+      path: 'Models/Tyre',
     },
     {
-      id: 'model',
-      label: 'Model',
+      id: 'stickerMesh',
+      label: 'Sticker Mesh',
       editable: true,
-      type: 'content',
-      content: model,
-      format: input => {
-        const data = []
-        if (input) {
-          Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
-        }
-        return data
-      },
-      reformat: input => {
-        const data = {}
-        if (input) {
-          input.map(el => {
-            const { uid, ...vals } = { ...el }
-            data[uid] = { ...vals }
-          })
-        }
-        return data
-      },
+      type: 'file',
+      format: '.sdx',
+      path: 'Models/StickerMesh',
+    },
+    {
+      id: 'rim',
+      label: 'Default Rim',
+      editable: true,
+      type: 'stringList',
+      enableDefault: true,
+      options: [],
     },
   ],
   format: {
@@ -68,8 +58,9 @@ const content = {
         name: '',
         image: '',
         size: RIMSIZES.$20,
-        bolts: 4,
-        model: {},
+        tyre: null,
+        stickerMesh: null,
+        rim: null,
       }
     },
     contentListStruct: data => {
@@ -85,14 +76,22 @@ const content = {
 }
 
 content.extra = {
-  icon: <FilterTiltShiftIcon />,
+  icon: <AlbumIcon />,
   adminActions: ['create', 'update', 'delete'],
 }
 
-const rim = {
+const wheel = {
   ...content,
   ...crud(content),
   element: { ...crud(content), ...content },
 }
 
-export default rim
+rims.read().then(data => {
+  const options = []
+  data.map(el => {
+    options.push(el.uid)
+  })
+  wheel.fields[6].options = options
+})
+
+export default wheel

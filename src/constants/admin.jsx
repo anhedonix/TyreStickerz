@@ -7,4 +7,5 @@ export default [
   contentTypes.sticker_graphics,
   contentTypes.environment,
   contentTypes.rims,
+  contentTypes.wheel,
 ]

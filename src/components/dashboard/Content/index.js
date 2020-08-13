@@ -75,7 +75,7 @@ const Content = () => {
   const saveData = () => {
     const xdata = {}
     const fields = CONTENT[contentType].fields
-    if (contentId !== 'create' || contentId !== 'default') {
+    if (!['create', 'default'].includes(contentId)) {
       for (var i = 0; i < fields.length; i++) {
         if (fields[i].editable) {
           xdata[fields[i].id] = cData[fields[i].id]
@@ -89,7 +89,7 @@ const Content = () => {
           setIsEdited(false)
           setEditMode(false)
         })
-    } else if (contentId === 'default') {
+    } else if (['default'].includes(contentId)) {
       CONTENT[contentType].element
         .update(contentId, null, cData, true)
         .then(() => {

@@ -91,8 +91,18 @@ const ContentFieldView = props => {
         }
       >
         {data !== undefined ? (
-          ['string', 'int', 'uid', 'stringList', 'file'].includes(type) ? (
+          ['string', 'int', 'uid', 'file'].includes(type) ? (
             data
+          ) : type === 'stringList' ? (
+            props.enableDefault ? (
+              data === null ? (
+                'DEFAULT'
+              ) : (
+                data
+              )
+            ) : (
+              data
+            )
           ) : type === 'metaList' ? (
             data.split(':')[1]
           ) : type === 'timestamp' ? (

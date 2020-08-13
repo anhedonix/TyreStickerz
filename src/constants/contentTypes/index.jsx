@@ -7,6 +7,7 @@ import sticker_graphics from './stickerGraphics'
 import environment from './environment'
 import rim_model from './rim_model'
 import rims from './rims'
+import wheel from './wheel'
 
 export {
   user,
@@ -18,4 +19,5 @@ export {
   environment,
   rim_model,
   rims,
+  wheel,
 }

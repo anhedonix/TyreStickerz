@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    borderRight: '1px solid rgba(128,128,128,0.5)',
+    borderRight: `1px solid ${theme.palette.divider}`,
     padding: '0 0rem',
     minWidth: '300px',
     position: 'relative',
