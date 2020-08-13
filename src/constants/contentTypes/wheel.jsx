@@ -2,9 +2,9 @@ import React from 'react'
 import { auth } from 'firebase/app'
 import AlbumIcon from '@material-ui/icons/Album'
 
-import model from './rim_model'
 import crud from '../../functions/crud'
 import * as RIMSIZES from '../../constants/rim'
+import rims from './rims'
 
 const content = {
   ID: 'wheel',
@@ -43,6 +43,14 @@ const content = {
       format: '.sdx',
       path: 'Models/StickerMesh',
     },
+    {
+      id: 'rim',
+      label: 'Default Rim',
+      editable: true,
+      type: 'stringList',
+      enableDefault: true,
+      options: [],
+    },
   ],
   format: {
     default: () => {
@@ -70,6 +78,14 @@ content.extra = {
   icon: <AlbumIcon />,
   adminActions: ['create', 'update', 'delete'],
 }
+
+rims.read().then(data => {
+  const options = []
+  data.map(el => {
+    options.push(el.uid)
+  })
+  content.fields[6].options = options
+})
 
 const wheel = {
   ...content,
