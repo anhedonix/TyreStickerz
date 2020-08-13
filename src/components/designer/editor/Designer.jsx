@@ -8,6 +8,7 @@ import { v4 as uuid } from 'uuid'
 import { Swipeable } from 'react-touch'
 import Slide from './Slide'
 import { useEffect } from 'react'
+import Canvas from './Canvas'
 
 const useStyles = makeStyles(theme => ({
   designer: {
@@ -45,13 +46,13 @@ const useStyles = makeStyles(theme => ({
   },
   tyre: {
     // flexGrow: '1',
-    backgroundImage: `url('/Tyre.png')`,
+    // backgroundImage: `url('/Tyre.png')`,
     alignSelf: 'center',
     width: '50vh',
     height: '50vh',
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
+    // backgroundSize: 'contain',
+    // backgroundRepeat: 'no-repeat',
+    // backgroundPosition: 'center',
   },
 
   image: {
@@ -160,7 +161,9 @@ const Designer = () => {
   return (
     <div className={classes.designer}>
       <div className={classes.viewport}>
-        <div className={classes.tyre} />
+        <div className={classes.tyre}>
+          <Canvas />
+        </div>
         <div className={classes.breadCrumbs}>
           <div style={{ fontSize: '32px', fontWeight: '500' }}>Mazda MX5</div>
           <div style={{ fontSize: '16px', opacity: '.6' }}>Tyre Stickers</div>
