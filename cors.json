@@ -1,6 +1,6 @@
 [{
     "origin": [
-        "localhost", "tyre-stickerz.herokuapp.com/"
+        "*"
     ],
     "method": [
         "GET"
