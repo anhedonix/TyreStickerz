@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import Defaults from '../../src/constants/contentTypes/defaults'
+import Defaults from '../../../src/constants/contentTypes/defaults'
 
 export default (req, res) => {
   res.statusCode = 200
