@@ -60,6 +60,7 @@ const content = {
         size: RIMSIZES.$20,
         tyre: null,
         stickerMesh: null,
+        rim: null,
       }
     },
     contentListStruct: data => {
