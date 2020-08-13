@@ -79,18 +79,18 @@ content.extra = {
   adminActions: ['create', 'update', 'delete'],
 }
 
-rims.read().then(data => {
-  const options = []
-  data.map(el => {
-    options.push(el.uid)
-  })
-  content.fields[6].options = options
-})
-
 const wheel = {
   ...content,
   ...crud(content),
   element: { ...crud(content), ...content },
 }
+
+rims.read().then(data => {
+  const options = []
+  data.map(el => {
+    options.push(el.uid)
+  })
+  wheel.fields[6].options = options
+})
 
 export default wheel
