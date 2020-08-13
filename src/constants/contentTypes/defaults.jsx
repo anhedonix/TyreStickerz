@@ -1,13 +1,10 @@
 import React from 'react'
-import { auth } from 'firebase/app'
 import DescriptionIcon from '@material-ui/icons/Description'
 
-import * as USER from '../../constants/user'
-import model from './rim_model'
 import crud from '../../functions/crud'
-import * as RIMSIZES from '../../constants/rim'
 import environment from './environment'
 import rims from './rims'
+import wheel from './wheel'
 
 const content = {
   ID: 'defaults',
@@ -72,6 +69,14 @@ rims.read().then(data => {
     options.push(el.uid)
   })
   defaults.fields[1].options = options
+})
+
+wheel.read().then(data => {
+  const options = []
+  data.map(el => {
+    options.push(el.uid)
+  })
+  defaults.fields[2].options = options
 })
 
 export default defaults
