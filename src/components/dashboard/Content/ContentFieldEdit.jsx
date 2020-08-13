@@ -121,35 +121,36 @@ const ContentSubFieldSection = props => {
 
   return (
     <>
-      {cData.map(i => (
-        <Paper className={classes.subSectionElementWrapper} key={i.uid}>
-          <Table className={classes.subField} size="small">
-            <TableBody>
-              {CONTENT[contentType].fields.map(el => {
-                return (
-                  <ContentFieldEdit
-                    uid={i.uid}
-                    data={i[el.id]}
-                    {...el}
-                    key={`${i.uid}${el.id}`}
-                    contentType={contentType}
-                    onChange={changeHandler}
-                    subContent
-                    mainContentType={mainContentType}
-                    mainContentId={mainContentId}
-                  />
-                )
-              })}
-            </TableBody>
-          </Table>
-          <IconButton
-            className={classes.subFieldDelete}
-            onClick={() => removeElement(i.uid)}
-          >
-            <HighlightOffIcon />
-          </IconButton>
-        </Paper>
-      ))}
+      {cData &&
+        cData.map(i => (
+          <Paper className={classes.subSectionElementWrapper} key={i.uid}>
+            <Table className={classes.subField} size="small">
+              <TableBody>
+                {CONTENT[contentType].fields.map(el => {
+                  return (
+                    <ContentFieldEdit
+                      uid={i.uid}
+                      data={i[el.id]}
+                      {...el}
+                      key={`${i.uid}${el.id}`}
+                      contentType={contentType}
+                      onChange={changeHandler}
+                      subContent
+                      mainContentType={mainContentType}
+                      mainContentId={mainContentId}
+                    />
+                  )
+                })}
+              </TableBody>
+            </Table>
+            <IconButton
+              className={classes.subFieldDelete}
+              onClick={() => removeElement(i.uid)}
+            >
+              <HighlightOffIcon />
+            </IconButton>
+          </Paper>
+        ))}
       <Button
         startIcon={<AddIcon />}
         variant="contained"

@@ -52,11 +52,10 @@ const Content = () => {
     setLoading(true)
     setEditMode(false)
     setData()
-
     if (contentType && contentType === 'defaults') {
       setLoading(false)
       setEditMode(false)
-      CONTENT.defaults.readSnap(setData)
+      CONTENT.defaults.readSnap(setData).then(i => (unsubscribe = i))
     } else if (contentType && contentId && contentId !== 'create') {
       CONTENT[contentType].element.readSnap(setData, contentId).then(i => {
         unsubscribe = i
