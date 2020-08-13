@@ -1,0 +1,12 @@
+[{
+    "origin": [
+        "localhost", "tyre-stickerz.herokuapp.com/"
+    ],
+    "method": [
+        "GET"
+    ],
+    "responseHeader": [
+        "Access-Control-Allow-Origin"
+    ],
+    "maxAgeSeconds": 3600
+}]
