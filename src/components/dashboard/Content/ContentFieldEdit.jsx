@@ -263,12 +263,17 @@ const ContentFieldEdit = props => {
           ) : type === 'stringList' ? (
             <Select
               id={`${uid}${label}`}
-              value={data ? data : ''}
+              value={data ? data : props.enableDefault ? 'default' : ''}
               fullWidth
               variant="standard"
               size="small"
-              onChange={e => setCData(e.target.value)}
+              onChange={e =>
+                setCData(e.target.value === 'default' ? null : e.target.value)
+              }
             >
+              {props.enableDefault && (
+                <MenuItem value="default">DEFAULT</MenuItem>
+              )}
               {props.options.map(el => (
                 <MenuItem value={el} key={el}>
                   {el}
