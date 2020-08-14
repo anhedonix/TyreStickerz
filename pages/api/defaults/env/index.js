@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import * as CONTENT from '../../../src/constants/contentTypes'
+import * as CONTENT from '../../../../src/constants/contentTypes'
 
 const runner = async function (req, res) {
   return new Promise((resolve, reject) => {
