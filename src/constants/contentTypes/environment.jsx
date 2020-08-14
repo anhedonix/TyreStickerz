@@ -15,7 +15,7 @@ const content = {
       label: 'Positive X-Axis',
       editable: true,
       type: 'file',
-      format: '.exr',
+      format: '.hdr',
       path: 'Environments',
     },
     {
@@ -23,7 +23,7 @@ const content = {
       label: 'Positive Y-Axis',
       editable: true,
       type: 'file',
-      format: '.exr',
+      format: '.hdr',
       path: 'Environments',
     },
     {
@@ -31,7 +31,7 @@ const content = {
       label: 'Positive Z-Axis',
       editable: true,
       type: 'file',
-      format: '.exr',
+      format: '.hdr',
       path: 'Environments',
     },
     {
@@ -39,7 +39,7 @@ const content = {
       label: 'Negative X-Axis',
       editable: true,
       type: 'file',
-      format: '.exr',
+      format: '.hdr',
       path: 'Environments',
     },
     {
@@ -47,7 +47,7 @@ const content = {
       label: 'Negative Y-Axis',
       editable: true,
       type: 'file',
-      format: '.exr',
+      format: '.hdr',
       path: 'Environments',
     },
     {
@@ -55,7 +55,7 @@ const content = {
       label: 'Negative Z-Axis',
       editable: true,
       type: 'file',
-      format: '.exr',
+      format: '.hdr',
       path: 'Environments',
     },
     {
@@ -63,7 +63,7 @@ const content = {
       label: 'Pano',
       editable: true,
       type: 'file',
-      format: '.exr',
+      format: '.hdr',
       path: 'Environments',
     },
     {

@@ -1,0 +1,46 @@
+import React, { useState, useEffect, Suspense, useRef } from 'react'
+import { useGLTFLoader } from 'drei'
+import {
+  CubeCamera,
+  WebGLCubeRenderTarget,
+  RGBFormat,
+  LinearMipmapLinearFilter,
+  MeshPhysicalMaterial,
+} from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { useThree, useLoader } from 'react-three-fiber'
+import store from '../../../../../functions/store'
+
+function Model({ path }) {
+  const { scene } = useThree()
+
+  const gltf = useLoader(GLTFLoader, path)
+
+  gltf.scene.traverse(child => {
+    if (child.isMesh) {
+      child.material.envMap = scene.environment
+      child.material.reflectivity = 0
+      // child.material.roughness = child.material.roughness / 2
+      // child.rotation.y = 22 / 7
+      child.material.needsUpdate = true
+    }
+  })
+
+  return <primitive object={gltf.scene} />
+}
+
+function LoaderScene({ path }) {
+  const [modelPath, setModelPath] = useState()
+
+  useEffect(() => {
+    store.getFileUrl(path).then(i => setModelPath(i))
+  }, [])
+
+  return (
+    <Suspense fallback={null}>
+      {modelPath && <Model path={modelPath} />}
+    </Suspense>
+  )
+}
+
+export default LoaderScene

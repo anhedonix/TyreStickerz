@@ -147,6 +147,8 @@ const DevToolbar = () => {
           Global
         </MenuItem>
       </Menu>
+      <Button href="/api/defaults">API Defaults</Button>
+      <Button href="/api/defaults/env">API Env</Button>
     </Paper>
   ) : null
 }
