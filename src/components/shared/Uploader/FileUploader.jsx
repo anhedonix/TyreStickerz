@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     // color: 'green',
   },
   wrapper: {
-    margin: '6px',
+    marginRight: '6px',
     position: 'relative',
   },
   delete: {

@@ -41,9 +41,13 @@ const useStyles = makeStyles(theme => ({
   subFieldWrapper: {
     paddingRight: '0',
   },
-  imageWrapper: {
+  fileWrapper: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
+    fontFamily: '"Lucida Console", Monaco, monospace',
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
+    padding: '0.5rem',
   },
   avatarWrapper: {
     display: 'flex',
@@ -259,12 +263,17 @@ const ContentFieldEdit = props => {
           ) : type === 'stringList' ? (
             <Select
               id={`${uid}${label}`}
-              value={data ? data : ''}
+              value={data ? data : props.enableDefault ? 'default' : ''}
               fullWidth
               variant="standard"
               size="small"
-              onChange={e => setCData(e.target.value)}
+              onChange={e =>
+                setCData(e.target.value === 'default' ? null : e.target.value)
+              }
             >
+              {props.enableDefault && (
+                <MenuItem value="default">DEFAULT</MenuItem>
+              )}
               {props.options.map(el => (
                 <MenuItem value={el} key={el}>
                   {el}
@@ -305,8 +314,8 @@ const ContentFieldEdit = props => {
               name={label}
             />
           ) : type === 'avatar' ? (
-            <div className={classes.imageWrapper}>
-              <Avatar alt="type" src={filePath} />
+            <div className={classes.fileWrapper}>
+              {filePath && <Avatar alt="type" src={filePath} />}
               <FileUploader
                 path={path}
                 text={cData ? `Change ${label}` : `Add ${label}`}
@@ -328,11 +337,13 @@ const ContentFieldEdit = props => {
               />
             </div>
           ) : type === 'image' ? (
-            <div className={classes.imageWrapper}>
-              <div
-                className={classes.image}
-                style={{ backgroundImage: `url('${filePath}')` }}
-              ></div>
+            <div className={classes.fileWrapper}>
+              {filePath && (
+                <div
+                  className={classes.image}
+                  style={{ backgroundImage: `url('${filePath}')` }}
+                ></div>
+              )}
               <FileUploader
                 path={path}
                 folder={uid}
@@ -355,8 +366,8 @@ const ContentFieldEdit = props => {
               />
             </div>
           ) : type === 'file' ? (
-            <div className={classes.imageWrapper}>
-              <div>{cData || ''}</div>
+            <div className={classes.fileWrapper}>
+              {cData && <div>{cData || ''}</div>}
               <FileUploader
                 folder={props.mainContentId}
                 path={path}

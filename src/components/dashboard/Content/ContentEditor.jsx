@@ -40,6 +40,7 @@ const ContentEditor = props => {
               {...el}
               key={el.id}
               onChange={onChange}
+              mainContentId={contentId}
             />
           )
 

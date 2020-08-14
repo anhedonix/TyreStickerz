@@ -51,8 +51,8 @@ const useStyles = makeStyles(theme => ({
 
 const Slide = ({ info, image, id, handleSelected, selected, order, page }) => {
   const classes = useStyles(selected === id)
-  const [width, setWidth] = useState()
-  const [height, setHeight] = useState()
+  const [width, setWidth] = useState(0)
+  const [height, setHeight] = useState(0)
   const [loading, setLoading] = useState(true)
   const [cPage, setCPage] = useState(page)
   const display = useRef()
