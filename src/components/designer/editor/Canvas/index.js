@@ -45,7 +45,7 @@ const MainCanvas = props => {
 
   return (
     <Canvas camera={{ position: [80, 60, -100], fov: 30 }}>
-      <ambientLight />
+      <ambientLight intensity={0.3} />
       {/* <pointLight position={[100, 100, 100]} /> */}
       <Env env={state.env} />
       <Suspense fallback={null}>

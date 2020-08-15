@@ -20,9 +20,13 @@ function Model({ path }) {
     if (child.isMesh) {
       child.material.envMap = scene.environment
       child.material.reflectivity = 0
+      // child.material.map = null
       // child.material.roughness = child.material.roughness / 2
+      child.material.clearcoat = 0.1
+      child.material.clearcoatRoughness = 0.3
       // child.rotation.y = 22 / 7
       child.material.needsUpdate = true
+      scene.needsUpdate = true
     }
   })
 
