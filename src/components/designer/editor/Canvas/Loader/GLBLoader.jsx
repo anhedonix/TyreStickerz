@@ -11,11 +11,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useThree, useLoader } from 'react-three-fiber'
 import store from '../../../../../functions/store'
 
-function Model({ path }) {
-  const { scene } = useThree()
-
-  const gltf = useLoader(GLTFLoader, path)
-
+const applyProperties = (gltf, scene) => {
   gltf.scene.traverse(child => {
     if (child.isMesh) {
       child.material.envMap = scene.environment
@@ -26,9 +22,18 @@ function Model({ path }) {
       child.material.clearcoatRoughness = 0.3
       // child.rotation.y = 22 / 7
       child.material.needsUpdate = true
-      scene.needsUpdate = true
     }
   })
+}
+
+function Model({ path }) {
+  const { scene } = useThree()
+
+  const gltf = useLoader(GLTFLoader, path)
+
+  useEffect(() => {
+    applyProperties(gltf, scene)
+  }, [scene.environment])
 
   return <primitive object={gltf.scene} />
 }
