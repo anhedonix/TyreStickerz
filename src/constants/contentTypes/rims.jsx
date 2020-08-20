@@ -62,7 +62,7 @@ const content = {
         size: RIMSIZES.$20,
         bolts: 4,
         model: '',
-        options: null,
+        accessories: null,
       }
     },
     contentListStruct: data => {
