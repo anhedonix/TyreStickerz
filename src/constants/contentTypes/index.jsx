@@ -5,7 +5,7 @@ import notification from './notification'
 import notifications_global from './globalNotifications'
 import sticker_graphics from './stickerGraphics'
 import environment from './environment'
-import rim_model from './rim_model'
+import accessories from './accessories'
 import rims from './rims'
 import wheel from './wheel'
 
@@ -17,7 +17,7 @@ export {
   notifications_global,
   sticker_graphics,
   environment,
-  rim_model,
+  accessories,
   rims,
   wheel,
 }

@@ -8,4 +8,5 @@ export default [
   contentTypes.environment,
   contentTypes.rims,
   contentTypes.wheel,
+  contentTypes.accessories,
 ]
