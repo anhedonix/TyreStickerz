@@ -11,47 +11,27 @@ import Env from './Loader/Env'
 
 const MainCanvas = props => {
   const { state, dispatch } = useContext(DesignerContext)
-  const [model, setModel] = useState()
-  const [modelPath, setModelPath] = useState('')
 
-  const [cluster, setCluster] = useState('')
-  const [clusterpath, setClusterpath] = useState([])
+  const [wheel, setWheel] = useState()
+  const [rim, setRim] = useState()
+  const [accessories, setAccessories] = useState()
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
-      setCluster(i.data.rim)
-      setModel(i.data.whl)
+      CONTENT.wheel.read(i.data.whl).then(j => setWheel(j.tyre))
+      CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
+      CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
     })
-    axios
-      .get('/api/defaults/env')
-      .then(i => dispatch({ type: 'setEnv', payload: i.data }))
   }, [])
-
-  useEffect(() => {
-    CONTENT.wheel.read(model).then(i => setModelPath(i.tyre))
-  }, [model])
-
-  useEffect(() => {
-    CONTENT.rims.read(cluster).then(i => {
-      const cluster_tmp = []
-      if (i.model) {
-        Object.keys(i.model).map(key => {
-          cluster_tmp.push(i.model[key].model)
-        })
-      }
-      setClusterpath(cluster_tmp)
-    })
-  }, [cluster])
 
   return (
     <Canvas camera={{ position: [80, 60, -100], fov: 30 }}>
       <ambientLight intensity={0.3} />
       {/* <pointLight position={[100, 100, 100]} /> */}
-      <Env env={state.env} />
-      <Suspense fallback={null}>
-        {modelPath && <GLBLoader path={modelPath} />}
-        {clusterpath && clusterpath.map(p => <GLBLoader path={p} key={p} />)}
-      </Suspense>
+      <Env />
+      {rim && <GLBLoader path={rim} />}
+      {wheel && <GLBLoader path={wheel} />}
+      {accessories && <GLBLoader path={accessories} />}
       <Shadow
         scale={[20, 20, 1]}
         opacity={0.8}
