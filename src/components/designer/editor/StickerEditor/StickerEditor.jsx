@@ -1,45 +1,27 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
-import StickerCard from './StickerCard'
-import StickerList from './StickerList'
+import StickerCard_1 from './StickerCard_1'
 
 const useStyles = makeStyles(theme => ({
-  stickerEditor: {
-    // width: `calc(100vw - calc(100vh - 100px))`,
-    display: 'flex',
-    height: `calc(100vh - 100px)`,
-    flexGrow: '1',
-    // backgroundColor: 'red',
-  },
+  stickerEditor: editMode => ({
+    height: `calc(100vh - 104px)`,
+    width: editMode ? '40vw' : '20vw',
+    transition: 'width 500ms',
+  }),
 }))
 
-const StickerEditor = () => {
-  const classes = useStyles()
-  const list = [
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-    '/resources/stickers/Hankook.png',
-  ]
+const StickerEditor = props => {
+  const classes = useStyles(props.editMode)
   return (
-    <div className={classes.stickerEditor}>
-      <StickerList list={list} />
-      <StickerCard />
+    <div
+      className={classes.stickerEditor}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
+      <StickerCard_1
+        setEditMode={props.setEditMode}
+        editMode={props.editMode}
+      />
     </div>
   )
 }

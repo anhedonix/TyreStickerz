@@ -6,10 +6,10 @@ const useStyles = makeStyles(theme => ({
   stickerList: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
-    height: `calc(100vh - 100px)`,
+    width: '50%',
+    // height: '100%',
     // padding: '24px',
-    overflow: 'scroll',
+    overflowY: 'scroll',
   },
   sortBar: {
     minHeight: '4vh',
@@ -20,17 +20,24 @@ const useStyles = makeStyles(theme => ({
 
 const StickerList = props => {
   const classes = useStyles()
+  const list = [
+    '/resources/stickers/AMG.png',
+    '/resources/stickers/BridgeStone.png',
+    '/resources/stickers/Continental.png',
+    '/resources/stickers/Dunlop.png',
+    '/resources/stickers/AMG.png',
+  ]
   return (
     <div className={classes.stickerList}>
       <div className={classes.sortBar}>sortbar</div>
-      {props.list.map(list => (
+      {list.map(image => (
         <Paper
           style={{
             width: 'auto',
             minHeight: '80px',
             // backgroundColor: 'red',
-            margin: '16px',
-            backgroundImage: `url(${list})`,
+            margin: ' 0 0 2px',
+            backgroundImage: `url(${image})`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
