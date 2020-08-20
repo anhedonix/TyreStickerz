@@ -5,6 +5,7 @@ import crud from '../../functions/crud'
 import environment from './environment'
 import rims from './rims'
 import wheel from './wheel'
+import accessories from './accessories'
 
 const content = {
   ID: 'defaults',
@@ -28,6 +29,13 @@ const content = {
     {
       id: 'whl',
       label: 'Wheel',
+      editable: true,
+      type: 'stringList',
+      options: [],
+    },
+    {
+      id: 'acc',
+      label: 'Accessories',
       editable: true,
       type: 'stringList',
       options: [],
@@ -77,6 +85,14 @@ wheel.read().then(data => {
     options.push(el.uid)
   })
   defaults.fields[2].options = options
+})
+
+accessories.read().then(data => {
+  const options = []
+  data.map(el => {
+    options.push(el.uid)
+  })
+  defaults.fields[3].options = options
 })
 
 export default defaults
