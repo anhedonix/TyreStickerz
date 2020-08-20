@@ -3,7 +3,7 @@ import { auth } from 'firebase/app'
 import FilterTiltShiftIcon from '@material-ui/icons/FilterTiltShift'
 
 import * as USER from '../../constants/user'
-import model from './rim_model'
+import accessories from './accessories'
 import crud from '../../functions/crud'
 import * as RIMSIZES from '../../constants/rim'
 
@@ -41,25 +41,17 @@ const content = {
       id: 'model',
       label: 'Model',
       editable: true,
-      type: 'content',
-      content: model,
-      format: input => {
-        const data = []
-        if (input) {
-          Object.keys(input).map(i => data.push({ ...input[i], uid: i }))
-        }
-        return data
-      },
-      reformat: input => {
-        const data = {}
-        if (input) {
-          input.map(el => {
-            const { uid, ...vals } = { ...el }
-            data[uid] = { ...vals }
-          })
-        }
-        return data
-      },
+      type: 'file',
+      format: '.glb',
+      path: 'Models/Rims',
+    },
+    {
+      id: 'accessories',
+      label: 'Accessories',
+      editable: true,
+      type: 'stringList',
+      enableDefault: true,
+      options: [],
     },
   ],
   format: {
@@ -69,7 +61,8 @@ const content = {
         image: '',
         size: RIMSIZES.$20,
         bolts: 4,
-        model: {},
+        model: '',
+        options: null,
       }
     },
     contentListStruct: data => {
@@ -94,5 +87,13 @@ const rim = {
   ...crud(content),
   element: { ...crud(content), ...content },
 }
+
+accessories.read().then(data => {
+  const options = []
+  data.map(el => {
+    options.push(el.uid)
+  })
+  rim.fields[6].options = options
+})
 
 export default rim
