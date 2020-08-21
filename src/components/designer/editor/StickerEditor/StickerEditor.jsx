@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    overflowY: 'scroll',
     // transition: 'width 500ms',
   }),
   addStickerCard: {
@@ -24,30 +25,35 @@ const useStyles = makeStyles(theme => ({
 
 const StickerEditor = props => {
   const classes = useStyles(props.editMode)
-  const defaults = [
-    { sticker: '/resources/stickers/M_Performance.png' },
-    { startingDegree: 45 },
-    { endingDegree: 135 },
-    { offsetU: 0 },
-    { offsetV: 0 },
-    { scaleU: 1 },
-    { scaleV: 1 },
-    { Mirror: false },
-  ]
+  const defaults = {
+    Sticker: '/resources/stickers/M_Performance.png',
+    StartingDegree: 45,
+    EndingDegree: 135,
+    offsetU: 0,
+    offsetV: 0,
+    ScaleU: 1,
+    ScaleV: 1,
+    Mirror: false,
+  }
   const [stickersList, updateStickersList] = useState([defaults])
-
   const createNewStickerCard = () => {
     const tempStickersList = stickersList
-    updateStickersList(tempStickersList.concat([defaults]))
+    updateStickersList(tempStickersList.concat(defaults))
   }
-  console.log(stickersList)
+  // console.log(stickersList)
   return (
     <div className={classes.stickerEditor}>
       <AddCircleIcon
         className={classes.addStickerCard}
         onClick={createNewStickerCard}
       />
-      <StickerCard setEditMode={props.setEditMode} editMode={props.editMode} />
+      {stickersList.map(e => (
+        <StickerCard
+          setEditMode={props.setEditMode}
+          editMode={props.editMode}
+          data={e}
+        />
+      ))}
     </div>
   )
 }
