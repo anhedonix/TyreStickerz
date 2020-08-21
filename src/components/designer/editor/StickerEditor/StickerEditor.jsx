@@ -13,6 +13,16 @@ const useStyles = makeStyles(theme => ({
 
 const StickerEditor = props => {
   const classes = useStyles(props.editMode)
+  const defaults = [
+    { sticker: '/resources/stickers/M_Performance.png' },
+    { startingDegree: 45 },
+    { endingDegree: 135 },
+    { offsetU: 0 },
+    { offsetV: 0 },
+    { scaleU: 1 },
+    { scaleV: 1 },
+    { Mirror: false },
+  ]
   return (
     <div
       className={classes.stickerEditor}
