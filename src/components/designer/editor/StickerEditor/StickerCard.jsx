@@ -5,19 +5,22 @@ import Paper from '@material-ui/core/Paper'
 import StickerList from './StickerList'
 
 const useStyles = makeStyles(theme => ({
-  stickerCard: {
-    width: '360px',
+  stickerCardPreview: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     height: '100px',
     margin: ' 0 0 4% 0',
-    position: 'relative',
-    // backgroundColor: 'green',
+    // position: 'relative',
   },
   image: {
-    width: '70%',
-    height: '80%',
+    width: '100%',
+    height: '10vh',
     // backgroundColor: 'red',
 
-    backgroundImage: `url('/resources/stickers/Hankook.png')`,
+    backgroundImage: `url('/resources/stickers/M_Performance.png')`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -25,37 +28,30 @@ const useStyles = makeStyles(theme => ({
       opacity: '.5',
     },
   },
-  data: {
-    display: 'flex',
-    // flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    height: '100%',
-    // width: '100%',
-  },
+
   editMode: {
-    position: 'absolute',
-    // right: '0',
-    // // flexDirection: 'column',
-    // // width: '60vh',
-    // display: 'block',
-    // top: '0',
+    display: 'flex',
+    // flexDirection: 'Column',
     height: '30vh',
-    width: '100vw',
+    width: '100%',
     margin: ' 0 0 4% 0',
+  },
+  dataCard: {
+    width: '50%',
+    height: '100%',
   },
 }))
 
 const StickerCardPreview = props => {
   const classes = useStyles()
   return (
-    <div
-      className={classes.stickerCard}
+    <Paper
+      className={classes.stickerCardPreview}
       onClick={() => props.setEditMode(!props.editmode)}
     >
       <div className={classes.image} />
       <div className={classes.data}>S:45 E:135 U:0 V:0 SU:1 SV:1 M:T</div>
-    </div>
+    </Paper>
   )
 }
 
@@ -68,8 +64,8 @@ const StickerCardEdit = props => {
         props.setEditMode(!props.editMode)
       }}
     >
-      <div style={{ display: 'flex' }}>
-        {/* <StickerList list={props.list} /> */}
+      <StickerList />
+      <div className={classes.dataCard}>
         <div className={classes.image} />
         <div className={classes.data}>
           <div>cover perpendicular:100</div>
