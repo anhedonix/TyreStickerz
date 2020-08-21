@@ -8,7 +8,10 @@ const useStyles = makeStyles(theme => ({
   stickerEditor: editMode => ({
     height: `calc(100vh - 104px)`,
     width: editMode ? '40vw' : '20vw',
-    transition: 'width 500ms',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    // transition: 'width 500ms',
   }),
   addStickerCard: {
     width: '2vw',
@@ -37,18 +40,14 @@ const StickerEditor = props => {
     const tempStickersList = stickersList
     updateStickersList(tempStickersList.concat([defaults]))
   }
+  console.log(stickersList)
   return (
-    <div
-      className={classes.stickerEditor}
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-    >
-      <StickerCard_1
-        setEditMode={props.setEditMode}
-        editMode={props.editMode}
+    <div className={classes.stickerEditor}>
       <AddCircleIcon
         className={classes.addStickerCard}
         onClick={createNewStickerCard}
       />
+      <StickerCard setEditMode={props.setEditMode} editMode={props.editMode} />
     </div>
   )
 }
