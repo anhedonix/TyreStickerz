@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
+import Slider from '@material-ui/core/Slider'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 import StickerList from './StickerList'
 
@@ -70,16 +73,66 @@ const StickerCardPreview = props => {
 const StickerCardEdit = props => {
   const classes = useStyles(props.data)
   return (
-    <Paper
-      className={classes.editMode}
-      onClick={() => {
-        props.setEditMode(!props.editMode)
-      }}
-    >
+    <Paper className={classes.editMode}>
       <StickerList />
       <div className={classes.dataCard}>
         <div className={classes.image} />
-        <div className={classes.data}>{props.data.map}</div>
+        <Typography id="discrete-slider" gutterBottom>
+          Starting Degree
+        </Typography>
+        <Slider
+          defaultValue={props.data.StartingDegree}
+          getAriaValueText={props.data.StartingPoint}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={2.5}
+          marks
+          min={0}
+          max={360}
+        />
+        <Typography id="discrete-slider" gutterBottom>
+          Ending Degree
+        </Typography>
+        <Slider
+          defaultValue={props.data && props.data.EndingDegree}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={2.5}
+          marks
+          min={0}
+          max={360}
+        />
+        <Typography id="discrete-slider" gutterBottom>
+          Offset X
+        </Typography>
+        <Slider
+          defaultValue={props.data.OffsetX}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={0.1}
+          marks
+          min={0}
+          max={1}
+        />
+        <Typography id="discrete-slider" gutterBottom>
+          Offset Y
+        </Typography>
+        <Slider
+          defaultValue={props.data.OffsetY}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={0.1}
+          marks
+          min={0}
+          max={1}
+        />
+        <Button
+          onClick={() => {
+            props.setEditMode(!props.editMode)
+          }}
+        >
+          apply
+        </Button>
       </div>
     </Paper>
   )
