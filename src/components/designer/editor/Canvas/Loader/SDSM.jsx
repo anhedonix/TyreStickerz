@@ -40,7 +40,7 @@ const BufferGeoCustom = ({ data, material, uvOffset }) => {
               const iter = uvOffset[0]
               const end = uvOffset[1]
               const val = i
-              return (val + iter) / (end / 2.5 - 1)
+              return (val + iter) / (end / 3 - 1)
             }
           }),
           2
@@ -75,20 +75,22 @@ const SDSM = props => {
   var texture = new THREE.TextureLoader().load('/CompanyLogo.png')
   texture.wrapS = THREE.ClampToEdgeWrapping
   texture.wrapT = THREE.ClampToEdgeWrapping
-  texture.minFilter = THREE.LinearMipmapLinearFilter
+  texture.minFilter = THREE.LinearFilter
   texture.magFilter = THREE.NearestFilter
   const Material = new THREE.MeshPhysicalMaterial({
-    roughness: 0.6,
+    roughness: 0.3,
     side: THREE.DoubleSide,
     map: texture,
+    emissiveMap: texture,
+    emissiveIntensity: 0.2,
     premultipliedAlpha: true,
     transparent: true,
     envMap: scene.environment,
   })
 
   const final_mesh = model && (
-    <group position={model.c}>
-      {[...Array(parseInt((props.range[1] - props.range[0]) / 2.5)).keys()].map(
+    <group position={model.c} scale={[1, 1, -1]}>
+      {[...Array(parseInt((props.range[1] - props.range[0]) / 3)).keys()].map(
         i => {
           return (
             <group

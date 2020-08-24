@@ -64,7 +64,7 @@ const MainCanvas = () => {
         onChange={handleChange}
         min={0}
         max={420}
-        step={2.5}
+        step={3}
         valueLabelDisplay="auto"
       />
     </>
