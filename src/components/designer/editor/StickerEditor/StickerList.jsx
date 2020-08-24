@@ -45,6 +45,9 @@ const StickerList = props => {
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
             }}
+            onClick={() => {
+              props.updateStickers(props.index, 'Sticker', image)
+            }}
           />
         ))}
       </div>

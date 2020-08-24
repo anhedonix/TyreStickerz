@@ -57,6 +57,14 @@ const StickerEditor = props => {
     setCardsStatus(temp)
     setTriger(!triger)
   }
+  const updateStickers = (current, property, value) => {
+    const tempStickersList = stickersList
+    const tempSticker = stickersList[current]
+    tempSticker[property] = value
+    tempStickersList[current] = tempSticker
+    updateStickersList(tempStickersList)
+    setTriger(!triger)
+  }
   useEffect(() => {
     const temp = cardsStatus.includes(true)
 
@@ -80,6 +88,7 @@ const StickerEditor = props => {
           index={i}
           cardsStatus={cardsStatus}
           editMode={props.editMode}
+          updateStickers={updateStickers}
         />
       ))}
     </div>

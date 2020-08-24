@@ -87,7 +87,7 @@ const StickerCardEdit = props => {
   const classes = useStyles(props)
   return (
     <Paper className={classes.editMode}>
-      <StickerList />
+      <StickerList updateStickers={props.updateStickers} index={props.index} />
       <div className={classes.dataCard}>
         <div className={classes.image} />
         <div className={classes.data}>
@@ -223,6 +223,7 @@ const StickerCard = props => {
           setEditCard={setEditCard}
           updateCardStatus={props.updateCardStatus}
           index={props.index}
+          updateStickers={props.updateStickers}
         />
       ) : (
         <StickerCardPreview
