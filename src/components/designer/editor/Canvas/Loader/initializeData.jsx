@@ -14,13 +14,14 @@ const initializeStickerMeshData = parms => {
   const pos = init.p
   const nor = init.n
   const uvs = init.uv
+  const c = init.c
   let p = []
   let n = []
   let uv = []
   for (let i = 0; i < verts.length; i++) {
-    p.push(pos[verts[i] * 3] / parms.precision_factor)
-    p.push(pos[verts[i] * 3 + 1] / parms.precision_factor)
-    p.push(pos[verts[i] * 3 + 2] / parms.precision_factor)
+    p.push((c[0] - pos[verts[i] * 3 + 0]) / parms.precision_factor)
+    p.push((c[1] - pos[verts[i] * 3 + 1]) / parms.precision_factor)
+    p.push((c[2] - pos[verts[i] * 3 + 2]) / parms.precision_factor)
     n.push(nor[verts[i] * 3] / parms.precision_factor)
     n.push(nor[verts[i] * 3 + 1] / parms.precision_factor)
     n.push(nor[verts[i] * 3 + 2] / parms.precision_factor)
@@ -31,6 +32,11 @@ const initializeStickerMeshData = parms => {
     p,
     n,
     uv,
+    c: [
+      c[0] / parms.precision_factor,
+      c[1] / parms.precision_factor,
+      c[2] / parms.precision_factor,
+    ],
   }
   return data
 }

@@ -1,3 +1,4 @@
+import Slider from '@material-ui/core/Slider'
 import axios from 'axios'
 import { OrbitControls, Shadow } from 'drei'
 import React, { useEffect, useState } from 'react'
@@ -5,8 +6,7 @@ import { Canvas } from 'react-three-fiber'
 import * as CONTENT from '../../../../constants/contentTypes'
 import Env from './Loader/Env'
 import GLBLoader from './Loader/GLBLoader'
-import SDSM from '../../../shared/Loaders/SDSM'
-import Slider from '@material-ui/core/Slider'
+import SDSM from './Loader/SDSM'
 
 const MainCanvas = () => {
   const [init, setInit] = useState(false)
@@ -65,6 +65,7 @@ const MainCanvas = () => {
         min={0}
         max={420}
         step={2.5}
+        valueLabelDisplay="auto"
       />
     </>
   )
