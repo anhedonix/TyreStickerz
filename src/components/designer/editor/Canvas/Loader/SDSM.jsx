@@ -11,7 +11,8 @@ import React, { useEffect, useState } from 'react'
 import initializeStickerMeshData from './initializeData'
 import store from '../../../../../functions/store'
 
-const BufferGeoCustom = ({ data, material }) => {
+import { useThree, useLoader } from 'react-three-fiber'
+const BufferGeoCustom = ({ data, material, uvOffset }) => {
   const [geo, setGeo] = useState()
 
   const geoRef = element => {
@@ -29,15 +30,31 @@ const BufferGeoCustom = ({ data, material }) => {
         'normal',
         new THREE.Float32BufferAttribute(data.n, 3)
       )
-      geo_curr.setAttribute('uv', new THREE.Float32BufferAttribute(data.uv, 2))
+      geo_curr.setAttribute(
+        'uv',
+        new THREE.Float32BufferAttribute(
+          data.uv.map((i, j) => {
+            if (j % 2) {
+              return i
+            } else {
+              const iter = uvOffset[0]
+              const end = uvOffset[1]
+              const val = i
+              return (val + iter) / (end / 2.5 - 1)
+            }
+          }),
+          2
+        )
+      )
       geo_curr.parent.material = material
     }
-  }, [geo])
+  }, [geo, uvOffset])
 
   return <bufferGeometry Name="Model" attach="geometry" ref={geoRef} />
 }
 
 const SDSM = props => {
+  const { scene } = useThree()
   const [model, setModel] = useState()
   const [data, setData] = useState()
 
@@ -55,10 +72,15 @@ const SDSM = props => {
     }
     initialize()
   }, [])
-
+  var texture = new THREE.TextureLoader().load('/CompanyLogo.png')
   const Material = new THREE.MeshPhysicalMaterial({
     roughness: 0.6,
     side: THREE.DoubleSide,
+    map: texture,
+    premultipliedAlpha: true,
+    transparent: true,
+    envMap: scene.environment,
+    needsUpdate: true,
   })
 
   const final_mesh = model && (
@@ -68,13 +90,17 @@ const SDSM = props => {
           return (
             <group
               rotation={[
-                THREE.MathUtils.degToRad(2.5 * i + props.range[0]),
+                THREE.MathUtils.degToRad(3 * i + props.range[0]),
                 0,
                 Math.PI,
               ]}
             >
               <mesh>
-                <BufferGeoCustom data={model} material={Material} />
+                <BufferGeoCustom
+                  data={model}
+                  material={Material}
+                  uvOffset={[i, props.range[1] - props.range[0]]}
+                />
               </mesh>
             </group>
           )
