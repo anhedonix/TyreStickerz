@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 
 import StickerCard from './StickerCard'
+import { useEffect } from 'react'
+import { log } from 'three'
 
 const useStyles = makeStyles(theme => ({
   stickerEditor: editMode => ({
@@ -10,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     width: editMode ? '40vw' : '20vw',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     overflowY: 'scroll',
     // transition: 'width 500ms',
   }),
@@ -25,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const StickerEditor = props => {
   const classes = useStyles(props.editMode)
+
   const defaults = {
     Sticker: '/resources/stickers/M_Performance.png',
     StartingDegree: 45,
@@ -36,22 +39,46 @@ const StickerEditor = props => {
     Mirror: false,
   }
   const [stickersList, updateStickersList] = useState([defaults])
+  const [cardsStatus, setCardsStatus] = useState([false])
+  const [triger, setTriger] = useState(false)
+
   const createNewStickerCard = () => {
     const tempStickersList = stickersList
+    let temp = cardsStatus
+
     updateStickersList(tempStickersList.concat(defaults))
+    setCardsStatus(temp.concat(false))
   }
-  // console.log(stickersList)
+
+  const updateCardStatus = (value, i) => {
+    let temp = cardsStatus
+    temp[i] = value
+    setCardsStatus(temp)
+    setTriger(!triger)
+  }
+  useEffect(() => {
+    const temp = cardsStatus.includes(true)
+
+    if (temp) {
+      props.setEditMode(true)
+    } else {
+      props.setEditMode(false)
+    }
+  }, [triger])
+
   return (
     <div className={classes.stickerEditor}>
       <AddCircleIcon
         className={classes.addStickerCard}
         onClick={createNewStickerCard}
       />
-      {stickersList.map(e => (
+      {stickersList.map((e, i) => (
         <StickerCard
-          setEditMode={props.setEditMode}
-          editMode={props.editMode}
+          updateCardStatus={updateCardStatus}
           data={e}
+          index={i}
+          cardsStatus={cardsStatus}
+          editMode={props.editMode}
         />
       ))}
     </div>

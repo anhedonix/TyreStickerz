@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Slider from '@material-ui/core/Slider'
@@ -8,22 +8,23 @@ import Button from '@material-ui/core/Button'
 import StickerList from './StickerList'
 
 const useStyles = makeStyles(theme => ({
-  stickerCardPreview: {
+  stickerCardPreview: props => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: props.editMode === true ? '50%' : '100%',
     height: '100px',
-    margin: ' 0 0 4% 0',
+    margin: ' 0 0 1vh 0',
+
     // position: 'relative',
-  },
-  image: data => ({
+  }),
+  image: props => ({
     width: '100%',
     height: '10vh',
     // backgroundColor: 'red',
 
-    backgroundImage: `url(${data && data.Sticker})`,
+    backgroundImage: `url(${props.data != undefined && props.data.Sticker})`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     // flexDirection: 'Column',
     height: '30vh',
     width: '100%',
-    margin: ' 0 0 4% 0',
+    margin: ' 0 0 1vh 0',
   },
   dataCard: {
     width: '50%',
@@ -49,14 +50,17 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const StickerCardPreview = props => {
-  const classes = useStyles(props.data)
+  const classes = useStyles(props)
   const keys = Object.keys(props.data)
   const keyShorts = keys.map(e => e.replace(/[a-z]/g, ''))
 
   return (
     <Paper
       className={classes.stickerCardPreview}
-      onClick={() => props.setEditMode(!props.editmode)}
+      onClick={() => {
+        props.updateCardStatus(!props.editCard, props.index)
+        props.setEditCard(!props.editCard)
+      }}
     >
       <div className={classes.image} />
       <div className={classes.data}>
@@ -71,7 +75,7 @@ const StickerCardPreview = props => {
 }
 
 const StickerCardEdit = props => {
-  const classes = useStyles(props.data)
+  const classes = useStyles(props)
   return (
     <Paper className={classes.editMode}>
       <StickerList />
@@ -128,7 +132,8 @@ const StickerCardEdit = props => {
         />
         <Button
           onClick={() => {
-            props.setEditMode(!props.editMode)
+            props.updateCardStatus(!props.editCard, props.index)
+            props.setEditCard(!props.editCard)
           }}
         >
           apply
@@ -139,19 +144,26 @@ const StickerCardEdit = props => {
 }
 
 const StickerCard = props => {
+  const [editCard, setEditCard] = useState(false)
+
   return (
     <>
-      {props.editMode ? (
+      {editCard ? (
         <StickerCardEdit
-          setEditMode={props.setEditMode}
-          editMode={props.editMode}
           data={props.data}
+          editCard={editCard}
+          setEditCard={setEditCard}
+          updateCardStatus={props.updateCardStatus}
+          index={props.index}
         />
       ) : (
         <StickerCardPreview
-          setEditMode={props.setEditMode}
-          editMode={props.editMode}
           data={props.data}
+          editCard={editCard}
+          setEditCard={setEditCard}
+          updateCardStatus={props.updateCardStatus}
+          index={props.index}
+          editMode={props.editMode}
         />
       )}
     </>
