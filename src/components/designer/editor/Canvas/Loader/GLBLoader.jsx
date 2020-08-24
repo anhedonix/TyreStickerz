@@ -45,11 +45,15 @@ function LoaderScene({ path }) {
     store.getFileUrl(path).then(i => setModelPath(i))
   }, [])
 
-  return (
-    <Suspense fallback={null}>
-      {modelPath && <Model path={modelPath} />}
-    </Suspense>
-  )
+  if (modelPath) {
+    return (
+      <Suspense fallback={null}>
+        <Model path={modelPath} />
+      </Suspense>
+    )
+  } else {
+    return null
+  }
 }
 
 export default LoaderScene
