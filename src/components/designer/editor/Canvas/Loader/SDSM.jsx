@@ -81,6 +81,7 @@ const SDSM = props => {
     roughness: 0.3,
     side: THREE.DoubleSide,
     map: texture,
+    emissive: '#ffffff',
     emissiveMap: texture,
     emissiveIntensity: 0.2,
     premultipliedAlpha: true,
