@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
+import Scroll from 'react-scrollbars-custom'
 
 const useStyles = makeStyles(theme => ({
   stickerList: {
@@ -14,9 +15,6 @@ const useStyles = makeStyles(theme => ({
     minHeight: '50px',
     width: '100%',
     backgroundColor: theme.palette.action.disabled,
-  },
-  list: {
-    overflowY: 'scroll',
   },
 }))
 
@@ -32,7 +30,7 @@ const StickerList = props => {
   return (
     <div className={classes.stickerList}>
       <div className={classes.sortBar}>sortbar</div>
-      <div className={classes.list}>
+      <Scroll>
         {list.map(image => (
           <Paper
             style={{
@@ -50,7 +48,7 @@ const StickerList = props => {
             }}
           />
         ))}
-      </div>
+      </Scroll>
     </div>
   )
 }

@@ -4,16 +4,16 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 
 import StickerCard from './StickerCard'
 import { useEffect } from 'react'
-import { log } from 'three'
+import Scroll from 'react-scrollbars-custom'
 
 const useStyles = makeStyles(theme => ({
   stickerEditor: editMode => ({
     height: `calc(100vh - 104px)`,
     width: editMode ? '40vw' : '20vw',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    overflowY: 'scroll',
+    // display: 'flex',
+    // flexDirection: 'column',
+    // alignItems: 'flex-end',
+    // overflowY: 'scroll',
     // transition: 'width 500ms',
   }),
   addStickerCard: {
@@ -23,6 +23,10 @@ const useStyles = makeStyles(theme => ({
     // color: '#8888',
     opacity: '.5',
     margin: '8px',
+  },
+  scroll: {
+    height: `calc(100vh - 104px)`,
+    width: '100%',
   },
 }))
 
@@ -76,22 +80,24 @@ const StickerEditor = props => {
   }, [triger])
 
   return (
-    <div className={classes.stickerEditor}>
-      <AddCircleIcon
-        className={classes.addStickerCard}
-        onClick={createNewStickerCard}
-      />
-      {stickersList.map((e, i) => (
-        <StickerCard
-          updateCardStatus={updateCardStatus}
-          data={e}
-          index={i}
-          cardsStatus={cardsStatus}
-          editMode={props.editMode}
-          updateStickers={updateStickers}
+    <Scroll>
+      <div className={classes.stickerEditor}>
+        <AddCircleIcon
+          className={classes.addStickerCard}
+          onClick={createNewStickerCard}
         />
-      ))}
-    </div>
+        {stickersList.map((e, i) => (
+          <StickerCard
+            updateCardStatus={updateCardStatus}
+            data={e}
+            index={i}
+            cardsStatus={cardsStatus}
+            editMode={props.editMode}
+            updateStickers={updateStickers}
+          />
+        ))}
+      </div>
+    </Scroll>
   )
 }
 
