@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import Switch from '@material-ui/core/Switch'
 
 import StickerList from './StickerList'
 
@@ -21,7 +22,8 @@ const useStyles = makeStyles(theme => ({
   }),
   image: props => ({
     width: '100%',
-    height: '10vh',
+    // height: '10vh',
+    minHeight: '80px',
     // backgroundColor: 'red',
 
     backgroundImage: `url(${props.data != undefined && props.data.Sticker})`,
@@ -29,23 +31,30 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     '&:hover': {
-      opacity: '.5',
+      opacity: props.editCard ? '1' : '.5',
     },
   }),
 
   editMode: {
     display: 'flex',
     // flexDirection: 'Column',
-    height: '30vh',
+    height: '330px',
     width: '100%',
     margin: ' 0 0 1vh 0',
   },
   dataCard: {
+    // display: 'flex',
+    // flexDirection: 'column',
+    // justifyContent: 'space-between',
     width: '50%',
     height: '100%',
   },
   data: {
     display: 'flex',
+    justifyContent: 'space-between',
+  },
+  input: {
+    width: '60%',
   },
 }))
 
@@ -81,60 +90,119 @@ const StickerCardEdit = props => {
       <StickerList />
       <div className={classes.dataCard}>
         <div className={classes.image} />
-        <Typography id="discrete-slider" gutterBottom>
-          Starting Degree
-        </Typography>
-        <Slider
-          defaultValue={props.data.StartingDegree}
-          getAriaValueText={props.data.StartingPoint}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
-          step={2.5}
-          marks
-          min={0}
-          max={360}
-        />
-        <Typography id="discrete-slider" gutterBottom>
-          Ending Degree
-        </Typography>
-        <Slider
-          defaultValue={props.data && props.data.EndingDegree}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
-          step={2.5}
-          marks
-          min={0}
-          max={360}
-        />
-        <Typography id="discrete-slider" gutterBottom>
-          Offset X
-        </Typography>
-        <Slider
-          defaultValue={props.data.OffsetX}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
-          step={0.1}
-          marks
-          min={0}
-          max={1}
-        />
-        <Typography id="discrete-slider" gutterBottom>
-          Offset Y
-        </Typography>
-        <Slider
-          defaultValue={props.data.OffsetY}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
-          step={0.1}
-          marks
-          min={0}
-          max={1}
-        />
+        <div className={classes.data}>
+          <Typography id="discrete-slider" gutterBottom>
+            Starting Degree
+          </Typography>
+          <Slider
+            defaultValue={props.data.StartingDegree}
+            getAriaValueText={props.data.StartingPoint}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="auto"
+            step={2.5}
+            marks
+            min={0}
+            max={360}
+            className={classes.input}
+          />
+        </div>
+        <div className={classes.data}>
+          <Typography id="discrete-slider" gutterBottom>
+            Ending Degree
+          </Typography>
+          <Slider
+            defaultValue={props.data && props.data.EndingDegree}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="auto"
+            step={2.5}
+            marks
+            min={0}
+            max={360}
+            className={classes.input}
+          />
+        </div>
+        <div className={classes.data}>
+          <Typography id="discrete-slider" gutterBottom>
+            Offset X
+          </Typography>
+          <Slider
+            defaultValue={props.data.OffsetX}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="auto"
+            step={0.1}
+            marks
+            min={0}
+            max={1}
+            className={classes.input}
+          />
+        </div>
+        <div className={classes.data}>
+          <Typography id="discrete-slider" gutterBottom>
+            Offset Y
+          </Typography>
+          <Slider
+            defaultValue={props.data.OffsetY}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="auto"
+            step={0.1}
+            marks
+            min={0}
+            max={1}
+            className={classes.input}
+          />
+        </div>
+        <div className={classes.data}>
+          <Typography id="discrete-slider" gutterBottom>
+            Scale Y
+          </Typography>
+          <Slider
+            defaultValue={props.data.OffsetY}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="auto"
+            step={0.1}
+            marks
+            min={0}
+            max={1}
+            className={classes.input}
+          />
+        </div>
+        <div className={classes.data}>
+          <Typography id="discrete-slider" gutterBottom>
+            Scale Y
+          </Typography>
+          <Slider
+            defaultValue={props.data.OffsetY}
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="auto"
+            step={0.1}
+            marks
+            min={0}
+            max={1}
+            className={classes.input}
+          />
+        </div>
+        <div className={classes.data} style={{ justifyContent: 'flex-Start' }}>
+          <Typography
+            id="discrete-slider"
+            gutterBottom
+            style={{ margin: '0 90px 0 0' }}
+          >
+            Mirror
+          </Typography>
+          <Switch
+            defaultValue={props.data.Mirror}
+            color="default"
+            inputProps={{ 'aria-label': 'checkbox with default color' }}
+          />
+        </div>
         <Button
+          style={{ width: '100%' }}
           onClick={() => {
             props.updateCardStatus(!props.editCard, props.index)
             props.setEditCard(!props.editCard)
           }}
+          color="primary"
+          variant="contained"
         >
           apply
         </Button>

@@ -9,12 +9,14 @@ const useStyles = makeStyles(theme => ({
     width: '50%',
     // height: '100%',
     // padding: '24px',
-    overflowY: 'scroll',
   },
   sortBar: {
-    minHeight: '4vh',
+    minHeight: '50px',
     width: '100%',
-    backgroundColor: 'red',
+    backgroundColor: theme.palette.action.disabled,
+  },
+  list: {
+    overflowY: 'scroll',
   },
 }))
 
@@ -30,20 +32,22 @@ const StickerList = props => {
   return (
     <div className={classes.stickerList}>
       <div className={classes.sortBar}>sortbar</div>
-      {list.map(image => (
-        <Paper
-          style={{
-            width: 'auto',
-            minHeight: '80px',
-            // backgroundColor: 'red',
-            margin: ' 0 0 2px',
-            backgroundImage: `url(${image})`,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
-      ))}
+      <div className={classes.list}>
+        {list.map(image => (
+          <Paper
+            style={{
+              width: 'auto',
+              minHeight: '80px',
+              // backgroundColor: 'red',
+              margin: ' 0 0 2px',
+              backgroundImage: `url(${image})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+        ))}
+      </div>
     </div>
   )
 }

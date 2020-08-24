@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
     // transition: 'width 500ms',
   }),
   addStickerCard: {
+    alignSelf: 'center',
     width: '2vw',
     height: '2vw',
     // color: '#8888',
