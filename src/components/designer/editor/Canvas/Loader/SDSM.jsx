@@ -73,6 +73,10 @@ const SDSM = props => {
     initialize()
   }, [])
   var texture = new THREE.TextureLoader().load('/CompanyLogo.png')
+  texture.wrapS = THREE.ClampToEdgeWrapping
+  texture.wrapT = THREE.ClampToEdgeWrapping
+  texture.minFilter = THREE.LinearMipmapLinearFilter
+  texture.magFilter = THREE.NearestFilter
   const Material = new THREE.MeshPhysicalMaterial({
     roughness: 0.6,
     side: THREE.DoubleSide,
@@ -80,7 +84,6 @@ const SDSM = props => {
     premultipliedAlpha: true,
     transparent: true,
     envMap: scene.environment,
-    needsUpdate: true,
   })
 
   const final_mesh = model && (
@@ -94,6 +97,7 @@ const SDSM = props => {
                 0,
                 Math.PI,
               ]}
+              key={`${i}-${props.range[1] - props.range[1]}`}
             >
               <mesh>
                 <BufferGeoCustom
