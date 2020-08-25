@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { v4 as uuid } from 'uuid'
 
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const defaults = {
-  uid: 0,
+  uid: uuid(),
   proportional: false,
   Start: 45,
   End: 135,
@@ -40,7 +41,7 @@ const defaults = {
   Mirror: false,
   Texture: {
     type: textureTypes.raster,
-    path: '/resources/stickers/M_Performance.png',
+    path: 'Stickers/Graphics/PNYLAsMLcxeK9hwpSP4r/M_Performance.png',
   },
 }
 
