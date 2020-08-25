@@ -1,6 +1,6 @@
 import Slider from '@material-ui/core/Slider'
 import axios from 'axios'
-import { OrbitControls, Shadow } from 'drei'
+import { OrbitControls, TrackballControls, Shadow } from 'drei'
 import React, { useEffect, useState } from 'react'
 import { Canvas } from 'react-three-fiber'
 import * as CONTENT from '../../../../constants/contentTypes'
@@ -52,10 +52,11 @@ const MainCanvas = () => {
             rotation={[-Math.PI / 2, 0, 0]}
           />
         )}
+        {/* <TrackballControls noPan={true} target={[0, 30, 0]} /> */}
         <OrbitControls
           target={[0, 30, 0]}
           minDistance={120}
-          maxDistance={180}
+          maxDistance={220}
           enablePan={false}
         />
       </Canvas>
