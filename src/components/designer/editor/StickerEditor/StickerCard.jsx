@@ -8,6 +8,7 @@ import Switch from '@material-ui/core/Switch'
 
 import { DarkThemeContainer } from '../../../../config/theme'
 import StickerList from './StickerList'
+import store from '../../../../functions/store'
 
 const useStyles = makeStyles(theme => ({
   stickerCardPreview: props => ({
@@ -26,9 +27,6 @@ const useStyles = makeStyles(theme => ({
     // height: '10vh',
     minHeight: '80px',
     // backgroundColor: 'red',
-    backgroundImage: `url(${
-      props.data != undefined && props.data.Texture.path
-    })`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -69,6 +67,11 @@ const StickerCardPreview = props => {
   const classes = useStyles(props)
   const keys = Object.keys(props.data)
   const keyShorts = keys.map(e => e.replace(/[a-z]/g, ''))
+  const [image, setImage] = useState()
+
+  useEffect(() => {
+    store.getFileUrl(props.data.Texture.path).then(i => setImage(i))
+  }, [])
 
   return (
     <Paper
@@ -77,7 +80,12 @@ const StickerCardPreview = props => {
       onClick={props.onClick}
       className={classes.stickerCardPreview}
     >
-      <div className={classes.image} />
+      <div
+        className={classes.image}
+        style={{
+          backgroundImage: `url(${image})`,
+        }}
+      />
       <div className={classes.data}>
         {Object.values(props.data).map((e, i) => (
           <div style={{ margin: '4px' }}>

@@ -86,13 +86,13 @@ const StickerEditor = props => {
         className={classes.addStickerCard}
         disabled={props.stickers.length >= maxStickers}
       >
-        <AddCircleIcon fontSize="large" />{' '}
+        <AddCircleIcon fontSize="large" />
       </IconButton>
       {`${props.stickers.length} of ${maxStickers}`}
       <div className={classes.stickerEditor}>
         <Scrollbars style={{ overflowX: 'visible' }} onUpdate={handleUpdate}>
           {props.stickers.map(e => (
-            <StickerCard key={e.uid} data={e} index={e.uid} />
+            <StickerCard key={e.uid} data={e} />
           ))}
         </Scrollbars>
         <div ref={shadowTop} style={shadowTopStyle} />
