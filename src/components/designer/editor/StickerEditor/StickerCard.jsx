@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '340px',
     height: '120px',
     margin: ' 0 0 1vh 0',
     padding: '8px',
@@ -26,8 +26,9 @@ const useStyles = makeStyles(theme => ({
     // height: '10vh',
     minHeight: '80px',
     // backgroundColor: 'red',
-
-    backgroundImage: `url(${props.data != undefined && props.data.Sticker})`,
+    backgroundImage: `url(${
+      props.data != undefined && props.data.Texture.path
+    })`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -71,17 +72,16 @@ const StickerCardPreview = props => {
 
   return (
     <Paper
-      elevation={24}
+      elevation={1}
+      /* variant="outlined" */
+      onClick={props.onClick}
       className={classes.stickerCardPreview}
-      onClick={() => {
-        props.setEditCard(!props.editCard)
-      }}
     >
       <div className={classes.image} />
       <div className={classes.data}>
         {Object.values(props.data).map((e, i) => (
           <div style={{ margin: '4px' }}>
-            {![0, 1].includes(i) ? keyShorts[i] + '=' + e : null}
+            {![0, 1, 9].includes(i) ? keyShorts[i] + '=' + e : null}
           </div>
         ))}
       </div>
@@ -92,7 +92,7 @@ const StickerCardPreview = props => {
 const StickerCardEdit = props => {
   const classes = useStyles(props)
   return (
-    <Paper className={classes.editMode} elevation={24}>
+    <Paper className={classes.editMode} elevation={0}>
       <StickerList updateStickers={props.updateStickers} index={props.index} />
       <div className={classes.dataCard}>
         <div className={classes.image} />
@@ -226,16 +226,15 @@ const StickerCard = props => {
           data={props.data}
           editCard={editCard}
           setEditCard={setEditCard}
-          index={props.index}
           updateStickers={props.updateStickers}
         />
       ) : (
         <StickerCardPreview
           data={props.data}
-          editCard={editCard}
-          setEditCard={setEditCard}
-          index={props.index}
-          editMode={props.editMode}
+          onClick={() => {
+            console.log('running')
+            setEditCard(true)
+          }}
         />
       )}
     </DarkThemeContainer>

@@ -1,87 +1,104 @@
-import React, { useState } from 'react'
+import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
-
+import css from 'dom-css'
+import React, { useRef, useState } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars'
 import StickerCard from './StickerCard'
-import { useEffect } from 'react'
-import Scroll from 'react-scrollbars-custom'
 
 const useStyles = makeStyles(theme => ({
-  stickerEditor: editMode => ({
-    height: `calc(100vh - 104px)`,
-    width: '19vw',
+  stickerWrapper: {
+    float: 'right',
+    // display: 'block',
+    // width: '360px',
+    position: 'absolute',
+    right: '8px',
+    top: '8px',
     display: 'flex',
     flexDirection: 'column',
+  },
+  stickerEditor: editMode => ({
+    minHeight: '480px',
+    height: 'calc(80vh - 100px)',
+    width: '360px',
     alignItems: 'flex-end',
-    // overflowY: 'scroll',
-    overflowX: 'visible',
     transition: 'width 500ms',
-    padding: '8px',
+    position: 'relative',
   }),
   addStickerCard: {
     alignSelf: 'center',
-    width: '2vw',
-    height: '2vw',
+    // width: '2vw',
+    // height: '2vw',
     // color: '#8888',
     opacity: '.5',
     margin: '8px',
   },
-  scroll: {
-    height: `calc(100vh - 104px)`,
-    width: '100%',
-  },
 }))
-const defaults = {
-  uid: 0,
-  Sticker: '/resources/stickers/M_Performance.png',
-  StartingDegree: 45,
-  EndingDegree: 135,
-  offsetU: 0,
-  offsetV: 0,
-  ScaleU: 1,
-  ScaleV: 1,
-  Mirror: false,
-}
+
+const maxStickers = 10
+
 const StickerEditor = props => {
   const classes = useStyles(props.editMode)
 
-  const [stickersList, updateStickersList] = useState([defaults])
+  const shadowTop = useRef()
+  const shadowBottom = useRef()
 
-  const [triger, setTriger] = useState(false)
-
-  const createNewStickerCard = () => {
-    updateStickersList([
-      { ...defaults, uid: stickersList.length },
-      ...stickersList,
-    ])
+  const handleUpdate = values => {
+    const shadowTop_ = shadowTop.current
+    const shadowBottom_ = shadowBottom.current
+    const { scrollTop, scrollHeight, clientHeight } = values
+    const shadowTopOpacity = (1 / 20) * Math.min(scrollTop, 20)
+    const bottomScrollTop = scrollHeight - clientHeight
+    const shadowBottomOpacity =
+      (1 / 20) * (bottomScrollTop - Math.max(scrollTop, bottomScrollTop - 20))
+    css(shadowTop_, { opacity: shadowTopOpacity })
+    css(shadowBottom_, { opacity: shadowBottomOpacity })
   }
 
-  const updateStickers = (current, property, value) => {
-    const tempStickersList = stickersList
-    const tempSticker = stickersList[current]
-    tempSticker[property] = value
-    tempStickersList[current] = tempSticker
-    updateStickersList(tempStickersList)
-    setTriger(!triger)
+  const shadowTopStyle = {
+    position: 'absolute',
+    top: 0,
+    left: '-14px',
+    right: 0,
+    height: 20,
+    background:
+      'linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%)',
+    borderRadius: '8px 8px 0 0',
+    borderTop: '1px solid rgba(255,255,255,0.1)',
+  }
+
+  const shadowBottomStyle = {
+    position: 'absolute',
+    bottom: 0,
+    left: '-14px',
+    right: '0',
+    height: 20,
+    background:
+      'linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%)',
+    borderRadius: '0 0 8px 8px',
+    borderBottom: '1px solid rgba(255,255,255,0.1)',
   }
 
   return (
-    // <Scroll>
-    <div className={classes.stickerEditor}>
-      <AddCircleIcon
+    <div className={classes.stickerWrapper}>
+      <IconButton
+        onClick={props.createNew}
         className={classes.addStickerCard}
-        onClick={createNewStickerCard}
-      />
-      {stickersList.map((e, i) => (
-        <StickerCard
-          key={e.uid}
-          data={e}
-          index={i}
-          updateStickers={updateStickers}
-        />
-      ))}
+        disabled={props.stickers.length >= maxStickers}
+      >
+        <AddCircleIcon fontSize="large" />{' '}
+      </IconButton>
+      {`${props.stickers.length} of ${maxStickers}`}
+      <div className={classes.stickerEditor}>
+        <Scrollbars style={{ overflowX: 'visible' }} onUpdate={handleUpdate}>
+          {props.stickers.map(e => (
+            <StickerCard key={e.uid} data={e} index={e.uid} />
+          ))}
+        </Scrollbars>
+        <div ref={shadowTop} style={shadowTopStyle} />
+        <div ref={shadowBottom} style={shadowBottomStyle} />
+      </div>
     </div>
-    // </Scroll>
   )
 }
 

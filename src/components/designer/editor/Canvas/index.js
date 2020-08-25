@@ -60,14 +60,6 @@ const MainCanvas = () => {
           enablePan={false}
         />
       </Canvas>
-      <Slider
-        value={range}
-        onChange={handleChange}
-        min={0}
-        max={420}
-        step={3}
-        valueLabelDisplay="auto"
-      />
     </>
   )
 }
