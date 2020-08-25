@@ -1,31 +1,30 @@
 import React from 'react'
-import PanoramaIcon from '@material-ui/icons/Panorama'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 
 import { v4 as uuid } from 'uuid'
 import crud from '../../functions/crud'
 
 const content = {
-  ID: 'rim_model',
-  label: 'Rim Model',
-  token: 'field:Rims/model',
+  ID: 'accessories',
+  label: 'Accessories',
+  token: 'doc:Accessories',
   fields: [
     { id: 'uid', label: 'UID', editable: false, type: 'uid' },
     { id: 'name', label: 'Name', editable: true, type: 'string' },
-    { id: 'autoLoad', label: 'Auto Load', editable: true, type: 'bool' },
     {
       id: 'model',
       label: 'Model',
       editable: true,
       type: 'file',
       format: '.glb',
-      path: 'Models/Rims',
+      path: 'Models/Accessories',
     },
   ],
   format: {
     default: () => {
       return {
         name: '',
-        model: null,
+        model: '',
       }
     },
     adminDefault: () => {
@@ -49,7 +48,7 @@ const content = {
 }
 
 content.extra = {
-  icon: <PanoramaIcon />,
+  icon: <AddCircleOutlineIcon />,
   adminActions: ['create', 'update', 'delete'],
 }
 

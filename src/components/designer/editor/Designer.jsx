@@ -44,17 +44,6 @@ const useStyles = makeStyles(theme => ({
     margin: '0 2vw 0 0',
     // position: 'absolute',
   },
-  tyre: {
-    // flexGrow: '1',
-    // backgroundImage: `url('/Tyre.png')`,
-    alignSelf: 'center',
-    width: '60vh',
-    height: '60vh',
-    // backgroundSize: 'contain',
-    // backgroundRepeat: 'no-repeat',
-    // backgroundPosition: 'center',
-  },
-
   image: {
     height: '100%',
     width: '100%',
@@ -101,11 +90,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Designer = () => {
-  const [page, setPage] = useState(0)
-  const [list, setList] = useState([])
-  const [pages, setPages] = useState()
-  const [scrollSlice, setScrollSlice] = useState([])
-  const [selected, setSelected] = useState()
   const classes = useStyles()
 
   const data = () => {
@@ -121,97 +105,58 @@ const Designer = () => {
     }
   }
 
-  useEffect(() => {
-    let tempList = []
-
-    for (let i = 0; i < 100; i++) {
-      const currentData = data()
-
-      tempList.push(currentData)
-    }
-    setList(tempList)
-    setPage(0)
-  }, [])
-
-  useEffect(() => {
-    setPages(Math.floor(list.length / 6))
-    setScrollSlice(list.slice(0, 6))
-  }, [list])
-
-  useEffect(() => {
-    setScrollSlice(list.slice(page * 6, page * 6 + 6))
-  }, [page])
-
-  const handleSelected = value => {
-    setSelected(value)
-  }
-
-  const handleScrollLeft = () => {
-    if (page != 0) {
-      setPage(page - 1)
-    }
-  }
-
-  const handleScrollRight = () => {
-    if (page < pages) {
-      setPage(page + 1)
-    }
-  }
-
   return (
     <div className={classes.designer}>
       <div className={classes.viewport}>
-        <div className={classes.tyre}>
-          <Canvas />
-        </div>
-        <div className={classes.breadCrumbs}>
-          <div style={{ fontSize: '32px', fontWeight: '500' }}>Mazda MX5</div>
-          <div style={{ fontSize: '16px', opacity: '.6' }}>Tyre Stickers</div>
-          {selected !== undefined && (
-            <div style={{ fontSize: '24px' }}>Code: {selected}</div>
-          )}
-        </div>
+        <Canvas />
+        {/* <div className={classes.breadCrumbs}> */}
+        {/*   <div style={{ fontSize: '32px', fontWeight: '500' }}>Mazda MX5</div> */}
+        {/*   <div style={{ fontSize: '16px', opacity: '.6' }}>Tyre Stickers</div> */}
+        {/*   {selected !== undefined && ( */}
+        {/*     <div style={{ fontSize: '24px' }}>Code: {selected}</div> */}
+        {/*   )} */}
+        {/* </div> */}
       </div>
-      <div className={classes.slidebar}>
-        <div className={classes.arrow}>
-          {page !== 0 && (
-            <ArrowRightIcon
-              style={{ transform: 'rotate(180deg)' }}
-              onClick={() => handleScrollLeft()}
-            />
-          )}
-        </div>
-        <div className={classes.visibleSlides}>
-          <Swipeable
-            onSwipeLeft={handleScrollRight}
-            onSwipeRight={handleScrollLeft}
-          >
-            <div className={classes.slides}>
-              {scrollSlice.map((value, i) => (
-                <Slide
-                  info={value.info}
-                  image={value.image}
-                  key={i}
-                  id={value.info.uuid}
-                  order={i}
-                  page={page}
-                  handleSelected={handleSelected}
-                  selected={selected}
-                />
-              ))}
-            </div>
-          </Swipeable>
-        </div>
-        <div className={classes.arrow}>
-          {' '}
-          {page !== pages && (
-            <ArrowRightIcon
-              className={classes.arrow}
-              onClick={() => handleScrollRight()}
-            />
-          )}
-        </div>
-      </div>
+      {/* <div className={classes.slidebar}> */}
+      {/*   <div className={classes.arrow}> */}
+      {/*     {page !== 0 && ( */}
+      {/*       <ArrowRightIcon */}
+      {/*         style={{ transform: 'rotate(180deg)' }} */}
+      {/*         onClick={() => handleScrollLeft()} */}
+      {/*       /> */}
+      {/*     )} */}
+      {/*   </div> */}
+      {/*   <div className={classes.visibleSlides}> */}
+      {/*     <Swipeable */}
+      {/*       onSwipeLeft={handleScrollRight} */}
+      {/*       onSwipeRight={handleScrollLeft} */}
+      {/*     > */}
+      {/*       <div className={classes.slides}> */}
+      {/*         {scrollSlice.map((value, i) => ( */}
+      {/*           <Slide */}
+      {/*             info={value.info} */}
+      {/*             image={value.image} */}
+      {/*             key={i} */}
+      {/*             id={value.info.uuid} */}
+      {/*             order={i} */}
+      {/*             page={page} */}
+      {/*             handleSelected={handleSelected} */}
+      {/*             selected={selected} */}
+      {/*           /> */}
+      {/*         ))} */}
+      {/*       </div> */}
+      {/*     </Swipeable> */}
+      {/*   </div> */}
+      {/*   <div className={classes.arrow}> */}
+      {/*     {' '} */}
+      {/*     {page !== pages && ( */}
+      {/*       <ArrowRightIcon */}
+      {/*         className={classes.arrow} */}
+      {/*         onClick={() => handleScrollRight()} */}
+      {/*       /> */}
+      {/*     )} */}
+      {/*   </div> */}
+      {/* </div> */}
     </div>
   )
 }
