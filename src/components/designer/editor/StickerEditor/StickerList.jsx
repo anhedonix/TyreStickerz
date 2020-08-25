@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
-import Scroll from 'react-scrollbars-custom'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 import { DarkThemeContainer } from '../../../../config/theme'
 
@@ -46,7 +46,7 @@ const StickerList = props => {
     <DarkThemeContainer>
       <Paper className={classes.stickerList} elevation={20}>
         <div className={classes.sortBar}>sortbar</div>
-        <Scroll>
+        <Scrollbars>
           {list.map(image => (
             <Paper
               variant="outlined"
@@ -59,7 +59,7 @@ const StickerList = props => {
               }}
             />
           ))}
-        </Scroll>
+        </Scrollbars>
       </Paper>
     </DarkThemeContainer>
   )
