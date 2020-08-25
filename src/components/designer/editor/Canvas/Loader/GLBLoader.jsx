@@ -11,10 +11,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useThree, useLoader } from 'react-three-fiber'
 import store from '../../../../../functions/store'
 
-const applyProperties = (gltf, scene) => {
+const applyProperties = (gltf, scene, envIntensity) => {
   gltf.scene.traverse(child => {
     if (child.isMesh) {
       child.material.envMap = scene.environment
+      child.material.envMapIntensity = envIntensity ? envIntensity : 1
       child.material.reflectivity = 0
       // child.material.map = null
       // child.material.roughness = child.material.roughness / 2
@@ -26,19 +27,19 @@ const applyProperties = (gltf, scene) => {
   })
 }
 
-function Model({ path }) {
+function Model({ path, envIntensity }) {
   const { scene } = useThree()
 
   const gltf = useLoader(GLTFLoader, path)
 
   useEffect(() => {
-    applyProperties(gltf, scene)
+    applyProperties(gltf, scene, envIntensity)
   }, [scene.environment])
 
   return <primitive object={gltf.scene} />
 }
 
-function LoaderScene({ path }) {
+function LoaderScene({ path, envIntensity }) {
   const [modelPath, setModelPath] = useState()
 
   useEffect(() => {
@@ -48,7 +49,7 @@ function LoaderScene({ path }) {
   if (modelPath) {
     return (
       <Suspense fallback={null}>
-        <Model path={modelPath} />
+        <Model path={modelPath} envIntensity={envIntensity} />
       </Suspense>
     )
   } else {
