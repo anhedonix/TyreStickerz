@@ -56,7 +56,8 @@ const BufferGeoCustom = ({ data, material, uvOffset }) => {
 const SDSM = props => {
   const { scene } = useThree()
   const [model, setModel] = useState()
-  const [data, setData] = useState()
+  // const [data, setData] = useState()
+  const [texture, setTexture] = useState()
 
   const [centroid, setCentroid] = useState()
 
@@ -68,22 +69,28 @@ const SDSM = props => {
     const initialize = async () => {
       const c_data = await BasicLoader(await store.getFileUrl(props.path))
       setModel(initializeStickerMeshData(c_data))
-      setData(c_data)
+      // setData(c_data)
+      const texture_path = await store.getFileUrl(props.texture)
+      var texture_map = new THREE.TextureLoader().load(texture_path)
+      console.log(texture_map, texture_path)
+      texture_map.wrapS = THREE.ClampToEdgeWrapping
+      texture_map.wrapT = THREE.ClampToEdgeWrapping
+      texture_map.minFilter = THREE.LinearFilter
+      texture_map.magFilter = THREE.NearestFilter
+      setTexture(texture_map)
     }
-    initialize()
-  }, [])
-  var texture = new THREE.TextureLoader().load('/CompanyLogo.png')
-  texture.wrapS = THREE.ClampToEdgeWrapping
-  texture.wrapT = THREE.ClampToEdgeWrapping
-  texture.minFilter = THREE.LinearFilter
-  texture.magFilter = THREE.NearestFilter
-  const Material = new THREE.MeshPhysicalMaterial({
+    if (props.path && props.texture) {
+      initialize()
+    }
+  }, [props.path, props.texture])
+
+  const material = new THREE.MeshPhysicalMaterial({
     roughness: 0.3,
     side: THREE.DoubleSide,
     map: texture,
     emissive: '#ffffff',
     emissiveMap: texture,
-    emissiveIntensity: 0.2,
+    emissiveIntensity: 0.4,
     premultipliedAlpha: true,
     transparent: true,
     envMap: scene.environment,
@@ -105,7 +112,7 @@ const SDSM = props => {
               <mesh>
                 <BufferGeoCustom
                   data={model}
-                  material={Material}
+                  material={material}
                   uvOffset={[i, props.range[1] - props.range[0]]}
                 />
               </mesh>

@@ -8,7 +8,7 @@ import Env from './Loader/Env'
 import GLBLoader from './Loader/GLBLoader'
 import SDSM from './Loader/SDSM'
 
-const MainCanvas = () => {
+const MainCanvas = props => {
   const [init, setInit] = useState(false)
   const [wheel, setWheel] = useState()
   const [sticker, setSticker] = useState()
@@ -39,11 +39,20 @@ const MainCanvas = () => {
         {init && (
           <>
             {rim && <GLBLoader path={rim} />}
-            {wheel && <GLBLoader path={wheel} />}
-            {accessories && <GLBLoader path={accessories} />}{' '}
+            {wheel && <GLBLoader path={wheel} envIntensity={2.2} />}
+            {accessories && <GLBLoader path={accessories} />}
           </>
         )}
-        {sticker && <SDSM path={sticker} range={range} />}
+        {props.stickers.map(el => {
+          return (
+            <SDSM
+              path={sticker}
+              texture={el.Texture.path}
+              range={range}
+              key={el.uid}
+            />
+          )
+        })}
         {init && (
           <Shadow
             scale={[40, 40, 1]}
@@ -60,14 +69,6 @@ const MainCanvas = () => {
           enablePan={false}
         />
       </Canvas>
-      <Slider
-        value={range}
-        onChange={handleChange}
-        min={0}
-        max={420}
-        step={3}
-        valueLabelDisplay="auto"
-      />
     </>
   )
 }
