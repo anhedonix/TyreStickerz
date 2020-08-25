@@ -3,18 +3,33 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Scroll from 'react-scrollbars-custom'
 
+import { DarkThemeContainer } from '../../../../config/theme'
+
 const useStyles = makeStyles(theme => ({
   stickerList: {
     display: 'flex',
     flexDirection: 'column',
-    width: '50%',
-    // height: '100%',
+    width: '600px',
+    top: '0',
+    left: '-620px',
+    height: '100%',
     // padding: '24px',
+    position: 'absolute',
   },
   sortBar: {
     minHeight: '50px',
     width: '100%',
-    backgroundColor: theme.palette.action.disabled,
+    // backgroundColor: theme.palette.background.default,
+  },
+  listItem: {
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    width: 'auto',
+    minHeight: '80px',
+    margin: '8px',
+    // backgroundColor: 'red',
+    // margin: ' 0 0 2px',
   },
 }))
 
@@ -28,28 +43,25 @@ const StickerList = props => {
     '/resources/stickers/AMG.png',
   ]
   return (
-    <div className={classes.stickerList}>
-      <div className={classes.sortBar}>sortbar</div>
-      <Scroll>
-        {list.map(image => (
-          <Paper
-            style={{
-              width: 'auto',
-              minHeight: '80px',
-              // backgroundColor: 'red',
-              margin: ' 0 0 2px',
-              backgroundImage: `url(${image})`,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-            }}
-            onClick={() => {
-              props.updateStickers(props.index, 'Sticker', image)
-            }}
-          />
-        ))}
-      </Scroll>
-    </div>
+    <DarkThemeContainer>
+      <Paper className={classes.stickerList} elevation={20}>
+        <div className={classes.sortBar}>sortbar</div>
+        <Scroll>
+          {list.map(image => (
+            <Paper
+              variant="outlined"
+              className={classes.listItem}
+              style={{
+                backgroundImage: `url(${image})`,
+              }}
+              onClick={() => {
+                props.updateStickers(props.index, 'Sticker', image)
+              }}
+            />
+          ))}
+        </Scroll>
+      </Paper>
+    </DarkThemeContainer>
   )
 }
 export default StickerList

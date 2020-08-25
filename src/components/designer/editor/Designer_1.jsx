@@ -16,8 +16,16 @@ const useStyles = makeStyles(theme => ({
     // overflow: 'hidden',
   },
   canvas: editMode => ({
-    width: editMode ? '60vw' : '80vw',
+    // width: editMode ? '60vw' : '80vw',
+    width: '80vw',
     height: `calc(100vh - 104px)`,
+    // transition: 'width 500ms',
+    '& canvas': {
+      // transition: 'width 100ms',
+    },
+    '& div': {
+      overflow: 'visible',
+    },
   }),
 }))
 

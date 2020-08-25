@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Switch from '@material-ui/core/Switch'
 
+import { DarkThemeContainer } from '../../../../config/theme'
 import StickerList from './StickerList'
 
 const useStyles = makeStyles(theme => ({
@@ -14,11 +15,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: props.editMode === true ? '50%' : '100%',
-    height: '100px',
+    width: '100%',
+    height: '120px',
     margin: ' 0 0 1vh 0',
-
-    // position: 'relative',
+    padding: '8px',
+    position: 'relative',
   }),
   image: props => ({
     width: '100%',
@@ -33,21 +34,26 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       opacity: props.editCard ? '1' : '.5',
     },
+    position: 'relative',
+    display: 'block',
   }),
 
   editMode: {
     display: 'flex',
     // flexDirection: 'Column',
-    height: '330px',
+    // height: '330px',
+    transition: 'height 500ms',
     width: '100%',
     margin: ' 0 0 1vh 0',
+    position: 'relative',
   },
   dataCard: {
     // display: 'flex',
     // flexDirection: 'column',
     // justifyContent: 'space-between',
-    width: '50%',
-    height: '100%',
+    width: '100%',
+    // height: '100%',
+    padding: '8px',
   },
   data: {
     display: 'flex',
@@ -65,9 +71,9 @@ const StickerCardPreview = props => {
 
   return (
     <Paper
+      elevation={24}
       className={classes.stickerCardPreview}
       onClick={() => {
-        props.updateCardStatus(!props.editCard, props.index)
         props.setEditCard(!props.editCard)
       }}
     >
@@ -75,7 +81,7 @@ const StickerCardPreview = props => {
       <div className={classes.data}>
         {Object.values(props.data).map((e, i) => (
           <div style={{ margin: '4px' }}>
-            {i != 0 ? keyShorts[i] + '=' + e : null}
+            {![0, 1].includes(i) ? keyShorts[i] + '=' + e : null}
           </div>
         ))}
       </div>
@@ -86,7 +92,7 @@ const StickerCardPreview = props => {
 const StickerCardEdit = props => {
   const classes = useStyles(props)
   return (
-    <Paper className={classes.editMode}>
+    <Paper className={classes.editMode} elevation={24}>
       <StickerList updateStickers={props.updateStickers} index={props.index} />
       <div className={classes.dataCard}>
         <div className={classes.image} />
@@ -198,7 +204,6 @@ const StickerCardEdit = props => {
         <Button
           style={{ width: '100%' }}
           onClick={() => {
-            props.updateCardStatus(!props.editCard, props.index)
             props.setEditCard(!props.editCard)
           }}
           color="primary"
@@ -215,13 +220,12 @@ const StickerCard = props => {
   const [editCard, setEditCard] = useState(false)
 
   return (
-    <>
+    <DarkThemeContainer>
       {editCard ? (
         <StickerCardEdit
           data={props.data}
           editCard={editCard}
           setEditCard={setEditCard}
-          updateCardStatus={props.updateCardStatus}
           index={props.index}
           updateStickers={props.updateStickers}
         />
@@ -230,12 +234,11 @@ const StickerCard = props => {
           data={props.data}
           editCard={editCard}
           setEditCard={setEditCard}
-          updateCardStatus={props.updateCardStatus}
           index={props.index}
           editMode={props.editMode}
         />
       )}
-    </>
+    </DarkThemeContainer>
   )
 }
 export default StickerCard

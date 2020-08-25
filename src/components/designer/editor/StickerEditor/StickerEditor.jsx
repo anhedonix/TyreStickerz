@@ -9,12 +9,14 @@ import Scroll from 'react-scrollbars-custom'
 const useStyles = makeStyles(theme => ({
   stickerEditor: editMode => ({
     height: `calc(100vh - 104px)`,
-    width: editMode ? '40vw' : '20vw',
-    // display: 'flex',
-    // flexDirection: 'column',
-    // alignItems: 'flex-end',
+    width: '19vw',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
     // overflowY: 'scroll',
-    // transition: 'width 500ms',
+    overflowX: 'visible',
+    transition: 'width 500ms',
+    padding: '8px',
   }),
   addStickerCard: {
     alignSelf: 'center',
@@ -29,38 +31,31 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
 }))
-
+const defaults = {
+  uid: 0,
+  Sticker: '/resources/stickers/M_Performance.png',
+  StartingDegree: 45,
+  EndingDegree: 135,
+  offsetU: 0,
+  offsetV: 0,
+  ScaleU: 1,
+  ScaleV: 1,
+  Mirror: false,
+}
 const StickerEditor = props => {
   const classes = useStyles(props.editMode)
 
-  const defaults = {
-    Sticker: '/resources/stickers/M_Performance.png',
-    StartingDegree: 45,
-    EndingDegree: 135,
-    offsetU: 0,
-    offsetV: 0,
-    ScaleU: 1,
-    ScaleV: 1,
-    Mirror: false,
-  }
   const [stickersList, updateStickersList] = useState([defaults])
-  const [cardsStatus, setCardsStatus] = useState([false])
+
   const [triger, setTriger] = useState(false)
 
   const createNewStickerCard = () => {
-    const tempStickersList = stickersList
-    let temp = cardsStatus
-
-    updateStickersList(tempStickersList.concat(defaults))
-    setCardsStatus(temp.concat(false))
+    updateStickersList([
+      { ...defaults, uid: stickersList.length },
+      ...stickersList,
+    ])
   }
 
-  const updateCardStatus = (value, i) => {
-    let temp = cardsStatus
-    temp[i] = value
-    setCardsStatus(temp)
-    setTriger(!triger)
-  }
   const updateStickers = (current, property, value) => {
     const tempStickersList = stickersList
     const tempSticker = stickersList[current]
@@ -69,35 +64,24 @@ const StickerEditor = props => {
     updateStickersList(tempStickersList)
     setTriger(!triger)
   }
-  useEffect(() => {
-    const temp = cardsStatus.includes(true)
-
-    if (temp) {
-      props.setEditMode(true)
-    } else {
-      props.setEditMode(false)
-    }
-  }, [triger])
 
   return (
-    <Scroll>
-      <div className={classes.stickerEditor}>
-        <AddCircleIcon
-          className={classes.addStickerCard}
-          onClick={createNewStickerCard}
+    // <Scroll>
+    <div className={classes.stickerEditor}>
+      <AddCircleIcon
+        className={classes.addStickerCard}
+        onClick={createNewStickerCard}
+      />
+      {stickersList.map((e, i) => (
+        <StickerCard
+          key={e.uid}
+          data={e}
+          index={i}
+          updateStickers={updateStickers}
         />
-        {stickersList.map((e, i) => (
-          <StickerCard
-            updateCardStatus={updateCardStatus}
-            data={e}
-            index={i}
-            cardsStatus={cardsStatus}
-            editMode={props.editMode}
-            updateStickers={updateStickers}
-          />
-        ))}
-      </div>
-    </Scroll>
+      ))}
+    </div>
+    // </Scroll>
   )
 }
 
