@@ -30,6 +30,7 @@ const themes = {
       },
       type: 'dark',
       dense: ui_dense,
+      divider: 'rgba(255,255,255,0.2)',
     },
   }),
 }
@@ -47,4 +48,13 @@ const ThemeContainer = props => {
   )
 }
 
+const DarkThemeContainer = props => {
+  return (
+    <ThemeProvider {...props} theme={themes.dark}>
+      {props.children}
+    </ThemeProvider>
+  )
+}
+
 export default ThemeContainer
+export { DarkThemeContainer }
