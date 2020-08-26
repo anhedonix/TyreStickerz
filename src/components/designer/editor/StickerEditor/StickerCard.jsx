@@ -70,6 +70,7 @@ const StickerCardPreview = props => {
   const keys = Object.keys(props.data)
   const keyShorts = keys.map(e => e.replace(/[a-z]/g, ''))
   const [image, setImage] = useState()
+  const [hover, setHover] = useState(false)
 
   useEffect(() => {
     store.getFileUrl(props.data.Texture.path).then(i => setImage(i))
@@ -81,6 +82,8 @@ const StickerCardPreview = props => {
       /* variant="outlined" */
       onClick={props.onClick}
       className={classes.stickerCardPreview}
+      onMouseEnter={() => setHover(!hover)}
+      onMouseLeave={() => setHover(!hover)}
     >
       <div
         className={classes.image}
@@ -96,17 +99,19 @@ const StickerCardPreview = props => {
         ))}
       </div>
 
-      <IconButton
-        style={{
-          display: 'block',
-          position: 'absolute',
-          top: -5,
-          right: -5,
-        }}
-        onClick={() => props.updateStickersList('delete', props.data.uid)}
-      >
-        <HighlightOffIcon />
-      </IconButton>
+      {hover ? (
+        <IconButton
+          style={{
+            display: 'block',
+            position: 'absolute',
+            top: -5,
+            right: -5,
+          }}
+          onClick={() => props.updateStickersList('delete', props.data.uid)}
+        >
+          <HighlightOffIcon />
+        </IconButton>
+      ) : null}
     </Paper>
   )
 }
