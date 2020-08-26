@@ -17,14 +17,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  stickerEditor: editMode => ({
-    minHeight: '480px',
-    height: 'calc(80vh - 100px)',
-    width: '360px',
-    alignItems: 'flex-end',
-    transition: 'width 500ms',
-    position: 'relative',
-  }),
+
   addStickerCard: {
     alignSelf: 'center',
     // width: '2vw',
@@ -89,13 +82,22 @@ const StickerEditor = props => {
         <AddCircleIcon fontSize="large" />
       </IconButton>
       {`${props.stickers.length} of ${maxStickers}`}
-      <div className={classes.stickerEditor}>
-        <Scrollbars style={{ overflowX: 'visible' }} onUpdate={handleUpdate}>
+      <div style={{ position: 'relative' }}>
+        <div ref={shadowTop} style={shadowTopStyle} />
+        <Scrollbars
+          onUpdate={handleUpdate}
+          style={{
+            minHeight: 480,
+            height: 'calc(80vh - 100px)',
+            width: 360,
+          }}
+          universal
+        >
           {props.stickers.map(e => (
             <StickerCard key={e.uid} data={e} />
           ))}
         </Scrollbars>
-        <div ref={shadowTop} style={shadowTopStyle} />
+
         <div ref={shadowBottom} style={shadowBottomStyle} />
       </div>
     </div>
