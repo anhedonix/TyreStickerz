@@ -43,13 +43,14 @@ const MainCanvas = props => {
             {accessories && <GLBLoader path={accessories} />}
           </>
         )}
-        {props.stickers.map(el => {
+        {props.stickers.map((el, i) => {
           return (
             <SDSM
               path={sticker}
               texture={el.Texture.path}
               range={range}
               key={el.uid}
+              index={i}
             />
           )
         })}

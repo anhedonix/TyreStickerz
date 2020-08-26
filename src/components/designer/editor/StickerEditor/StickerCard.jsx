@@ -5,6 +5,8 @@ import Slider from '@material-ui/core/Slider'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Switch from '@material-ui/core/Switch'
+import IconButton from '@material-ui/core/IconButton'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 
 import { DarkThemeContainer } from '../../../../config/theme'
 import StickerList from './StickerList'
@@ -68,6 +70,7 @@ const StickerCardPreview = props => {
   const keys = Object.keys(props.data)
   const keyShorts = keys.map(e => e.replace(/[a-z]/g, ''))
   const [image, setImage] = useState()
+  const [hover, setHover] = useState(false)
 
   useEffect(() => {
     store.getFileUrl(props.data.Texture.path).then(i => setImage(i))
@@ -79,6 +82,8 @@ const StickerCardPreview = props => {
       /* variant="outlined" */
       onClick={props.onClick}
       className={classes.stickerCardPreview}
+      onMouseEnter={() => setHover(!hover)}
+      onMouseLeave={() => setHover(!hover)}
     >
       <div
         className={classes.image}
@@ -93,6 +98,20 @@ const StickerCardPreview = props => {
           </div>
         ))}
       </div>
+
+      {hover ? (
+        <IconButton
+          style={{
+            display: 'block',
+            position: 'absolute',
+            top: -5,
+            right: -5,
+          }}
+          onClick={() => props.updateStickersList('delete', props.data.uid)}
+        >
+          <HighlightOffIcon />
+        </IconButton>
+      ) : null}
     </Paper>
   )
 }
@@ -240,9 +259,9 @@ const StickerCard = props => {
         <StickerCardPreview
           data={props.data}
           onClick={() => {
-            console.log('running')
             setEditCard(true)
           }}
+          updateStickersList={props.updateStickersList}
         />
       )}
     </DarkThemeContainer>
