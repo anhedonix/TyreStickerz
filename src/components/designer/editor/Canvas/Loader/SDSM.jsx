@@ -97,7 +97,10 @@ const SDSM = props => {
   })
 
   const final_mesh = model && (
-    <group position={model.c} scale={[1, 1, -1]}>
+    <group
+      position={[model.c[0] + props.index * 0.01, model.c[1], model.c[2]]}
+      scale={[1, 1, -1]}
+    >
       {[...Array(parseInt((props.range[1] - props.range[0]) / 3)).keys()].map(
         i => {
           return (
