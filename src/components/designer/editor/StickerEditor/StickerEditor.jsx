@@ -94,7 +94,11 @@ const StickerEditor = props => {
           universal
         >
           {props.stickers.map(e => (
-            <StickerCard key={e.uid} data={e} />
+            <StickerCard
+              key={e.uid}
+              data={e}
+              updateStickersList={props.updateStickersList}
+            />
           ))}
         </Scrollbars>
 

@@ -47,6 +47,7 @@ const defaults = {
 
 const Designer = () => {
   const classes = useStyles()
+  const [triger, setTriger] = useState(true)
 
   const [stickersList, setStickersList] = useState([defaults])
   const createNewStickerCard = () => {
@@ -56,12 +57,29 @@ const Designer = () => {
     ])
   }
 
+  const updateStickersList = (action, uid, parameter, value) => {
+    if (action === 'delete') {
+      let temp = stickersList
+      temp.map((e, i) => {
+        if (e.uid === uid) {
+          temp.splice(i, 1)
+        }
+      })
+      setStickersList(temp)
+    }
+    setTriger(!triger)
+  }
+  console.log(stickersList, 'stickerList')
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>
         <Canvas stickers={stickersList} />
       </div>
-      <StickerEditor stickers={stickersList} createNew={createNewStickerCard} />
+      <StickerEditor
+        stickers={stickersList}
+        createNew={createNewStickerCard}
+        updateStickersList={updateStickersList}
+      />
     </div>
   )
 }
