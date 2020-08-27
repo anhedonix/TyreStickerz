@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
 import { types as textureTypes } from '../../../constants/Designer/textureTypes'
+import StickerList from './StickerEditor/StickerCard/StickerList'
 
 const useStyles = makeStyles(theme => ({
   designer: {
@@ -17,12 +18,8 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: '100% 100%',
   },
   canvas: editMode => ({
-    // width: '80vw',
     height: `calc(100vh - 104px)`,
     width: `84vw`,
-    // '& canvas': {
-    //    transition: 'width 100ms',
-    // },
     '& div': {
       overflow: 'visible',
     },
@@ -57,7 +54,7 @@ const Designer = () => {
     ])
   }
 
-  const updateStickersList = (action, uid, parameter, value) => {
+  const updateStickersList = (action, uid, sticker) => {
     if (action === 'delete') {
       let temp = stickersList
       temp.map((e, i) => {
@@ -66,6 +63,8 @@ const Designer = () => {
         }
       })
       setStickersList(temp)
+    } else if (action === 'update') {
+      let temp = stickersList
     }
     setTriger(!triger)
   }

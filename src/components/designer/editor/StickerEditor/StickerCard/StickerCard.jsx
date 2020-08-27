@@ -8,6 +8,7 @@ import { DarkThemeContainer } from '../../../../../config/theme'
 import store from '../../../../../functions/store'
 import StickerCardDataPreview from './StickerCardDataPreview'
 import StickerCardEdit from './StickerCardEdit'
+import StickerList from './StickerList'
 
 const useStyles = makeStyles(theme => ({
   stickerCardPreview: props => ({
@@ -28,7 +29,6 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     '&:hover': {
-      // opacity: '.5',
       backgroundColor: '#8888',
       cursor: 'pointer',
     },
@@ -58,6 +58,7 @@ const useStyles = makeStyles(theme => ({
 
 const StickerCard = props => {
   const [editCard, setEditCard] = useState(false)
+  const [list, setList] = useState(false)
   const classes = useStyles(props)
   const [image, setImage] = useState()
 
@@ -70,14 +71,19 @@ const StickerCard = props => {
         elevation={1}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: editCard ? '550px' : '200px' }}
+        style={{ height: editCard || list ? '550px' : '200px' }}
       >
         <div
           className={classes.image}
           style={{
             backgroundImage: `url(${image})`,
           }}
+          onClick={() => {
+            setEditCard(false)
+            setList(!list)
+          }}
         />
+        {list ? <StickerList setList={setList} /> : null}
         <IconButton
           style={{
             display: 'block',
@@ -92,13 +98,17 @@ const StickerCard = props => {
         {!editCard ? (
           <StickerCardDataPreview
             data={props.data}
-            onClick={() => setEditCard(!editCard)}
+            onClick={() => {
+              setList(false)
+              setEditCard(!editCard)
+            }}
           />
         ) : (
           <StickerCardEdit
             data={props.data}
             setEditCard={setEditCard}
             editCard={editCard}
+            updateSticker={props.updateStickersList}
           />
         )}
       </Paper>

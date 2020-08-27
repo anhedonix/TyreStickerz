@@ -8,13 +8,12 @@ const useStyles = makeStyles(theme => ({
   stickerCardEdit: {
     width: '340px',
     minHeight: '300px',
-    // backgroundColor: 'red',
-    // opacity: '.5',
     padding: '16px',
   },
 }))
 
 const StickerCardEdit = props => {
+  let sticker = props.data
   const classes = useStyles()
   return (
     <div className={classes.stickerCardEdit}>
@@ -29,6 +28,9 @@ const StickerCardEdit = props => {
         marks
         min={0}
         max={360}
+        onChange={e => {
+          sticker.Start = Number(e.target.innerText)
+        }}
       />
       <Typography id="discrete-slider" gutterBottom>
         End
@@ -41,6 +43,9 @@ const StickerCardEdit = props => {
         marks
         min={0}
         max={360}
+        onChange={e => {
+          sticker.End = Number(e.target.innerText)
+        }}
       />
       <Typography id="discrete-slider" gutterBottom>
         Offset U
@@ -53,9 +58,12 @@ const StickerCardEdit = props => {
         marks
         min={0}
         max={1}
+        onChange={e => {
+          sticker.offsetU = Number(e.target.innerText)
+        }}
       />
       <Typography id="discrete-slider" gutterBottom>
-        Offset Y
+        Offset V
       </Typography>
       <Slider
         defaultValue={props.data.offsetV}
@@ -65,6 +73,9 @@ const StickerCardEdit = props => {
         marks
         min={0}
         max={1}
+        onChange={e => {
+          sticker.offsetV = Number(e.target.innerText)
+        }}
       />
       <Typography id="discrete-slider" gutterBottom>
         Scale U
@@ -77,6 +88,10 @@ const StickerCardEdit = props => {
         marks
         min={0}
         max={1}
+        onChange={e => {
+          sticker.ScaleU = Number(e.target.innerText)
+          console.log(e.target.innerText)
+        }}
       />
       <Typography id="discrete-slider" gutterBottom>
         Scale V
@@ -89,10 +104,15 @@ const StickerCardEdit = props => {
         marks
         min={0}
         max={1}
+        onChange={e => {
+          sticker.ScaleV = Number(e.target.innerText)
+        }}
       />
       <Button
         onClick={() => {
           props.setEditCard(!props.editCard)
+          props.updateSticker('update', props.data.uid, sticker)
+          console.log(sticker)
         }}
         style={{ width: '100%' }}
         color="primary"
