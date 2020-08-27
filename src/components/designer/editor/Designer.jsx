@@ -65,6 +65,12 @@ const Designer = () => {
       setStickersList(temp)
     } else if (action === 'update') {
       let temp = stickersList
+      temp.map((e, i) => {
+        if (e.uid === uid) {
+          temp[i] = sticker
+        }
+      })
+      setStickersList(temp)
     }
     setTriger(!triger)
   }
