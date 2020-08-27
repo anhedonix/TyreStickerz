@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-import { DarkThemeContainer } from '../../../../config/theme'
+import { DarkThemeContainer } from '../../../../../config/theme'
 
 const useStyles = makeStyles(theme => ({
   stickerList: {

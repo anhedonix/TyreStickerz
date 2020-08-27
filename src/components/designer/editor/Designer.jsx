@@ -38,7 +38,7 @@ const defaults = {
   offsetV: 0,
   ScaleU: 1,
   ScaleV: 1,
-  Mirror: false,
+  Mirror: true,
   Texture: {
     type: textureTypes.raster,
     path: 'Stickers/Graphics/PNYLAsMLcxeK9hwpSP4r/M_Performance.png',
@@ -69,7 +69,7 @@ const Designer = () => {
     }
     setTriger(!triger)
   }
-  console.log(stickersList, 'stickerList')
+  // console.log(stickersList, 'stickerList')
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>

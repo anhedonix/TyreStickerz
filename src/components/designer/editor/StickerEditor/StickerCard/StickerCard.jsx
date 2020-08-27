@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
-import Slider from '@material-ui/core/Slider'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import Switch from '@material-ui/core/Switch'
 import IconButton from '@material-ui/core/IconButton'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 
 import { DarkThemeContainer } from '../../../../../config/theme'
-import StickerList from './StickerList'
 import store from '../../../../../functions/store'
 import StickerCardDataPreview from './StickerCardDataPreview'
+import StickerCardEdit from './StickerCardEdit'
 
 const useStyles = makeStyles(theme => ({
   stickerCardPreview: props => ({
@@ -32,7 +28,9 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     '&:hover': {
-      opacity: props.editCard ? '1' : '.5',
+      // opacity: '.5',
+      backgroundColor: '#8888',
+      cursor: 'pointer',
     },
     position: 'relative',
     display: 'block',
@@ -62,7 +60,6 @@ const StickerCard = props => {
   const [editCard, setEditCard] = useState(false)
   const classes = useStyles(props)
   const [image, setImage] = useState()
-  // const [hover, setHover] = useState(false)
 
   useEffect(() => {
     store.getFileUrl(props.data.Texture.path).then(i => setImage(i))
@@ -73,6 +70,7 @@ const StickerCard = props => {
         elevation={1}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
+        style={{ height: editCard ? '550px' : '200px' }}
       >
         <div
           className={classes.image}
@@ -91,7 +89,18 @@ const StickerCard = props => {
         >
           <HighlightOffIcon />
         </IconButton>
-        <StickerCardDataPreview data={props.data} />
+        {!editCard ? (
+          <StickerCardDataPreview
+            data={props.data}
+            onClick={() => setEditCard(!editCard)}
+          />
+        ) : (
+          <StickerCardEdit
+            data={props.data}
+            setEditCard={setEditCard}
+            editCard={editCard}
+          />
+        )}
       </Paper>
     </DarkThemeContainer>
   )

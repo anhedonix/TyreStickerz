@@ -14,6 +14,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     // padding: '4px',
+    '&:hover': {
+      // opacity: '.5',
+      backgroundColor: '#8888',
+      cursor: 'pointer',
+    },
   },
   coverageCircle: {
     width: '100%',
@@ -47,9 +52,14 @@ const StickerCardDataPreview = props => {
   }
   const rotate = props.data.Start - 180
 
-  console.log(toString(props.data.mirror))
   return (
-    <div className={classes.stickerCardDataPreview}>
+    <div
+      className={classes.stickerCardDataPreview}
+      onClick={() => {
+        console.log('editMode')
+      }}
+      {...props}
+    >
       <div className={classes.data}>
         <div className={classes.dataTitle}>Coverage</div>
         <div className={classes.coverageCircle}>
