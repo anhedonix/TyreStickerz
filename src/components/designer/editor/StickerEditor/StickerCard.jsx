@@ -12,8 +12,8 @@ import { DarkThemeContainer } from '../../../../config/theme'
 import StickerList from './StickerList'
 import store from '../../../../functions/store'
 
-const useStyles = makeStyles(theme => ({
-  stickerCardPreview: props => ({
+const useStyles = makeStyles((theme) => ({
+  stickerCardPreview: (props) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     padding: '8px',
     position: 'relative',
   }),
-  image: props => ({
+  image: (props) => ({
     width: '100%',
     // height: '10vh',
     minHeight: '80px',
@@ -65,15 +65,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const StickerCardPreview = props => {
+const StickerCardPreview = (props) => {
   const classes = useStyles(props)
   const keys = Object.keys(props.data)
-  const keyShorts = keys.map(e => e.replace(/[a-z]/g, ''))
+  const keyShorts = keys.map((e) => e.replace(/[a-z]/g, ''))
   const [image, setImage] = useState()
-  const [hover, setHover] = useState(false)
+  // const [hover, setHover] = useState(false)
 
   useEffect(() => {
-    store.getFileUrl(props.data.Texture.path).then(i => setImage(i))
+    store.getFileUrl(props.data.Texture.path).then((i) => setImage(i))
   }, [])
 
   return (
@@ -82,8 +82,8 @@ const StickerCardPreview = props => {
       /* variant="outlined" */
       onClick={props.onClick}
       className={classes.stickerCardPreview}
-      onMouseEnter={() => setHover(!hover)}
-      onMouseLeave={() => setHover(!hover)}
+      // onMouseEnter={() => setHover(!hover)}
+      // onMouseLeave={() => setHover(!hover)}
     >
       <div
         className={classes.image}
@@ -98,25 +98,25 @@ const StickerCardPreview = props => {
           </div>
         ))}
       </div>
-
-      {hover ? (
-        <IconButton
-          style={{
-            display: 'block',
-            position: 'absolute',
-            top: -5,
-            right: -5,
-          }}
-          onClick={() => props.updateStickersList('delete', props.data.uid)}
-        >
-          <HighlightOffIcon />
-        </IconButton>
-      ) : null}
+      {/* 
+      {hover ? ( */}
+      <IconButton
+        style={{
+          display: 'block',
+          position: 'absolute',
+          top: -5,
+          right: -5,
+        }}
+        onClick={() => props.updateStickersList('delete', props.data.uid)}
+      >
+        <HighlightOffIcon />
+      </IconButton>
+      {/* ) : null} */}
     </Paper>
   )
 }
 
-const StickerCardEdit = props => {
+const StickerCardEdit = (props) => {
   const classes = useStyles(props)
   return (
     <Paper className={classes.editMode} elevation={0}>
@@ -124,14 +124,14 @@ const StickerCardEdit = props => {
       <div className={classes.dataCard}>
         <div className={classes.image} />
         <div className={classes.data}>
-          <Typography id="discrete-slider" gutterBottom>
+          <Typography id='discrete-slider' gutterBottom>
             Starting Degree
           </Typography>
           <Slider
             defaultValue={props.data.StartingDegree}
             getAriaValueText={props.data.StartingPoint}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
+            aria-labelledby='discrete-slider'
+            valueLabelDisplay='auto'
             step={2.5}
             marks
             min={0}
@@ -140,13 +140,13 @@ const StickerCardEdit = props => {
           />
         </div>
         <div className={classes.data}>
-          <Typography id="discrete-slider" gutterBottom>
+          <Typography id='discrete-slider' gutterBottom>
             Ending Degree
           </Typography>
           <Slider
             defaultValue={props.data && props.data.EndingDegree}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
+            aria-labelledby='discrete-slider'
+            valueLabelDisplay='auto'
             step={2.5}
             marks
             min={0}
@@ -155,13 +155,13 @@ const StickerCardEdit = props => {
           />
         </div>
         <div className={classes.data}>
-          <Typography id="discrete-slider" gutterBottom>
+          <Typography id='discrete-slider' gutterBottom>
             Offset X
           </Typography>
           <Slider
             defaultValue={props.data.OffsetX}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
+            aria-labelledby='discrete-slider'
+            valueLabelDisplay='auto'
             step={0.1}
             marks
             min={0}
@@ -170,13 +170,13 @@ const StickerCardEdit = props => {
           />
         </div>
         <div className={classes.data}>
-          <Typography id="discrete-slider" gutterBottom>
+          <Typography id='discrete-slider' gutterBottom>
             Offset Y
           </Typography>
           <Slider
             defaultValue={props.data.OffsetY}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
+            aria-labelledby='discrete-slider'
+            valueLabelDisplay='auto'
             step={0.1}
             marks
             min={0}
@@ -185,13 +185,13 @@ const StickerCardEdit = props => {
           />
         </div>
         <div className={classes.data}>
-          <Typography id="discrete-slider" gutterBottom>
+          <Typography id='discrete-slider' gutterBottom>
             Scale Y
           </Typography>
           <Slider
             defaultValue={props.data.OffsetY}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
+            aria-labelledby='discrete-slider'
+            valueLabelDisplay='auto'
             step={0.1}
             marks
             min={0}
@@ -200,13 +200,13 @@ const StickerCardEdit = props => {
           />
         </div>
         <div className={classes.data}>
-          <Typography id="discrete-slider" gutterBottom>
+          <Typography id='discrete-slider' gutterBottom>
             Scale Y
           </Typography>
           <Slider
             defaultValue={props.data.OffsetY}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
+            aria-labelledby='discrete-slider'
+            valueLabelDisplay='auto'
             step={0.1}
             marks
             min={0}
@@ -216,7 +216,7 @@ const StickerCardEdit = props => {
         </div>
         <div className={classes.data} style={{ justifyContent: 'flex-Start' }}>
           <Typography
-            id="discrete-slider"
+            id='discrete-slider'
             gutterBottom
             style={{ margin: '0 90px 0 0' }}
           >
@@ -224,7 +224,7 @@ const StickerCardEdit = props => {
           </Typography>
           <Switch
             defaultValue={props.data.Mirror}
-            color="default"
+            color='default'
             inputProps={{ 'aria-label': 'checkbox with default color' }}
           />
         </div>
@@ -233,8 +233,8 @@ const StickerCardEdit = props => {
           onClick={() => {
             props.setEditCard(!props.editCard)
           }}
-          color="primary"
-          variant="contained"
+          color='primary'
+          variant='contained'
         >
           apply
         </Button>
@@ -243,7 +243,7 @@ const StickerCardEdit = props => {
   )
 }
 
-const StickerCard = props => {
+const StickerCard = (props) => {
   const [editCard, setEditCard] = useState(false)
 
   return (
