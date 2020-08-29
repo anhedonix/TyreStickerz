@@ -26,55 +26,51 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
-const defaults = {
-  uid: uuid(),
-  proportional: false,
-  Start: 45,
-  End: 135,
-  offsetU: 0,
-  offsetV: 0,
-  ScaleU: 1,
-  ScaleV: 1,
-  Mirror: true,
-  Texture: {
-    type: textureTypes.raster,
-    path: 'Stickers/Graphics/PNYLAsMLcxeK9hwpSP4r/M_Performance.png',
-  },
+const defaults = () => {
+  return {
+    uid: uuid(),
+    proportional: false,
+    Start: 45,
+    End: 135,
+    offsetU: 0,
+    offsetV: 0,
+    ScaleU: 1,
+    ScaleV: 1,
+    Mirror: true,
+    Texture: {
+      type: textureTypes.raster,
+      path: 'Stickers/Graphics/PNYLAsMLcxeK9hwpSP4r/M_Performance.png',
+    },
+  }
 }
 
 const Designer = () => {
   const classes = useStyles()
-  const [triger, setTriger] = useState(true)
+  const [stickersList, setStickersList] = useState([defaults()])
 
-  const [stickersList, setStickersList] = useState([defaults])
   const createNewStickerCard = () => {
-    setStickersList([
-      { ...defaults, uid: stickersList.length },
-      ...stickersList,
-    ])
+    setStickersList([{ ...defaults() }, ...stickersList])
   }
 
-  const updateStickersList = (action, uid, sticker) => {
+  const updateStickersList = (action, sticker) => {
+    let temp = [...stickersList]
     if (action === 'delete') {
-      let temp = stickersList
       temp.map((e, i) => {
-        if (e.uid === uid) {
+        if (e.uid === sticker.uid) {
           temp.splice(i, 1)
         }
       })
       setStickersList(temp)
     } else if (action === 'update') {
-      let temp = stickersList
       temp.map((e, i) => {
-        if (e.uid === uid) {
-          temp[i] = sticker
+        if (e.uid === sticker.uid) {
+          temp.splice(i, 1, sticker)
         }
       })
       setStickersList(temp)
     }
-    setTriger(!triger)
   }
-  // console.log(stickersList, 'stickerList')
+
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>
