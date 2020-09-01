@@ -21,25 +21,26 @@ const StickerCardEdit = props => {
         Start
       </Typography>
       <Slider
-        defaultValue={props.data.Start}
+        defaultValue={props.data.start}
+        value={props.data.start}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={2.5}
         marks
         min={0}
         max={360}
-        onChange={e => {
-          sticker.Start = Number(e.target.innerText)
+        onChange={(e, v) => {
+          props.update({ ...sticker, start: v })
         }}
       />
       <Typography id="discrete-slider" gutterBottom>
-        End
+        Length
       </Typography>
       <Slider
-        defaultValue={props.data.End}
+        defaultValue={sticker.length}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={2.5}
+        step={3}
         marks
         min={0}
         max={360}

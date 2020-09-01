@@ -85,9 +85,6 @@ const StickerCardDataPreview = props => {
           <LinearProgress
             variant="determinate"
             value={props.data.offsetU * 100}
-            style={{ colorPrimary: 'grey', colorSecondary: 'gray' }}
-            colorPrimary="grey"
-            colorSecondary="grey"
           />
         </div>
         <div className={classes.dataTitle}> OffsetV</div>
@@ -104,9 +101,6 @@ const StickerCardDataPreview = props => {
           <LinearProgress
             variant="determinate"
             value={props.data.ScaleU * 100}
-            style={{ colorPrimary: 'grey', colorSecondary: 'gray' }}
-            colorPrimary="grey"
-            colorSecondary="grey"
           />
         </div>
         <div className={classes.dataTitle}> ScaleV</div>

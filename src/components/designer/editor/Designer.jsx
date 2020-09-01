@@ -55,6 +55,7 @@ const Designer = () => {
   const [rim, setRim] = useState()
   const [accessories, setAccessories] = useState()
   const [sticker, setSticker] = useState()
+  const [currentSticker, setCurrentSticker] = useState()
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
@@ -98,6 +99,7 @@ const Designer = () => {
       <div className={classes.canvas}>
         <Canvas
           stickers={stickersList}
+          currentSticker={currentSticker}
           rim={rim}
           wheel={wheel}
           accessories={accessories}
@@ -106,6 +108,8 @@ const Designer = () => {
       </div>
       <StickerEditor
         stickers={stickersList}
+        currentSticker={currentSticker}
+        setCurrentSticker={setCurrentSticker}
         create={createNewStickerCard}
         update={updateStickersList}
       />

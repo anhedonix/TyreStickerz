@@ -6,7 +6,14 @@ import Env from './Loader/Env'
 import GLBLoader from './Loader/GLBLoader'
 import SDSM from './Loader/SDSM'
 
-const MainCanvas = ({ rim, wheel, accessories, stickers, stickerMesh }) => {
+const MainCanvas = ({
+  rim,
+  wheel,
+  accessories,
+  stickers,
+  stickerMesh,
+  currentSticker,
+}) => {
   const [init, setInit] = useState(false)
 
   return (
@@ -24,8 +31,20 @@ const MainCanvas = ({ rim, wheel, accessories, stickers, stickerMesh }) => {
         )}
 
         {stickers.map((el, i) => {
-          return <SDSM mesh={stickerMesh} data={el} key={el.uid} index={i} />
+          if (currentSticker && currentSticker.uid === el.uid) {
+            return null
+          } else {
+            return <SDSM mesh={stickerMesh} data={el} key={el.uid} index={i} />
+          }
         })}
+
+        {currentSticker && (
+          <SDSM
+            mesh={stickerMesh}
+            data={currentSticker}
+            index={stickers.length}
+          />
+        )}
 
         {init && (
           <Shadow

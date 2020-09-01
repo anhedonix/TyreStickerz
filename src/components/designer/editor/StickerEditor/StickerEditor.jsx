@@ -30,13 +30,19 @@ const useStyles = makeStyles(theme => ({
 
 const maxStickers = 10
 
-const StickerEditor = ({ create, update, stickers }) => {
+const StickerEditor = ({
+  create,
+  update,
+  stickers,
+  setCurrentSticker,
+  currentSticker,
+}) => {
   const classes = useStyles()
 
   const shadowTop = useRef()
   const shadowBottom = useRef()
 
-  const handleUpdate = values => {
+  const handleScroll = values => {
     const shadowTop_ = shadowTop.current
     const shadowBottom_ = shadowBottom.current
     const { scrollTop, scrollHeight, clientHeight } = values
@@ -84,7 +90,7 @@ const StickerEditor = ({ create, update, stickers }) => {
       {`${stickers.length} of ${maxStickers}`}
       <div style={{ position: 'relative' }}>
         <Scrollbars
-          onUpdate={handleUpdate}
+          onUpdate={handleScroll}
           style={{
             minHeight: 480,
             height: 'calc(80vh - 100px)',
@@ -92,9 +98,27 @@ const StickerEditor = ({ create, update, stickers }) => {
           }}
           universal
         >
-          {stickers.map(e => (
-            <StickerCard key={e.uid} data={e} update={update} />
-          ))}
+          {stickers.map(e => {
+            if (currentSticker && e.uid === currentSticker.uid) {
+              return (
+                <StickerCard
+                  edit
+                  key={e.uid}
+                  data={currentSticker}
+                  update={update}
+                  updateCurrent={setCurrentSticker}
+                />
+              )
+            } else {
+              return (
+                <StickerCard
+                  key={e.uid}
+                  data={e}
+                  setCurrentSticker={setCurrentSticker}
+                />
+              )
+            }
+          })}
         </Scrollbars>
 
         <div ref={shadowTop} style={shadowTopStyle} />

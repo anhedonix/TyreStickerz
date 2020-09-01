@@ -57,7 +57,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const StickerCard = props => {
-  const [editCard, setEditCard] = useState(false)
   const [list, setList] = useState(false)
   const classes = useStyles(props)
   const [image, setImage] = useState()
@@ -71,7 +70,7 @@ const StickerCard = props => {
         elevation={1}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: editCard || list ? '550px' : '200px' }}
+        style={{ height: props.edit || list ? '550px' : '200px' }}
       >
         <div
           className={classes.image}
@@ -79,7 +78,6 @@ const StickerCard = props => {
             backgroundImage: `url(${image})`,
           }}
           onClick={() => {
-            setEditCard(false)
             setList(!list)
           }}
         />
@@ -95,21 +93,16 @@ const StickerCard = props => {
         >
           <HighlightOffIcon />
         </IconButton>
-        {!editCard ? (
+        {!props.edit ? (
           <StickerCardDataPreview
             data={props.data}
             onClick={() => {
               setList(false)
-              setEditCard(!editCard)
+              props.setCurrentSticker(props.data)
             }}
           />
         ) : (
-          <StickerCardEdit
-            data={props.data}
-            setEditCard={setEditCard}
-            editCard={editCard}
-            updateSticker={props.update}
-          />
+          <StickerCardEdit data={props.data} update={props.updateCurrent} />
         )}
       </Paper>
     </DarkThemeContainer>
