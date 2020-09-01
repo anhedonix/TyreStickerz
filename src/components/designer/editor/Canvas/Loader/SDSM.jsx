@@ -53,76 +53,69 @@ const BufferGeoCustom = ({ data, material, uvOffset }) => {
   return <bufferGeometry Name="Model" attach="geometry" ref={geoRef} />
 }
 
-const SDSM = props => {
+const SDSM = ({ mesh, data, index }) => {
   const { scene } = useThree()
+  const [ready, setReady] = useState(false)
   const [model, setModel] = useState()
-  // const [data, setData] = useState()
   const [texture, setTexture] = useState()
-
-  const [centroid, setCentroid] = useState()
-
-  const centroidRef = element => {
-    setCentroid(element)
-  }
 
   useEffect(() => {
     const initialize = async () => {
-      const c_data = await BasicLoader(await store.getFileUrl(props.path))
+      const c_data = await BasicLoader(await store.getFileUrl(mesh))
       setModel(initializeStickerMeshData(c_data))
-      // setData(c_data)
-      const texture_path = await store.getFileUrl(props.texture)
+      const texture_path = await store.getFileUrl(data.texture.path)
       var texture_map = new THREE.TextureLoader().load(texture_path)
-      console.log(texture_map, texture_path)
       texture_map.wrapS = THREE.ClampToEdgeWrapping
       texture_map.wrapT = THREE.ClampToEdgeWrapping
       texture_map.minFilter = THREE.LinearFilter
       texture_map.magFilter = THREE.NearestFilter
       setTexture(texture_map)
+      setReady(true)
     }
-    if (props.path && props.texture) {
+    if (mesh && data) {
       initialize()
     }
-  }, [props.path, props.texture])
+  }, [mesh, data])
 
-  const material = new THREE.MeshPhysicalMaterial({
-    roughness: 0.3,
-    side: THREE.DoubleSide,
-    map: texture,
-    emissive: '#ffffff',
-    emissiveMap: texture,
-    emissiveIntensity: 0.4,
-    premultipliedAlpha: true,
-    transparent: true,
-    envMap: scene.environment,
-  })
-
+  const material = () => {
+    return new THREE.MeshPhysicalMaterial({
+      roughness: 0.3,
+      side: THREE.DoubleSide,
+      map: texture,
+      emissive: '#ffffff',
+      emissiveMap: texture,
+      emissiveIntensity: 0.4,
+      premultipliedAlpha: true,
+      transparent: true,
+      envMap: scene.environment,
+    })
+  }
   const final_mesh = model && (
     <group
-      position={[model.c[0] + props.index * 0.01, model.c[1], model.c[2]]}
+      position={[model.c[0] + index * 0.01, model.c[1], model.c[2]]}
       scale={[1, 1, -1]}
     >
-      {[...Array(parseInt((props.range[1] - props.range[0]) / 3)).keys()].map(
-        i => {
-          return (
-            <group
-              rotation={[
-                THREE.MathUtils.degToRad(3 * i + props.range[0]),
-                0,
-                Math.PI,
-              ]}
-              key={`${i}-${props.range[1] - props.range[1]}`}
-            >
-              <mesh>
-                <BufferGeoCustom
-                  data={model}
-                  material={material}
-                  uvOffset={[i, props.range[1] - props.range[0]]}
-                />
-              </mesh>
-            </group>
-          )
-        }
-      )}
+      {[...Array(parseInt(data.length / 3)).keys()].map(i => {
+        return (
+          <group
+            rotation={[
+              THREE.MathUtils.degToRad(3 * i + data.start),
+              0,
+              Math.PI,
+            ]}
+            key={`${i}-${data.start}`}
+          >
+            <mesh>
+              <BufferGeoCustom
+                data={model}
+                material={ready && material()}
+                uvOffset={[i, data.length]}
+                key={i}
+              />
+            </mesh>
+          </group>
+        )
+      })}
     </group>
   )
 

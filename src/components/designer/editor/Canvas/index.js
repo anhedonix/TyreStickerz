@@ -1,41 +1,20 @@
 import Slider from '@material-ui/core/Slider'
-import axios from 'axios'
 import { OrbitControls, TrackballControls, Shadow } from 'drei'
 import React, { useEffect, useState } from 'react'
 import { Canvas } from 'react-three-fiber'
-import * as CONTENT from '../../../../constants/contentTypes'
 import Env from './Loader/Env'
 import GLBLoader from './Loader/GLBLoader'
 import SDSM from './Loader/SDSM'
 
-const MainCanvas = props => {
+const MainCanvas = ({ rim, wheel, accessories, stickers, stickerMesh }) => {
   const [init, setInit] = useState(false)
-  const [wheel, setWheel] = useState()
-  const [sticker, setSticker] = useState()
-  const [rim, setRim] = useState()
-  const [accessories, setAccessories] = useState()
-  const [range, setRange] = useState([45, 135])
-
-  useEffect(() => {
-    axios.get('/api/defaults').then(i => {
-      CONTENT.wheel.read(i.data.whl).then(j => {
-        setWheel(j.tyre)
-        setSticker(j.stickerMesh)
-      })
-      CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
-      CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
-    })
-  }, [])
-
-  const handleChange = (event, newValue) => {
-    setRange(newValue)
-  }
 
   return (
     <>
       <Canvas camera={{ position: [80, 60, -100], fov: 30 }}>
         <ambientLight intensity={0.2} />
         <Env initialize={() => setInit(true)} />
+
         {init && (
           <>
             {rim && <GLBLoader path={rim} />}
@@ -43,17 +22,11 @@ const MainCanvas = props => {
             {accessories && <GLBLoader path={accessories} />}
           </>
         )}
-        {props.stickers.map((el, i) => {
-          return (
-            <SDSM
-              path={sticker}
-              texture={el.Texture.path}
-              range={range}
-              key={el.uid}
-              index={i}
-            />
-          )
+
+        {stickers.map((el, i) => {
+          return <SDSM mesh={stickerMesh} data={el} key={el.uid} index={i} />
         })}
+
         {init && (
           <Shadow
             scale={[40, 40, 1]}

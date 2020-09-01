@@ -126,7 +126,7 @@ const StickerCardDataPreview = props => {
             fontSize: '20px',
           }}
         >
-          {props.data.Mirror.toString()}
+          {props.data.mirror.toString()}
         </div>
       </div>
     </div>

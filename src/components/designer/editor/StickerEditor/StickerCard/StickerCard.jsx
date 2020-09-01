@@ -63,7 +63,7 @@ const StickerCard = props => {
   const [image, setImage] = useState()
 
   useEffect(() => {
-    store.getFileUrl(props.data.Texture.path).then(i => setImage(i))
+    store.getFileUrl(props.data.texture.path).then(i => setImage(i))
   }, [])
   return (
     <DarkThemeContainer>
@@ -91,7 +91,7 @@ const StickerCard = props => {
             top: -5,
             right: -5,
           }}
-          onClick={() => props.updateStickersList('delete', props.data.uid)}
+          onClick={() => props.update('delete', props.data.uid)}
         >
           <HighlightOffIcon />
         </IconButton>
@@ -108,7 +108,7 @@ const StickerCard = props => {
             data={props.data}
             setEditCard={setEditCard}
             editCard={editCard}
-            updateSticker={props.updateStickersList}
+            updateSticker={props.update}
           />
         )}
       </Paper>
