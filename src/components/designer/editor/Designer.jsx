@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
 
@@ -6,6 +7,7 @@ import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
 import { types as textureTypes } from '../../../constants/Designer/textureTypes'
 import StickerList from './StickerEditor/StickerCard/StickerList'
+import * as CONTENT from '../../../constants/contentTypes'
 
 const useStyles = makeStyles(theme => ({
   designer: {
@@ -26,64 +28,90 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
-const defaults = {
-  uid: uuid(),
-  proportional: false,
-  Start: 45,
-  End: 135,
-  offsetU: 0,
-  offsetV: 0,
-  ScaleU: 1,
-  ScaleV: 1,
-  Mirror: true,
-  Texture: {
-    type: textureTypes.raster,
-    path: 'Stickers/Graphics/PNYLAsMLcxeK9hwpSP4r/M_Performance.png',
-  },
+const defaults = () => {
+  return {
+    uid: uuid(),
+    proportional: false,
+    start: 45,
+    length: 135,
+    offsetU: 0,
+    offsetV: 0,
+    scaleU: 1,
+    scaleV: 1,
+    mirror: true,
+    texture: {
+      type: textureTypes.raster,
+      path: 'Stickers/Graphics/PNYLAsMLcxeK9hwpSP4r/M_Performance.png',
+    },
+  }
 }
 
 const Designer = () => {
   const classes = useStyles()
-  const [triger, setTriger] = useState(true)
+  const [stickersList, setStickersList] = useState([
+    { ...defaults(), index: 0 },
+  ])
+  const [wheel, setWheel] = useState()
+  const [rim, setRim] = useState()
+  const [accessories, setAccessories] = useState()
+  const [sticker, setSticker] = useState()
+  const [currentSticker, setCurrentSticker] = useState()
 
-  const [stickersList, setStickersList] = useState([defaults])
+  useEffect(() => {
+    axios.get('/api/defaults').then(i => {
+      CONTENT.wheel.read(i.data.whl).then(j => {
+        setWheel(j.tyre)
+        setSticker(j.stickerMesh)
+      })
+      CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
+      CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
+    })
+  }, [])
+
   const createNewStickerCard = () => {
     setStickersList([
-      { ...defaults, uid: stickersList.length },
+      { ...defaults(), index: stickersList.length },
       ...stickersList,
     ])
   }
 
-  const updateStickersList = (action, uid, sticker) => {
+  const updateStickersList = (action, sticker) => {
+    let temp = [...stickersList]
     if (action === 'delete') {
-      let temp = stickersList
       temp.map((e, i) => {
-        if (e.uid === uid) {
+        if (e.uid === sticker.uid) {
           temp.splice(i, 1)
         }
       })
       setStickersList(temp)
     } else if (action === 'update') {
-      let temp = stickersList
       temp.map((e, i) => {
-        if (e.uid === uid) {
-          temp[i] = sticker
+        if (e.uid === sticker.uid) {
+          temp.splice(i, 1, sticker)
         }
       })
       setStickersList(temp)
     }
-    setTriger(!triger)
   }
-  // console.log(stickersList, 'stickerList')
+
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>
-        <Canvas stickers={stickersList} />
+        <Canvas
+          stickers={stickersList}
+          currentSticker={currentSticker}
+          rim={rim}
+          wheel={wheel}
+          accessories={accessories}
+          stickerMesh={sticker}
+        />
       </div>
       <StickerEditor
         stickers={stickersList}
-        createNew={createNewStickerCard}
-        updateStickersList={updateStickersList}
+        currentSticker={currentSticker}
+        setCurrentSticker={setCurrentSticker}
+        create={createNewStickerCard}
+        update={updateStickersList}
       />
     </div>
   )

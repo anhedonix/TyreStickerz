@@ -21,8 +21,8 @@ const StickerCardEdit = props => {
         Start
       </Typography>
       <Slider
-        // defaultValue={Math.max(props.sticker.End, props.sticker.Start)}
-        value={Math.min(props.sticker.End, props.sticker.Start)}
+        defaultValue={props.data.start}
+        value={props.data.start}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={2.5}
@@ -30,20 +30,17 @@ const StickerCardEdit = props => {
         min={0}
         max={360}
         onChange={(e, v) => {
-          props.setSticker({
-            ...props.sticker,
-            Start: Math.min(props.sticker.End, v),
-          })
+          props.update({ ...sticker, start: v })
         }}
       />
       <Typography id="discrete-slider" gutterBottom>
-        End
+        Length
       </Typography>
       <Slider
-        defaultValue={props.sticker.End}
+        defaultValue={sticker.length}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={2.5}
+        step={3}
         marks
         min={0}
         max={360}

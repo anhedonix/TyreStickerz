@@ -30,13 +30,19 @@ const useStyles = makeStyles(theme => ({
 
 const maxStickers = 10
 
-const StickerEditor = props => {
-  const classes = useStyles(props.editMode)
+const StickerEditor = ({
+  create,
+  update,
+  stickers,
+  setCurrentSticker,
+  currentSticker,
+}) => {
+  const classes = useStyles()
 
   const shadowTop = useRef()
   const shadowBottom = useRef()
 
-  const handleUpdate = values => {
+  const handleScroll = values => {
     const shadowTop_ = shadowTop.current
     const shadowBottom_ = shadowBottom.current
     const { scrollTop, scrollHeight, clientHeight } = values
@@ -50,7 +56,7 @@ const StickerEditor = props => {
 
   const shadowTopStyle = {
     position: 'absolute',
-    top: 0,
+    top: -1,
     left: '-14px',
     right: 0,
     height: 20,
@@ -62,7 +68,7 @@ const StickerEditor = props => {
 
   const shadowBottomStyle = {
     position: 'absolute',
-    bottom: 0,
+    bottom: -1,
     left: '-14px',
     right: '0',
     height: 20,
@@ -75,17 +81,16 @@ const StickerEditor = props => {
   return (
     <div className={classes.stickerWrapper}>
       <IconButton
-        onClick={props.createNew}
+        onClick={create}
         className={classes.addStickerCard}
-        disabled={props.stickers.length >= maxStickers}
+        disabled={stickers.length >= maxStickers}
       >
         <AddCircleIcon fontSize="large" />
       </IconButton>
-      {`${props.stickers.length} of ${maxStickers}`}
+      {`${stickers.length} of ${maxStickers}`}
       <div style={{ position: 'relative' }}>
-        <div ref={shadowTop} style={shadowTopStyle} />
         <Scrollbars
-          onUpdate={handleUpdate}
+          onUpdate={handleScroll}
           style={{
             minHeight: 480,
             height: 'calc(80vh - 100px)',
@@ -93,15 +98,30 @@ const StickerEditor = props => {
           }}
           universal
         >
-          {props.stickers.map(e => (
-            <StickerCard
-              key={e.uid}
-              data={e}
-              updateStickersList={props.updateStickersList}
-            />
-          ))}
+          {stickers.map(e => {
+            if (currentSticker && e.uid === currentSticker.uid) {
+              return (
+                <StickerCard
+                  edit
+                  key={e.uid}
+                  data={currentSticker}
+                  update={update}
+                  updateCurrent={setCurrentSticker}
+                />
+              )
+            } else {
+              return (
+                <StickerCard
+                  key={e.uid}
+                  data={e}
+                  setCurrentSticker={setCurrentSticker}
+                />
+              )
+            }
+          })}
         </Scrollbars>
 
+        <div ref={shadowTop} style={shadowTopStyle} />
         <div ref={shadowBottom} style={shadowBottomStyle} />
       </div>
     </div>
