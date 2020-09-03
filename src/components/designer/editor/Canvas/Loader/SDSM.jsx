@@ -40,7 +40,7 @@ const BufferGeoCustom = ({ data, material, uvOffset }) => {
               const iter = uvOffset[0]
               const end = uvOffset[1]
               const val = i
-              return (val + iter) / (end / 3 - 1)
+              return (val + iter) / (end / 3)
             }
           }),
           2

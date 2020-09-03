@@ -65,20 +65,21 @@ const StickerCard = props => {
   useEffect(() => {
     store.getFileUrl(props.data.texture.path).then(i => setImage(i))
   }, [])
+
   return (
     <DarkThemeContainer>
       <Paper
         elevation={1}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: editCard || list ? '550px' : '100px' }}
+        style={{ height: props.edit || list ? '550px' : '100px' }}
       >
         <div style={{ display: 'flex', width: '100%' }}>
           <StickerCardDataPreview
-            data={sticker}
+            data={props.data}
             onClick={() => {
               setList(false)
-              setEditCard(!editCard)
+              props.setCurrentSticker(props.data)
             }}
           />
           <div
@@ -87,7 +88,6 @@ const StickerCard = props => {
               backgroundImage: `url(${image})`,
             }}
             onClick={() => {
-              setEditCard(false)
               setList(!list)
             }}
           />
@@ -100,20 +100,18 @@ const StickerCard = props => {
             top: -5,
             right: -5,
           }}
-          onClick={() => props.update('delete', props.data.uid)}
+          onClick={() => {
+            props.update('delete', props.data)
+          }}
         >
           <HighlightOffIcon />
         </IconButton>
-        {!props.edit ? (
-          <StickerCardDataPreview
+        {props.edit && (
+          <StickerCardEdit
             data={props.data}
-            onClick={() => {
-              setList(false)
-              props.setCurrentSticker(props.data)
-            }}
+            update={props.update}
+            apply={props.apply}
           />
-        ) : (
-          <StickerCardEdit data={props.data} update={props.updateCurrent} />
         )}
       </Paper>
     </DarkThemeContainer>

@@ -55,27 +55,31 @@ const StickerEditor = ({
   }
 
   const shadowTopStyle = {
+    pointerEvents: 'none',
     position: 'absolute',
     top: -1,
-    left: '-14px',
+    left: '-20px',
     right: 0,
-    height: 20,
+    height: 60,
     background:
       'linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%)',
     borderRadius: '8px 8px 0 0',
     borderTop: '1px solid rgba(255,255,255,0.1)',
+    transition: 'opacity 200ms',
   }
 
   const shadowBottomStyle = {
+    pointerEvents: 'none',
     position: 'absolute',
     bottom: -1,
-    left: '-14px',
+    left: '-20px',
     right: '0',
-    height: 20,
+    height: 60,
     background:
       'linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%)',
     borderRadius: '0 0 8px 8px',
     borderBottom: '1px solid rgba(255,255,255,0.1)',
+    transition: 'opacity 200ms',
   }
 
   return (
@@ -105,8 +109,8 @@ const StickerEditor = ({
                   edit
                   key={e.uid}
                   data={currentSticker}
-                  update={update}
-                  updateCurrent={setCurrentSticker}
+                  update={setCurrentSticker}
+                  apply={update}
                 />
               )
             } else {
@@ -115,6 +119,7 @@ const StickerEditor = ({
                   key={e.uid}
                   data={e}
                   setCurrentSticker={setCurrentSticker}
+                  update={update}
                 />
               )
             }
