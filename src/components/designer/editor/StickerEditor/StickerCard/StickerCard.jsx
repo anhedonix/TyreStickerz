@@ -61,6 +61,7 @@ const StickerCard = props => {
   const [list, setList] = useState(false)
   const classes = useStyles(props)
   const [image, setImage] = useState()
+  const [sticker, setSticker] = useState(props.data)
 
   useEffect(() => {
     store.getFileUrl(props.data.Texture.path).then(i => setImage(i))
@@ -71,18 +72,27 @@ const StickerCard = props => {
         elevation={1}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: editCard || list ? '550px' : '200px' }}
+        style={{ height: editCard || list ? '550px' : '100px' }}
       >
-        <div
-          className={classes.image}
-          style={{
-            backgroundImage: `url(${image})`,
-          }}
-          onClick={() => {
-            setEditCard(false)
-            setList(!list)
-          }}
-        />
+        <div style={{ display: 'flex', width: '100%' }}>
+          <StickerCardDataPreview
+            data={sticker}
+            onClick={() => {
+              setList(false)
+              setEditCard(!editCard)
+            }}
+          />
+          <div
+            className={classes.image}
+            style={{
+              backgroundImage: `url(${image})`,
+            }}
+            onClick={() => {
+              setEditCard(false)
+              setList(!list)
+            }}
+          />
+        </div>
         {list ? <StickerList setList={setList} /> : null}
         <IconButton
           style={{
@@ -95,22 +105,15 @@ const StickerCard = props => {
         >
           <HighlightOffIcon />
         </IconButton>
-        {!editCard ? (
-          <StickerCardDataPreview
-            data={props.data}
-            onClick={() => {
-              setList(false)
-              setEditCard(!editCard)
-            }}
-          />
-        ) : (
+        {editCard ? (
           <StickerCardEdit
-            data={props.data}
+            sticker={sticker}
+            setSticker={setSticker}
             setEditCard={setEditCard}
             editCard={editCard}
             updateSticker={props.updateStickersList}
           />
-        )}
+        ) : null}
       </Paper>
     </DarkThemeContainer>
   )

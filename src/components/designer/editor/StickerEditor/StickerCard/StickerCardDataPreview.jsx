@@ -8,8 +8,8 @@ import ChangeHistoryTwoToneIcon from '@material-ui/icons/ChangeHistoryTwoTone'
 
 const useStyles = makeStyles(theme => ({
   stickerCardDataPreview: {
-    width: '100%',
-    flexGrow: '1',
+    width: '25%',
+    // flexGrow: '1',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -37,96 +37,90 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     // flexGrow: '1',
     // width: '50px',
-    // alignItems: 'center',
+    // alignItems: 'center'
   },
 }))
 
 const StickerCardDataPreview = props => {
   const classes = useStyles()
 
-  const coverageCircle = () => {
-    const usedDegree = props.data.End - props.data.Start
-    const percentage = (usedDegree / 360) * 100
+  const start = props.data.Start - 180
+  const end = props.data.End - 180
+  const coverage = props.data.End - props.data.Start
+  const offsetCoverage = coverage * props.data.offsetV
+  const offsetScaledCoverage = (offsetCoverage + coverage) * props.data.ScaleV
+  const usableCanvas = coverage - offsetCoverage
 
-    return percentage
-  }
-  const rotate = props.data.Start - 180
+  // const calculateOffsetV = () => {
+  //   const usedDegree = props.data.End - props.data.Start
+  //   const offsetV = props.data.Start + usedDegree * props.data.offsetV
+  //   return offsetV
+  // }
+  const coverageCircle =
+    offsetScaledCoverage >= usableCanvas
+      ? (usableCanvas / 360) * 100
+      : (offsetScaledCoverage / 360) * 100
 
   return (
     <div
       className={classes.stickerCardDataPreview}
       onClick={() => {
-        console.log('editMode')
+        // console.log('editMode')
       }}
       {...props}
     >
       <div className={classes.data}>
-        <div className={classes.dataTitle}>Coverage</div>
         <div className={classes.coverageCircle}>
           <CircularProgress
             variant="static"
             value={100}
-            color="#8888"
-            style={{ opacity: '.5' }}
+            size={80}
+            style={{
+              opacity: '1',
+              color: 'black',
+              // height: '90px',
+              // position: 'absolute',
+            }}
+            thickness={10}
+          />
+
+          <CircularProgress
+            variant="static"
+            value={coverageCircle}
+            thickness={
+              10 - props.data.offsetU * 10 <= props.data.ScaleU * 10
+                ? 10 - props.data.offsetU * 10
+                : props.data.ScaleU * 10
+            }
+            size={80 - 38 * props.data.offsetU}
+            style={{
+              position: 'absolute',
+              transform: `rotate(${start + offsetCoverage}deg)`,
+              color: 'white',
+            }}
           />
           <CircularProgress
             variant="static"
-            value={coverageCircle()}
+            value={1}
+            thickness={10}
+            size={80}
             style={{
               position: 'absolute',
-              transform: `rotate(${rotate}deg)`,
+              transform: `rotate(${start}deg)`,
+              color: 'green',
             }}
           />
-        </div>
-      </div>
-      <div className={classes.data}>
-        <div className={classes.dataTitle}> OffsetU</div>
-        <div>
-          <LinearProgress
-            variant="determinate"
-            value={props.data.offsetU * 100}
-            style={{ colorPrimary: 'grey', colorSecondary: 'gray' }}
-            colorPrimary="grey"
-            colorSecondary="grey"
+          <CircularProgress
+            variant="static"
+            value={1}
+            thickness={10}
+            size={80}
+            style={{
+              position: 'absolute',
+              transform: `rotate(${end}deg)`,
+              color: 'red',
+            }}
           />
-        </div>
-        <div className={classes.dataTitle}> OffsetV</div>
-        <div>
-          <LinearProgress
-            variant="determinate"
-            value={props.data.offsetU * 100}
-          />
-        </div>
-      </div>
-      <div className={classes.data}>
-        <div className={classes.dataTitle}> ScaleU</div>
-        <div>
-          <LinearProgress
-            variant="determinate"
-            value={props.data.ScaleU * 100}
-            style={{ colorPrimary: 'grey', colorSecondary: 'gray' }}
-            colorPrimary="grey"
-            colorSecondary="grey"
-          />
-        </div>
-        <div className={classes.dataTitle}> ScaleV</div>
-        <div>
-          <LinearProgress
-            variant="determinate"
-            value={props.data.ScaleV * 100}
-          />
-        </div>
-      </div>{' '}
-      <div className={classes.data}>
-        <div className={classes.dataTitle}> Mirror</div>
-        <div
-          className={classes.dataTitle}
-          style={{
-            color: props.data.Mirror ? 'green' : 'red',
-            fontSize: '20px',
-          }}
-        >
-          {props.data.Mirror.toString()}
         </div>
       </div>
     </div>
