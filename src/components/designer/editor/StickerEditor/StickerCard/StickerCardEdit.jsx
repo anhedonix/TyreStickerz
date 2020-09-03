@@ -110,9 +110,7 @@ const StickerCardEdit = props => {
       />
       <Button
         onClick={() => {
-          props.setEditCard(!props.editCard)
-          props.updateSticker('update', props.sticker.uid, props.sticker)
-          // console.log(sticker)
+          props.apply('update')
         }}
         style={{ width: '100%' }}
         color="primary"

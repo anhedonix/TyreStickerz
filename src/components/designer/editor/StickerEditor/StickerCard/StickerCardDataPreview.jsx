@@ -45,8 +45,8 @@ const StickerCardDataPreview = props => {
   const classes = useStyles()
 
   const start = props.data.start - 180
-  const end = props.data.length - 180
-  const coverage = props.data.length - props.data.start
+  const end = props.data.start + props.data.length - 180
+  const coverage = props.data.length
   const offsetCoverage = coverage * props.data.offsetV
   const offsetScaledCoverage = (offsetCoverage + coverage) * props.data.scaleV
   const usableCanvas = coverage - offsetCoverage
@@ -76,7 +76,7 @@ const StickerCardDataPreview = props => {
             value={100}
             size={80}
             style={{
-              opacity: '1',
+              opacity: '0.6',
               color: 'black',
               // height: '90px',
               // position: 'absolute',
@@ -101,7 +101,7 @@ const StickerCardDataPreview = props => {
           />
           <CircularProgress
             variant="static"
-            value={1}
+            value={2}
             thickness={10}
             size={80}
             style={{
@@ -112,7 +112,7 @@ const StickerCardDataPreview = props => {
           />
           <CircularProgress
             variant="static"
-            value={1}
+            value={2}
             thickness={10}
             size={80}
             style={{

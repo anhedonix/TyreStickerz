@@ -33,7 +33,7 @@ const defaults = () => {
     uid: uuid(),
     proportional: false,
     start: 45,
-    length: 135,
+    length: 90,
     offsetU: 0,
     offsetV: 0,
     scaleU: 1,
@@ -41,7 +41,7 @@ const defaults = () => {
     mirror: true,
     texture: {
       type: textureTypes.raster,
-      path: 'Stickers/Graphics/PNYLAsMLcxeK9hwpSP4r/M_Performance.png',
+      path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
     },
   }
 }
@@ -75,7 +75,7 @@ const Designer = () => {
     ])
   }
 
-  const updateStickersList = (action, sticker) => {
+  const updateStickersList = (action, sticker = null) => {
     let temp = [...stickersList]
     if (action === 'delete') {
       temp.map((e, i) => {
@@ -86,8 +86,9 @@ const Designer = () => {
       setStickersList(temp)
     } else if (action === 'update') {
       temp.map((e, i) => {
-        if (e.uid === sticker.uid) {
-          temp.splice(i, 1, sticker)
+        if (e.uid === currentSticker.uid) {
+          temp.splice(i, 1, { ...currentSticker, index: i })
+          setCurrentSticker()
         }
       })
       setStickersList(temp)

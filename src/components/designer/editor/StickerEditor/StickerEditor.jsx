@@ -110,6 +110,7 @@ const StickerEditor = ({
                   key={e.uid}
                   data={currentSticker}
                   update={setCurrentSticker}
+                  apply={update}
                 />
               )
             } else {

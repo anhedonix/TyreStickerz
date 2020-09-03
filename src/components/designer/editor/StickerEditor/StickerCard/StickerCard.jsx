@@ -107,7 +107,11 @@ const StickerCard = props => {
           <HighlightOffIcon />
         </IconButton>
         {props.edit && (
-          <StickerCardEdit data={props.data} update={props.update} />
+          <StickerCardEdit
+            data={props.data}
+            update={props.update}
+            apply={props.apply}
+          />
         )}
       </Paper>
     </DarkThemeContainer>
