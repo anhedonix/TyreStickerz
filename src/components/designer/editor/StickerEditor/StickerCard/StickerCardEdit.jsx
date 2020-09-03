@@ -15,13 +15,13 @@ const useStyles = makeStyles(theme => ({
 
 const StickerCardEdit = props => {
   const classes = useStyles()
+  const sticker = props.data
   return (
     <div className={classes.stickerCardEdit}>
       <Typography id="discrete-slider" gutterBottom>
         Start
       </Typography>
       <Slider
-        defaultValue={props.data.start}
         value={props.data.start}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
@@ -37,91 +37,75 @@ const StickerCardEdit = props => {
         Length
       </Typography>
       <Slider
-        defaultValue={sticker.length}
+        value={sticker.length}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={3}
         marks
         min={0}
         max={360}
-        onChange={e => {
-          props.setSticker({
-            ...props.sticker,
-            End: Number(e.target.innerText),
-          })
+        onChange={(e, v) => {
+          props.update({ ...sticker, length: v })
         }}
       />
       <Typography id="discrete-slider" gutterBottom>
         Offset U
       </Typography>
       <Slider
-        defaultValue={props.sticker.offsetU}
+        value={sticker.offsetU}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={0.01}
         marks
         min={0}
         max={1}
-        onChange={e => {
-          props.setSticker({
-            ...props.sticker,
-            offsetU: Number(e.target.innerText),
-          })
+        onChange={(e, v) => {
+          props.update({ ...sticker, offsetU: v })
         }}
       />
       <Typography id="discrete-slider" gutterBottom>
         Offset V
       </Typography>
       <Slider
-        defaultValue={props.sticker.offsetV}
+        value={sticker.offsetV}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={0.01}
         marks
         min={0}
         max={1}
-        onChange={e => {
-          props.setSticker({
-            ...props.sticker,
-            offsetV: Number(e.target.innerText),
-          })
+        onChange={(e, v) => {
+          props.update({ ...sticker, offsetV: v })
         }}
       />
       <Typography id="discrete-slider" gutterBottom>
         Scale U
       </Typography>
       <Slider
-        defaultValue={props.sticker.ScaleU}
+        value={sticker.scaleU}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={0.01}
         marks
         min={0}
         max={1}
-        onChange={e => {
-          props.setSticker({
-            ...props.sticker,
-            ScaleU: Number(e.target.innerText),
-          })
-          // console.log(e.target.innerText)
+        onChange={(e, v) => {
+          props.update({ ...sticker, scaleU: v })
         }}
       />
       <Typography id="discrete-slider" gutterBottom>
         Scale V
       </Typography>
       <Slider
-        defaultValue={props.sticker.ScaleV}
+        value={sticker.scaleV}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
         step={0.01}
         marks
         min={0}
         max={1}
-        onChange={e => {
-          props.setSticker({
-            ...props.sticker,
-            ScaleV: Number(e.target.innerText),
-          })
+        onChange={(e, v) => {
+          props.update({ ...sticker, scaleV: v })
         }}
       />
       <Button

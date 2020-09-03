@@ -44,11 +44,11 @@ const useStyles = makeStyles(theme => ({
 const StickerCardDataPreview = props => {
   const classes = useStyles()
 
-  const start = props.data.Start - 180
-  const end = props.data.End - 180
-  const coverage = props.data.End - props.data.Start
+  const start = props.data.start - 180
+  const end = props.data.length - 180
+  const coverage = props.data.length - props.data.start
   const offsetCoverage = coverage * props.data.offsetV
-  const offsetScaledCoverage = (offsetCoverage + coverage) * props.data.ScaleV
+  const offsetScaledCoverage = (offsetCoverage + coverage) * props.data.scaleV
   const usableCanvas = coverage - offsetCoverage
 
   // const calculateOffsetV = () => {
@@ -88,9 +88,9 @@ const StickerCardDataPreview = props => {
             variant="static"
             value={coverageCircle}
             thickness={
-              10 - props.data.offsetU * 10 <= props.data.ScaleU * 10
+              10 - props.data.offsetU * 10 <= props.data.scaleU * 10
                 ? 10 - props.data.offsetU * 10
-                : props.data.ScaleU * 10
+                : props.data.scaleU * 10
             }
             size={80 - 38 * props.data.offsetU}
             style={{
