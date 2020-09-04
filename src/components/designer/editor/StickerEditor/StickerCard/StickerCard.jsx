@@ -9,6 +9,7 @@ import store from '../../../../../functions/store'
 import StickerCardDataPreview from './StickerCardDataPreview'
 import StickerCardEdit from './StickerCardEdit'
 import StickerList from './StickerList'
+import { Button } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   stickerCardPreview: props => ({
@@ -16,8 +17,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '340px',
-    height: '200px',
+    width: '380px',
+    height: '250px',
     margin: ' 0 0 1vh 0',
     padding: '8px',
     position: 'relative',
@@ -34,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
     position: 'relative',
     display: 'block',
+    marginLeft: '8px',
   }),
 
   editMode: {
@@ -92,6 +94,7 @@ const StickerCard = props => {
             }}
           />
         </div>
+        <div style={{ display: 'flex', width: '100%' }}></div>
         {list ? <StickerList setList={setList} /> : null}
         <IconButton
           style={{

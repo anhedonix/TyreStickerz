@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
   coverageCircle: {
     width: '100%',
-    height: '50px',
+    height: '80px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -31,13 +31,13 @@ const useStyles = makeStyles(theme => ({
     margin: '4px',
   },
   data: {
-    margin: '8px',
+    // margin: '8px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     // flexGrow: '1',
     // width: '50px',
-    // alignItems: 'center'
+    alignItems: 'center',
   },
 }))
 

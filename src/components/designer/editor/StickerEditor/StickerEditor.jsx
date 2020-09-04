@@ -98,7 +98,7 @@ const StickerEditor = ({
           style={{
             minHeight: 480,
             height: 'calc(80vh - 100px)',
-            width: 360,
+            width: 400,
           }}
           universal
         >
