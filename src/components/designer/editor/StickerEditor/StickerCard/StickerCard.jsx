@@ -29,10 +29,10 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    '&:hover': {
-      backgroundColor: '#8888',
-      cursor: 'pointer',
-    },
+    // '&:hover': {
+    //   backgroundColor: '#8888',
+    //   cursor: 'pointer',
+    // },
     position: 'relative',
     display: 'block',
     marginLeft: '8px',
@@ -74,27 +74,42 @@ const StickerCard = props => {
         elevation={1}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: props.edit || list ? '550px' : '100px' }}
+        style={{ height: props.edit || list ? '620px' : '140px' }}
       >
         <div style={{ display: 'flex', width: '100%' }}>
-          <StickerCardDataPreview
-            data={props.data}
-            onClick={() => {
-              setList(false)
-              props.setCurrentSticker(props.data)
-            }}
-          />
+          <StickerCardDataPreview data={props.data} />
           <div
             className={classes.image}
             style={{
               backgroundImage: `url(${image})`,
             }}
-            onClick={() => {
-              setList(!list)
-            }}
           />
         </div>
-        <div style={{ display: 'flex', width: '100%' }}></div>
+        {!props.edit && !list ? (
+          <div style={{ display: 'flex', width: '100%' }}>
+            <Button
+              variant="outlined"
+              style={{ width: '20%' }}
+              color="primary"
+              onClick={() => {
+                setList(false)
+                props.setCurrentSticker(props.data)
+              }}
+            >
+              edit
+            </Button>
+            <Button
+              variant="outlined"
+              style={{ width: '80%' }}
+              color="primary"
+              onClick={() => {
+                setList(!list)
+              }}
+            >
+              Select Sticker
+            </Button>
+          </div>
+        ) : null}
         {list ? <StickerList setList={setList} /> : null}
         <IconButton
           style={{

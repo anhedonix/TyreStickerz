@@ -14,11 +14,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     // padding: '4px',
-    '&:hover': {
-      // opacity: '.5',
-      backgroundColor: '#8888',
-      cursor: 'pointer',
-    },
+    // '&:hover': {
+    //   // opacity: '.5',
+    //   backgroundColor: '#8888',
+    //   cursor: 'pointer',
+    // },
   },
   coverageCircle: {
     width: '100%',
