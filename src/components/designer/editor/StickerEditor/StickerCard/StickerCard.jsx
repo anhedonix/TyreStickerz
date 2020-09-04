@@ -65,7 +65,7 @@ const StickerCard = props => {
   const [sticker, setSticker] = useState(props.data)
 
   useEffect(() => {
-    store.getFileUrl(props.data.texture.path).then(i => setImage(i))
+    // store.getFileUrl(props.data.texture.path).then((i) => setImage(i))
   }, [])
 
   return (
@@ -87,15 +87,7 @@ const StickerCard = props => {
         </div>
         {!props.edit && !list ? (
           <div style={{ display: 'flex', width: '100%' }}>
-            <Button
-              variant="outlined"
-              style={{ width: '20%' }}
-              color="primary"
-              onClick={() => {
-                setList(false)
-                props.setCurrentSticker(props.data)
-              }}
-            >
+            <Button variant="outlined" style={{ width: '20%' }} color="primary">
               edit
             </Button>
             <Button

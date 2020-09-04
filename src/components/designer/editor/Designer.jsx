@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
-
+import store from '../../../functions/store'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
 import { types as textureTypes } from '../../../constants/Designer/textureTypes'
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const defaults = () => {
-  return {
+  const value = {
     uid: uuid(),
     proportional: false,
     start: 45,
@@ -38,12 +38,17 @@ const defaults = () => {
     offsetV: 0,
     scaleU: 1,
     scaleV: 1,
-    mirror: true,
+    mirror: false,
     texture: {
       type: textureTypes.raster,
-      path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
+      path: null,
     },
   }
+  const test = store.getFileUrlAsync(
+    'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png'
+  )
+  console.log(test)
+  return value
 }
 
 const Designer = () => {
@@ -69,10 +74,7 @@ const Designer = () => {
   }, [])
 
   const createNewStickerCard = () => {
-    setStickersList([
-      { ...defaults(), index: stickersList.length },
-      ...stickersList,
-    ])
+    setStickersList([{ index: stickersList.length }, ...stickersList])
   }
 
   const updateStickersList = (action, sticker = null) => {
@@ -98,14 +100,14 @@ const Designer = () => {
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>
-        <Canvas
+        {/* <Canvas
           stickers={stickersList}
           currentSticker={currentSticker}
           rim={rim}
           wheel={wheel}
           accessories={accessories}
           stickerMesh={sticker}
-        />
+        /> */}
       </div>
       <StickerEditor
         stickers={stickersList}

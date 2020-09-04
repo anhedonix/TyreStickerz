@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
 import Button from '@material-ui/core/Button'
+import Switch from '@material-ui/core/Switch'
 import { useState } from 'react'
 
 const useStyles = makeStyles(theme => ({
@@ -106,6 +107,16 @@ const StickerCardEdit = props => {
         max={1}
         onChange={(e, v) => {
           props.update({ ...sticker, scaleV: v })
+        }}
+      />
+      <Typography id="discrete-slider" gutterBottom>
+        Mirror
+      </Typography>
+      <Switch
+        value={sticker.mirror}
+        checked={sticker.mirror}
+        onChange={(e, v) => {
+          props.update({ ...sticker, mirror: v })
         }}
       />
       <Button
