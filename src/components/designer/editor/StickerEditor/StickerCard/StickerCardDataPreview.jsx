@@ -14,15 +14,21 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     // padding: '4px',
-    // '&:hover': {
-    //   // opacity: '.5',
-    //   backgroundColor: '#8888',
-    //   cursor: 'pointer',
-    // },
+    '&:hover': {
+      // opacity: '.5',
+      backgroundColor: '#8888',
+      cursor: 'pointer',
+    },
+    '& circle': {
+      transition: 'none',
+    },
+    '& div': {
+      transition: 'none',
+    },
   },
   coverageCircle: {
     width: '100%',
-    height: '80px',
+    height: '50px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -31,13 +37,13 @@ const useStyles = makeStyles(theme => ({
     margin: '4px',
   },
   data: {
-    // margin: '8px',
+    margin: '8px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     // flexGrow: '1',
     // width: '50px',
-    alignItems: 'center',
+    // alignItems: 'center'
   },
 }))
 
