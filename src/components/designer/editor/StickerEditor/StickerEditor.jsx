@@ -98,7 +98,7 @@ const StickerEditor = ({
           style={{
             minHeight: 480,
             height: 'calc(80vh - 100px)',
-            width: 360,
+            width: 400,
           }}
           universal
         >
@@ -118,7 +118,9 @@ const StickerEditor = ({
                 <StickerCard
                   key={e.uid}
                   data={e}
-                  setCurrentSticker={setCurrentSticker}
+                  setCurrentSticker={() => {
+                    setCurrentSticker(e)
+                  }}
                   update={update}
                 />
               )

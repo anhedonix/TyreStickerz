@@ -1,8 +1,9 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import IconButton from '@material-ui/core/IconButton'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import RemoveIcon from '@material-ui/icons/Remove'
+import EditIcon from '@material-ui/icons/Edit'
 import ChangeHistoryIcon from '@material-ui/icons/ChangeHistory'
 import ChangeHistoryTwoToneIcon from '@material-ui/icons/ChangeHistoryTwoTone'
 
@@ -14,10 +15,16 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     // padding: '4px',
-    '&:hover': {
-      // opacity: '.5',
-      backgroundColor: '#8888',
-      cursor: 'pointer',
+    // '&:hover': {
+    //   // opacity: '.5',
+    //   backgroundColor: '#8888',
+    //   cursor: 'pointer',
+    // },
+    '& circle': {
+      transition: 'none',
+    },
+    '& div': {
+      transition: 'none',
     },
   },
   coverageCircle: {
@@ -41,6 +48,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const thickness = 8
+const size = 80
+
 const StickerCardDataPreview = props => {
   const classes = useStyles()
 
@@ -62,65 +72,87 @@ const StickerCardDataPreview = props => {
       : (offsetScaledCoverage / 360) * 100
 
   return (
-    <div
-      className={classes.stickerCardDataPreview}
-      onClick={() => {
-        // console.log('editMode')
-      }}
-      {...props}
-    >
+    <div className={classes.stickerCardDataPreview}>
       <div className={classes.data}>
         <div className={classes.coverageCircle}>
           <CircularProgress
             variant="static"
             value={100}
-            size={80}
+            size={size}
             style={{
               opacity: '0.6',
               color: 'black',
               // height: '90px',
               // position: 'absolute',
             }}
-            thickness={10}
+            thickness={thickness}
           />
 
           <CircularProgress
             variant="static"
             value={coverageCircle}
             thickness={
-              10 - props.data.offsetU * 10 <= props.data.scaleU * 10
-                ? 10 - props.data.offsetU * 10
-                : props.data.scaleU * 10
+              thickness - props.data.offsetU * thickness <=
+              props.data.scaleU * thickness
+                ? thickness - props.data.offsetU * thickness
+                : props.data.scaleU * thickness
             }
-            size={80 - 38 * props.data.offsetU}
+            size={size - 38 * props.data.offsetU}
             style={{
               position: 'absolute',
               transform: `rotate(${start + offsetCoverage}deg)`,
-              color: 'white',
+              opacity: '.4',
+              color: '#8cf',
             }}
           />
+          {props.data.mirror && (
+            <CircularProgress
+              variant="static"
+              value={coverageCircle}
+              thickness={
+                thickness - props.data.offsetU * thickness <=
+                props.data.scaleU * thickness
+                  ? thickness - props.data.offsetU * thickness
+                  : props.data.scaleU * thickness
+              }
+              size={size - 38 * props.data.offsetU}
+              style={{
+                position: 'absolute',
+                transform: `rotate(${start + offsetCoverage + 180}deg)`,
+                opacity: '.3',
+                color: '#fff',
+              }}
+            />
+          )}
           <CircularProgress
             variant="static"
             value={2}
-            thickness={10}
-            size={80}
+            thickness={thickness}
+            size={size}
             style={{
               position: 'absolute',
               transform: `rotate(${start}deg)`,
-              color: 'green',
+              color: '#eeff00',
             }}
           />
           <CircularProgress
             variant="static"
             value={2}
-            thickness={10}
-            size={80}
+            thickness={thickness}
+            size={size}
             style={{
               position: 'absolute',
               transform: `rotate(${end}deg)`,
               color: 'red',
             }}
           />
+          <IconButton
+            style={{ position: 'absolute' }}
+            color="primary"
+            onClick={props.setCurrentSticker}
+          >
+            <EditIcon />
+          </IconButton>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
-
+import store from '../../../functions/store'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
 import { types as textureTypes } from '../../../constants/Designer/textureTypes'
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const defaults = () => {
-  return {
+  const value = {
     uid: uuid(),
     proportional: false,
     start: 45,
@@ -38,41 +38,60 @@ const defaults = () => {
     offsetV: 0,
     scaleU: 1,
     scaleV: 1,
-    mirror: true,
+    mirror: false,
     texture: {
       type: textureTypes.raster,
       path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
     },
   }
+  return value
+}
+
+const hydrateTexture = value => {
+  if (value.texture.type === textureTypes.raster) {
+    return new Promise((resolve, reject) => {
+      store
+        .getFileUrl(value.texture.path)
+        .then(texture_path =>
+          resolve({
+            ...value,
+            texture: { ...value.texture, file: texture_path },
+          })
+        )
+        .catch(err => reject(err))
+    })
+  } else {
+    return resolve(value)
+  }
 }
 
 const Designer = () => {
   const classes = useStyles()
-  const [stickersList, setStickersList] = useState([
-    { ...defaults(), index: 0 },
-  ])
+  const [stickersList, setStickersList] = useState([])
   const [wheel, setWheel] = useState()
   const [rim, setRim] = useState()
   const [accessories, setAccessories] = useState()
-  const [sticker, setSticker] = useState()
+  const [stickerMesh, setStickerMesh] = useState()
   const [currentSticker, setCurrentSticker] = useState()
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
       CONTENT.wheel.read(i.data.whl).then(j => {
         setWheel(j.tyre)
-        setSticker(j.stickerMesh)
+        store.getFileUrl(j.stickerMesh).then(e => setStickerMesh(e))
       })
       CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
       CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
     })
+    hydrateTexture(defaults()).then(val =>
+      setStickersList([{ ...val, index: 0 }])
+    )
   }, [])
 
   const createNewStickerCard = () => {
-    setStickersList([
-      { ...defaults(), index: stickersList.length },
-      ...stickersList,
-    ])
+    hydrateTexture(defaults()).then(val =>
+      setStickersList([{ ...val, index: stickersList.length }, ...stickersList])
+    )
   }
 
   const updateStickersList = (action, sticker = null) => {
@@ -99,12 +118,12 @@ const Designer = () => {
     <div className={classes.designer}>
       <div className={classes.canvas}>
         <Canvas
-          stickers={stickersList}
-          currentSticker={currentSticker}
           rim={rim}
           wheel={wheel}
           accessories={accessories}
-          stickerMesh={sticker}
+          stickerMesh={stickerMesh}
+          stickers={stickersList}
+          currentSticker={currentSticker}
         />
       </div>
       <StickerEditor

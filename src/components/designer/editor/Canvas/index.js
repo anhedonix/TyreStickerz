@@ -30,11 +30,18 @@ const MainCanvas = ({
           </>
         )}
 
-        {stickers.map((el, i) => {
-          if (currentSticker && currentSticker.uid === el.uid) {
+        {stickers.map((sticker_element, i) => {
+          if (currentSticker && currentSticker.uid === sticker_element.uid) {
             return null
           } else {
-            return <SDSM mesh={stickerMesh} data={el} key={el.uid} index={i} />
+            return (
+              <SDSM
+                mesh={stickerMesh}
+                data={sticker_element}
+                key={sticker_element.uid}
+                index={i}
+              />
+            )
           }
         })}
 
@@ -54,7 +61,9 @@ const MainCanvas = ({
             rotation={[-Math.PI / 2, 0, 0]}
           />
         )}
+
         {/* <TrackballControls noPan={true} target={[0, 30, 0]} /> */}
+
         <OrbitControls
           target={[0, 30, 0]}
           minDistance={120}
