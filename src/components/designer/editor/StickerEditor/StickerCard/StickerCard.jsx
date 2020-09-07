@@ -88,19 +88,21 @@ const StickerCard = props => {
 
         {list ? <StickerList setList={setList} /> : null}
 
-        <IconButton
-          style={{
-            display: 'block',
-            position: 'absolute',
-            top: -14,
-            right: -14,
-          }}
-          onClick={() => {
-            props.update('delete', props.data)
-          }}
-        >
-          <HighlightOffIcon />
-        </IconButton>
+        {!props.edit && (
+          <IconButton
+            style={{
+              display: 'block',
+              position: 'absolute',
+              top: -14,
+              right: -14,
+            }}
+            onClick={() => {
+              props.update('delete', props.data)
+            }}
+          >
+            <HighlightOffIcon />
+          </IconButton>
+        )}
 
         {props.edit && (
           <StickerCardEdit
