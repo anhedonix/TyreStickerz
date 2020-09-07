@@ -12,6 +12,7 @@ import initializeStickerMeshData from './initializeData'
 import store from '../../../../../functions/store'
 
 import { useThree, useLoader } from 'react-three-fiber'
+
 const BufferGeoCustom = ({ data, material, uvOffset }) => {
   const [geo, setGeo] = useState()
 

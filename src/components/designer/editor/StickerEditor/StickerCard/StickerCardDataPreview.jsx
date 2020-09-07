@@ -72,7 +72,7 @@ const StickerCardDataPreview = props => {
       : (offsetScaledCoverage / 360) * 100
 
   return (
-    <div className={classes.stickerCardDataPreview} {...props}>
+    <div className={classes.stickerCardDataPreview}>
       <div className={classes.data}>
         <div className={classes.coverageCircle}>
           <CircularProgress
@@ -110,9 +110,10 @@ const StickerCardDataPreview = props => {
               variant="static"
               value={coverageCircle}
               thickness={
-                10 - props.data.offsetU * 10 <= props.data.scaleU * 10
-                  ? 10 - props.data.offsetU * 10
-                  : props.data.scaleU * 10
+                thickness - props.data.offsetU * thickness <=
+                props.data.scaleU * thickness
+                  ? thickness - props.data.offsetU * thickness
+                  : props.data.scaleU * thickness
               }
               size={size - 38 * props.data.offsetU}
               style={{
@@ -148,7 +149,7 @@ const StickerCardDataPreview = props => {
           <IconButton
             style={{ position: 'absolute' }}
             color="primary"
-            onClick={() => {}}
+            onClick={props.setCurrentSticker}
           >
             <EditIcon />
           </IconButton>

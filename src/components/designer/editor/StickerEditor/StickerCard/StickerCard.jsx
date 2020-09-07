@@ -72,7 +72,10 @@ const StickerCard = props => {
         style={{ height: props.edit || list ? '620px' : '120px' }}
       >
         <div style={{ display: 'flex', width: '100%' }}>
-          <StickerCardDataPreview data={props.data} />
+          <StickerCardDataPreview
+            data={props.data}
+            setCurrentSticker={props.setCurrentSticker}
+          />
           <Paper className={classes.imageWrapper} variant="outlined">
             <div
               className={classes.image}
@@ -89,8 +92,8 @@ const StickerCard = props => {
           style={{
             display: 'block',
             position: 'absolute',
-            top: -12,
-            right: -24,
+            top: -14,
+            right: -14,
           }}
           onClick={() => {
             props.update('delete', props.data)

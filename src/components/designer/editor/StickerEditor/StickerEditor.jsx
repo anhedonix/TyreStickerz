@@ -118,7 +118,9 @@ const StickerEditor = ({
                 <StickerCard
                   key={e.uid}
                   data={e}
-                  setCurrentSticker={setCurrentSticker}
+                  setCurrentSticker={() => {
+                    setCurrentSticker(e)
+                  }}
                   update={update}
                 />
               )
