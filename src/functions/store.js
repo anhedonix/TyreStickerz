@@ -71,10 +71,6 @@ store.getFileUrl = path => {
   })
 }
 
-store.getFileUrlAsync = async path => {
-  return await await storage.ref().child(path).getDownloadURL()
-}
-
 store.getDoc = (collection, id) => {
   return new Promise((resolve, reject) => {
     const docRef = firestore
