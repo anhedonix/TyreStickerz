@@ -40,7 +40,7 @@ const content = {
       label: 'Sticker Mesh',
       editable: true,
       type: 'file',
-      format: '.sdx',
+      format: '.sdsm',
       path: 'Models/StickerMesh',
     },
     {

@@ -1,217 +1,141 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
-import ToggleButton from '@material-ui/lab/ToggleButton'
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
-import ArrowRightIcon from '@material-ui/icons/ArrowRight'
-import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { v4 as uuid } from 'uuid'
-import { Swipeable } from 'react-touch'
-import Slide from './Slide'
-import { useEffect } from 'react'
-import Canvas from './Canvas'
+import store from '../../../functions/store'
+import Canvas from './Canvas/index'
+import StickerEditor from './StickerEditor/StickerEditor'
+import { types as textureTypes } from '../../../constants/Designer/textureTypes'
+import StickerList from './StickerEditor/StickerCard/StickerList'
+import * as CONTENT from '../../../constants/contentTypes'
 
 const useStyles = makeStyles(theme => ({
   designer: {
     display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    flexGrow: '1',
+    width: '100vw',
+    height: `calc(100vh - 104px)`,
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
   },
-  breadCrumbs: {
-    margin: '0 0 2vh 10vw',
-    fontSize: '20px',
-    position: 'absolute',
-    bottom: '0',
-    left: '0',
-  },
-  viewport: {
-    flexGrow: '1',
-    height: '50vh',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-    position: 'relative',
-    justifyContent: 'space-evenly',
-  },
-  toggle: {
-    alignSelf: 'flex-end',
-    minWidth: '0',
-    margin: '0 2vw 0 0',
-    // position: 'absolute',
-  },
-  tyre: {
-    // flexGrow: '1',
-    // backgroundImage: `url('/Tyre.png')`,
-    alignSelf: 'center',
-    width: '60vh',
-    height: '60vh',
-    // backgroundSize: 'contain',
-    // backgroundRepeat: 'no-repeat',
-    // backgroundPosition: 'center',
-  },
-
-  image: {
-    height: '100%',
-    width: '100%',
-    backgroundImage: `url('/Tyre.png')`,
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'bottom',
-  },
-  slidebar: {
-    display: 'flex',
-    alignItems: 'center',
-    overflow: 'hidden',
-    // height: '20vh',
-    alignItems: 'center',
-    flexGrow: '0',
-    width: '100vw',
-    justifyContent: 'center',
-    paddingBottom: '4rem',
-  },
-  visibleSlides: {
-    overflow: 'hidden',
-    // flexGrow: '1',
-    // height: '30vh',
-    width: '84vw',
-  },
-  slides: slideValue => ({
-    display: 'flex',
-    flexGrow: '1',
-    // width: '80vw',
-    height: '100%',
-    // transform: `translateX(calc(100%*${-slideValue}))`,
-    // transition: 'transform 1.5s',
-  }),
-  arrow: {
-    height: '7vw',
-    width: '7vw',
-    cursor: 'pointer',
-    '& svg': {
-      height: '7vw',
-      width: '7vw',
-      opacity: '.7',
+  canvas: editMode => ({
+    height: `calc(100vh - 104px)`,
+    width: `84vw`,
+    '& div': {
+      overflow: 'visible',
     },
-  },
+    '& canvas:focus': {
+      outline: 'none',
+    },
+  }),
 }))
 
-const Designer = () => {
-  const [page, setPage] = useState(0)
-  const [list, setList] = useState([])
-  const [pages, setPages] = useState()
-  const [scrollSlice, setScrollSlice] = useState([])
-  const [selected, setSelected] = useState()
-  const classes = useStyles()
-
-  const data = () => {
-    return {
-      image: '/Tyre.png',
-      info: {
-        header: 'Sticker',
-        description: 'description',
-        meta1: 'meta1',
-        meta2: 'meta2',
-        uuid: uuid().slice(0, 8),
-      },
-    }
+const defaults = () => {
+  const value = {
+    uid: uuid(),
+    proportional: false,
+    start: 45,
+    length: 90,
+    offsetU: 0,
+    offsetV: 0,
+    scaleU: 1,
+    scaleV: 1,
+    mirror: false,
+    texture: {
+      type: textureTypes.raster,
+      path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
+    },
   }
+  return value
+}
+
+const hydrateTexture = value => {
+  if (value.texture.type === textureTypes.raster) {
+    return new Promise((resolve, reject) => {
+      store
+        .getFileUrl(value.texture.path)
+        .then(texture_path =>
+          resolve({
+            ...value,
+            texture: { ...value.texture, file: texture_path },
+          })
+        )
+        .catch(err => reject(err))
+    })
+  } else {
+    return resolve(value)
+  }
+}
+
+const Designer = () => {
+  const classes = useStyles()
+  const [stickersList, setStickersList] = useState([])
+  const [wheel, setWheel] = useState()
+  const [rim, setRim] = useState()
+  const [accessories, setAccessories] = useState()
+  const [stickerMesh, setStickerMesh] = useState()
+  const [currentSticker, setCurrentSticker] = useState()
 
   useEffect(() => {
-    let tempList = []
-
-    for (let i = 0; i < 100; i++) {
-      const currentData = data()
-
-      tempList.push(currentData)
-    }
-    setList(tempList)
-    setPage(0)
+    axios.get('/api/defaults').then(i => {
+      CONTENT.wheel.read(i.data.whl).then(j => {
+        setWheel(j.tyre)
+        store.getFileUrl(j.stickerMesh).then(e => setStickerMesh(e))
+      })
+      CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
+      CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
+    })
+    hydrateTexture(defaults()).then(val =>
+      setStickersList([{ ...val, index: 0 }])
+    )
   }, [])
 
-  useEffect(() => {
-    setPages(Math.floor(list.length / 6))
-    setScrollSlice(list.slice(0, 6))
-  }, [list])
-
-  useEffect(() => {
-    setScrollSlice(list.slice(page * 6, page * 6 + 6))
-  }, [page])
-
-  const handleSelected = value => {
-    setSelected(value)
+  const createNewStickerCard = () => {
+    hydrateTexture(defaults()).then(val =>
+      setStickersList([{ ...val, index: stickersList.length }, ...stickersList])
+    )
   }
 
-  const handleScrollLeft = () => {
-    if (page != 0) {
-      setPage(page - 1)
-    }
-  }
-
-  const handleScrollRight = () => {
-    if (page < pages) {
-      setPage(page + 1)
+  const updateStickersList = (action, sticker = null) => {
+    let temp = [...stickersList]
+    if (action === 'delete') {
+      temp.map((e, i) => {
+        if (e.uid === sticker.uid) {
+          temp.splice(i, 1)
+        }
+      })
+      setStickersList(temp)
+    } else if (action === 'update') {
+      temp.map((e, i) => {
+        if (e.uid === currentSticker.uid) {
+          temp.splice(i, 1, { ...currentSticker, index: i })
+          setCurrentSticker()
+        }
+      })
+      setStickersList(temp)
     }
   }
 
   return (
     <div className={classes.designer}>
-      <div className={classes.viewport}>
-        <div className={classes.tyre}>
-          <Canvas />
-        </div>
-        <div className={classes.breadCrumbs}>
-          <div style={{ fontSize: '32px', fontWeight: '500' }}>Mazda MX5</div>
-          <div style={{ fontSize: '16px', opacity: '.6' }}>Tyre Stickers</div>
-          {selected !== undefined && (
-            <div style={{ fontSize: '24px' }}>Code: {selected}</div>
-          )}
-        </div>
+      <div className={classes.canvas}>
+        <Canvas
+          rim={rim}
+          wheel={wheel}
+          accessories={accessories}
+          stickerMesh={stickerMesh}
+          stickers={stickersList}
+          currentSticker={currentSticker}
+        />
       </div>
-      <div className={classes.slidebar}>
-        <div className={classes.arrow}>
-          {page !== 0 && (
-            <ArrowRightIcon
-              style={{ transform: 'rotate(180deg)' }}
-              onClick={() => handleScrollLeft()}
-            />
-          )}
-        </div>
-        <div className={classes.visibleSlides}>
-          <Swipeable
-            onSwipeLeft={handleScrollRight}
-            onSwipeRight={handleScrollLeft}
-          >
-            <div className={classes.slides}>
-              {scrollSlice.map((value, i) => (
-                <Slide
-                  info={value.info}
-                  image={value.image}
-                  key={i}
-                  id={value.info.uuid}
-                  order={i}
-                  page={page}
-                  handleSelected={handleSelected}
-                  selected={selected}
-                />
-              ))}
-            </div>
-          </Swipeable>
-        </div>
-        <div className={classes.arrow}>
-          {' '}
-          {page !== pages && (
-            <ArrowRightIcon
-              className={classes.arrow}
-              onClick={() => handleScrollRight()}
-            />
-          )}
-        </div>
-      </div>
+      <StickerEditor
+        stickers={stickersList}
+        currentSticker={currentSticker}
+        setCurrentSticker={setCurrentSticker}
+        create={createNewStickerCard}
+        update={updateStickersList}
+      />
     </div>
   )
 }

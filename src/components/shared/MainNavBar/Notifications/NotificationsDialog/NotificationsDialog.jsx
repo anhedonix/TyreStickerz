@@ -1,7 +1,7 @@
 import Popover from '@material-ui/core/Popover'
 import PropTypes from 'prop-types'
 import React from 'react'
-import Scroll from 'react-scrollbars-custom'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 import NotificationSection from '../NotificationSection/NotificationSection'
 
@@ -58,7 +58,7 @@ const NotificationsPopover = props => {
       }}
     >
       {props.open && (
-        <Scroll
+        <Scrollbars
           style={{
             minWidth: '200px',
             width: '90vw',
@@ -77,7 +77,7 @@ const NotificationsPopover = props => {
               dynamic={false}
             />
           )}
-        </Scroll>
+        </Scrollbars>
       )}
     </Popover>
   )

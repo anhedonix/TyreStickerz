@@ -15,7 +15,33 @@ service cloud.firestore {
     }
 
     match /users/{UserID} {
-      allow read, write: if userIsAdmin() || request.auth.uid == UserID;
+      allow read;
+      allow write: if userIsAdmin() || request.auth.uid == UserID;
+    }
+
+    match /StickerGraphics/{StickerID} {
+      allow read;
+      allow write: if userIsAdmin();
+    }
+
+    match /Environments/{EnvID} {
+      allow read;
+      allow write: if userIsAdmin();
+    }
+
+    match /Rims/{RimID} {
+      allow read;
+      allow write: if userIsAdmin();
+    }
+
+    match /Wheels/{WheelID} {
+      allow read;
+      allow write: if userIsAdmin();
+    }
+
+    match /Accessories/{AccessoryID} {
+      allow read;
+      allow write: if userIsAdmin();
     }
   }
 }
