@@ -26,7 +26,7 @@ const StickerCardEdit = props => {
         value={props.data.start}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={2.5}
+        step={3}
         marks
         min={0}
         max={360}
@@ -56,9 +56,9 @@ const StickerCardEdit = props => {
         value={sticker.offsetU}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={0.01}
+        step={0.1}
         marks
-        min={0}
+        min={-1}
         max={1}
         onChange={(e, v) => {
           props.update({ ...sticker, offsetU: v })
@@ -71,9 +71,9 @@ const StickerCardEdit = props => {
         value={sticker.offsetV}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={0.01}
+        step={0.1}
         marks
-        min={0}
+        min={-1}
         max={1}
         onChange={(e, v) => {
           props.update({ ...sticker, offsetV: v })
@@ -86,7 +86,7 @@ const StickerCardEdit = props => {
         value={sticker.scaleU}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={0.01}
+        step={0.1}
         marks
         min={0}
         max={1}
@@ -101,7 +101,7 @@ const StickerCardEdit = props => {
         value={sticker.scaleV}
         aria-labelledby="discrete-slider"
         valueLabelDisplay="auto"
-        step={0.01}
+        step={0.1}
         marks
         min={0}
         max={1}
