@@ -18,20 +18,25 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '380px',
-    height: '250px',
+    height: '200px',
     margin: ' 0 0 1vh 0',
     padding: '8px',
     position: 'relative',
   }),
-  image: props => ({
+  imageWrapper: props => ({
     width: '100%',
-    minHeight: '80px',
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
     position: 'relative',
     display: 'block',
     marginLeft: '8px',
+    padding: '0 8px',
+    backgroundColor: '#222222',
+  }),
+  image: props => ({
+    width: '100%',
+    minHeight: '100px',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
   }),
   editMode: {
     display: 'flex',
@@ -64,41 +69,28 @@ const StickerCard = props => {
         elevation={1}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: props.edit || list ? '620px' : '140px' }}
+        style={{ height: props.edit || list ? '620px' : '120px' }}
       >
         <div style={{ display: 'flex', width: '100%' }}>
           <StickerCardDataPreview data={props.data} />
-          <div
-            className={classes.image}
-            style={{
-              backgroundImage: `url(${sticker.texture.file})`,
-            }}
-          />
-        </div>
-        {!props.edit && !list ? (
-          <div style={{ display: 'flex', width: '100%' }}>
-            <Button variant="outlined" style={{ width: '20%' }} color="primary">
-              edit
-            </Button>
-            <Button
-              variant="outlined"
-              style={{ width: '80%' }}
-              color="primary"
-              onClick={() => {
-                setList(!list)
+          <Paper className={classes.imageWrapper} variant="outlined">
+            <div
+              className={classes.image}
+              style={{
+                backgroundImage: `url(${sticker.texture.file})`,
               }}
-            >
-              Select Sticker
-            </Button>
-          </div>
-        ) : null}
+            />
+          </Paper>
+        </div>
+
         {list ? <StickerList setList={setList} /> : null}
+
         <IconButton
           style={{
             display: 'block',
             position: 'absolute',
-            top: -5,
-            right: -5,
+            top: -12,
+            right: -24,
           }}
           onClick={() => {
             props.update('delete', props.data)
@@ -106,6 +98,7 @@ const StickerCard = props => {
         >
           <HighlightOffIcon />
         </IconButton>
+
         {props.edit && (
           <StickerCardEdit
             data={props.data}

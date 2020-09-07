@@ -48,6 +48,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const thickness = 8
+const size = 80
+
 const StickerCardDataPreview = props => {
   const classes = useStyles()
 
@@ -75,25 +78,26 @@ const StickerCardDataPreview = props => {
           <CircularProgress
             variant="static"
             value={100}
-            size={80}
+            size={size}
             style={{
               opacity: '0.6',
               color: 'black',
               // height: '90px',
               // position: 'absolute',
             }}
-            thickness={10}
+            thickness={thickness}
           />
 
           <CircularProgress
             variant="static"
             value={coverageCircle}
             thickness={
-              10 - props.data.offsetU * 10 <= props.data.scaleU * 10
-                ? 10 - props.data.offsetU * 10
-                : props.data.scaleU * 10
+              thickness - props.data.offsetU * thickness <=
+              props.data.scaleU * thickness
+                ? thickness - props.data.offsetU * thickness
+                : props.data.scaleU * thickness
             }
-            size={80 - 38 * props.data.offsetU}
+            size={size - 38 * props.data.offsetU}
             style={{
               position: 'absolute',
               transform: `rotate(${start + offsetCoverage}deg)`,
@@ -110,7 +114,7 @@ const StickerCardDataPreview = props => {
                   ? 10 - props.data.offsetU * 10
                   : props.data.scaleU * 10
               }
-              size={80 - 38 * props.data.offsetU}
+              size={size - 38 * props.data.offsetU}
               style={{
                 position: 'absolute',
                 transform: `rotate(${start + offsetCoverage + 180}deg)`,
@@ -122,8 +126,8 @@ const StickerCardDataPreview = props => {
           <CircularProgress
             variant="static"
             value={2}
-            thickness={10}
-            size={80}
+            thickness={thickness}
+            size={size}
             style={{
               position: 'absolute',
               transform: `rotate(${start}deg)`,
@@ -133,8 +137,8 @@ const StickerCardDataPreview = props => {
           <CircularProgress
             variant="static"
             value={2}
-            thickness={10}
-            size={80}
+            thickness={thickness}
+            size={size}
             style={{
               position: 'absolute',
               transform: `rotate(${end}deg)`,
