@@ -13,7 +13,7 @@ import store from '../../../../../functions/store'
 
 import { useThree, useLoader } from 'react-three-fiber'
 
-const BufferGeoCustom = ({ data, material, uvOffset }) => {
+const BufferGeoCustom = ({ data, material, uvOffset, offset }) => {
   const [geo, setGeo] = useState()
 
   const geoRef = element => {
@@ -36,12 +36,12 @@ const BufferGeoCustom = ({ data, material, uvOffset }) => {
         new THREE.Float32BufferAttribute(
           data.uv.map((i, j) => {
             if (j % 2) {
-              return i
+              return i + offset.offsetU
             } else {
               const iter = uvOffset[0]
               const end = uvOffset[1]
               const val = i
-              return (val + iter) / (end / 3)
+              return (val + iter) / (end / 3) - offset.offsetV
             }
           }),
           2
@@ -93,7 +93,7 @@ const SDSM = ({ mesh, data, index }) => {
 
   const final_mesh = model && (
     <group
-      position={[model.c[0] + index * 0.1, model.c[1], model.c[2]]}
+      position={[model.c[0] + index * 0.05, model.c[1], model.c[2]]}
       scale={[1, 1, -1]}
     >
       {[...Array(parseInt(data.length / 3)).keys()].map(i => {
@@ -112,6 +112,7 @@ const SDSM = ({ mesh, data, index }) => {
                 material={ready && material()}
                 uvOffset={[i, data.length]}
                 key={i}
+                offset={data}
               />
             </mesh>
           </group>

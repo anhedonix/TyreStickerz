@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '380px',
+    width: '370px',
     height: '200px',
-    margin: ' 0 0 1vh 0',
+    margin: ' 0 0 1vh 10px',
     padding: '8px',
     position: 'relative',
   }),
@@ -66,7 +66,7 @@ const StickerCard = props => {
   return (
     <DarkThemeContainer>
       <Paper
-        elevation={1}
+        elevation={6}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
         style={{ height: props.edit || list ? '620px' : '120px' }}
