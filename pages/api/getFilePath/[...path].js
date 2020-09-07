@@ -1,5 +1,4 @@
 import store from '../../../src/functions/store'
-import { urlObjectKeys } from 'next/dist/next-server/lib/utils'
 
 export default (req, res) => {
   const {
@@ -8,12 +7,12 @@ export default (req, res) => {
   console.log(path)
   store
     .getFileUrl(path.join('/'))
-    .then((url) => {
+    .then(url => {
       res.statusCode = 200
       res.setHeader('Content-Type', 'application/json')
       res.end(`path: ${url}`)
     })
-    .catch((err) => {
+    .catch(err => {
       res.end(`error: ${err.msg}`)
     })
 }
