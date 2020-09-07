@@ -25,6 +25,9 @@ const useStyles = makeStyles(theme => ({
     '& div': {
       overflow: 'visible',
     },
+    '& canvas:focus': {
+      outline: 'none',
+    },
   }),
 }))
 
