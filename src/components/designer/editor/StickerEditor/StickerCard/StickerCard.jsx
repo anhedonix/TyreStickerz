@@ -29,15 +29,10 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    // '&:hover': {
-    //   backgroundColor: '#8888',
-    //   cursor: 'pointer',
-    // },
     position: 'relative',
     display: 'block',
     marginLeft: '8px',
   }),
-
   editMode: {
     display: 'flex',
     transition: 'height 500ms',
@@ -61,12 +56,7 @@ const useStyles = makeStyles(theme => ({
 const StickerCard = props => {
   const [list, setList] = useState(false)
   const classes = useStyles(props)
-  const [image, setImage] = useState()
   const [sticker, setSticker] = useState(props.data)
-
-  useEffect(() => {
-    // store.getFileUrl(props.data.texture.path).then((i) => setImage(i))
-  }, [])
 
   return (
     <DarkThemeContainer>
@@ -81,7 +71,7 @@ const StickerCard = props => {
           <div
             className={classes.image}
             style={{
-              backgroundImage: `url(${image})`,
+              backgroundImage: `url(${sticker.texture.file})`,
             }}
           />
         </div>

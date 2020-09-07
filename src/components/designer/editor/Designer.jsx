@@ -41,40 +41,57 @@ const defaults = () => {
     mirror: false,
     texture: {
       type: textureTypes.raster,
-      path: null,
+      path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
     },
   }
-  const test = store.getFileUrlAsync(
-    'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png'
-  )
-  console.log(test)
   return value
+}
+
+const hydrateTexture = value => {
+  if (value.texture.type === textureTypes.raster) {
+    return new Promise((resolve, reject) => {
+      store
+        .getFileUrl(value.texture.path)
+        .then(texture_path =>
+          resolve({
+            ...value,
+            texture: { ...value.texture, file: texture_path },
+          })
+        )
+        .catch(err => reject(err))
+    })
+  } else {
+    return resolve(value)
+  }
 }
 
 const Designer = () => {
   const classes = useStyles()
-  const [stickersList, setStickersList] = useState([
-    { ...defaults(), index: 0 },
-  ])
+  const [stickersList, setStickersList] = useState([])
   const [wheel, setWheel] = useState()
   const [rim, setRim] = useState()
   const [accessories, setAccessories] = useState()
-  const [sticker, setSticker] = useState()
+  const [stickerMesh, setStickerMesh] = useState()
   const [currentSticker, setCurrentSticker] = useState()
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
       CONTENT.wheel.read(i.data.whl).then(j => {
         setWheel(j.tyre)
-        setSticker(j.stickerMesh)
+        setStickerMesh(j.stickerMesh)
       })
       CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
       CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
     })
+    hydrateTexture(defaults()).then(val =>
+      setStickersList([{ ...val, index: 0 }])
+    )
   }, [])
 
   const createNewStickerCard = () => {
-    setStickersList([{ index: stickersList.length }, ...stickersList])
+    hydrateTexture(defaults()).then(val =>
+      setStickersList([{ ...val, index: stickersList.length }, ...stickersList])
+    )
   }
 
   const updateStickersList = (action, sticker = null) => {
@@ -100,14 +117,14 @@ const Designer = () => {
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>
-        {/* <Canvas
-          stickers={stickersList}
-          currentSticker={currentSticker}
+        <Canvas
           rim={rim}
           wheel={wheel}
           accessories={accessories}
-          stickerMesh={sticker}
-        /> */}
+          stickerMesh={stickerMesh}
+          stickers={stickersList}
+          currentSticker={currentSticker}
+        />
       </div>
       <StickerEditor
         stickers={stickersList}
