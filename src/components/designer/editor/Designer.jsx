@@ -78,7 +78,7 @@ const Designer = () => {
     axios.get('/api/defaults').then(i => {
       CONTENT.wheel.read(i.data.whl).then(j => {
         setWheel(j.tyre)
-        setStickerMesh(j.stickerMesh)
+        store.getFileUrl(j.stickerMesh).then(e => setStickerMesh(e))
       })
       CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
       CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))

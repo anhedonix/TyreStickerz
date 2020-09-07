@@ -61,10 +61,9 @@ const SDSM = ({ mesh, data, index }) => {
 
   useEffect(() => {
     const initialize = async () => {
-      const c_data = await BasicLoader(await store.getFileUrl(mesh))
+      const c_data = await BasicLoader(mesh)
       setModel(initializeStickerMeshData(c_data))
-      const texture_path = await store.getFileUrl(data.texture.path)
-      var texture_map = new THREE.TextureLoader().load(texture_path)
+      var texture_map = new THREE.TextureLoader().load(data.texture.file)
       texture_map.wrapS = THREE.ClampToEdgeWrapping
       texture_map.wrapT = THREE.ClampToEdgeWrapping
       texture_map.minFilter = THREE.LinearFilter
@@ -90,9 +89,10 @@ const SDSM = ({ mesh, data, index }) => {
       envMap: scene.environment,
     })
   }
+
   const final_mesh = model && (
     <group
-      position={[model.c[0] + index * 0.01, model.c[1], model.c[2]]}
+      position={[model.c[0] + index * 0.1, model.c[1], model.c[2]]}
       scale={[1, 1, -1]}
     >
       {[...Array(parseInt(data.length / 3)).keys()].map(i => {
