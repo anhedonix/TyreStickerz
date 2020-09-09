@@ -6,6 +6,7 @@ import React, { useRef, useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import StickerCard from './StickerCard_1/StickerCard'
 
+import StickerEditMode from './StickerCard_1/StickerCardEditMode'
 const useStyles = makeStyles(theme => ({
   stickerWrapper: {
     float: 'right',
@@ -81,56 +82,57 @@ const StickerEditor = ({
     borderBottom: '1px solid rgba(255,255,255,0.1)',
     transition: 'opacity 200ms',
   }
-
   return (
     <div className={classes.stickerWrapper}>
-      <IconButton
-        onClick={create}
-        className={classes.addStickerCard}
-        disabled={stickers.length >= maxStickers}
-      >
-        <AddCircleIcon fontSize="large" />
-      </IconButton>
-      {`${stickers.length} of ${maxStickers}`}
-      <div style={{ position: 'relative' }}>
-        <Scrollbars
-          onUpdate={handleScroll}
-          style={{
-            minHeight: 480,
-            height: 'calc(80vh - 100px)',
-            width: 400,
-          }}
-          universal
-        >
-          {stickers.map(e => {
-            if (currentSticker && e.uid === currentSticker.uid) {
-              return (
-                <StickerCard
-                  edit
-                  key={e.uid}
-                  data={currentSticker}
-                  update={setCurrentSticker}
-                  apply={update}
-                />
-              )
-            } else {
-              return (
-                <StickerCard
-                  key={e.uid}
-                  data={e}
-                  setCurrentSticker={() => {
-                    setCurrentSticker(e)
-                  }}
-                  update={update}
-                />
-              )
-            }
-          })}
-        </Scrollbars>
+      {!currentSticker ? (
+        <>
+          <IconButton
+            onClick={create}
+            className={classes.addStickerCard}
+            disabled={stickers.length >= maxStickers}
+          >
+            <AddCircleIcon fontSize="large" />
+          </IconButton>
+          {`${stickers.length} of ${maxStickers}`}
+          <div style={{ position: 'relative' }}>
+            <Scrollbars
+              onUpdate={handleScroll}
+              style={{
+                minHeight: 480,
+                height: 'calc(80vh - 100px)',
+                width: 400,
+              }}
+              universal
+            >
+              {stickers.map(e => {
+                return (
+                  <StickerCard
+                    key={e.uid}
+                    data={e}
+                    setCurrentSticker={() => {
+                      setCurrentSticker(e)
+                    }}
+                    update={update}
+                  />
+                )
+              })}
+            </Scrollbars>
 
-        <div ref={shadowTop} style={shadowTopStyle} />
-        <div ref={shadowBottom} style={shadowBottomStyle} />
-      </div>
+            <div ref={shadowTop} style={shadowTopStyle} />
+            <div ref={shadowBottom} style={shadowBottomStyle} />
+          </div>
+        </>
+      ) : (
+        <div
+          style={{ position: 'relative', width: '400px', overflow: 'hidden' }}
+        >
+          <StickerEditMode
+            data={currentSticker}
+            update={setCurrentSticker}
+            apply={update}
+          />
+        </div>
+      )}
     </div>
   )
 }

@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     margin: '4px',
   },
 }))
+const previewValues = { size: 60, thickness: 8 }
 
 const StickerDataPreview = props => {
   const classes = useStyles()
@@ -37,7 +38,7 @@ const StickerDataPreview = props => {
   return (
     <div className={classes.stickerCardDataPreview}>
       <div style={{ width: '100px' }}>
-        <TyrePreview data={props.data} />
+        <TyrePreview data={props.data} {...previewValues} />
       </div>
       <div
         style={{

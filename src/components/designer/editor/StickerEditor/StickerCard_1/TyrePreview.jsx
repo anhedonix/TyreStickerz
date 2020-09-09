@@ -5,7 +5,8 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 const useStyles = makeStyles(theme => ({
   coverageCircle: {
     width: '100%',
-    height: '80px',
+    // height: '80px',
+    // flexGrow: '1',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -15,9 +16,6 @@ const useStyles = makeStyles(theme => ({
     backgroundPosition: 'center',
   },
 }))
-
-const thickness = 8
-const size = 80
 
 const TyrePreview = props => {
   const classes = useStyles()
@@ -40,7 +38,7 @@ const TyrePreview = props => {
       : (offsetScaledCoverage / 360) * 100
 
   return (
-    <div className={classes.coverageCircle}>
+    <div className={classes.coverageCircle} style={{ height: props.size }}>
       {/* <CircularProgress
             variant='static'
             value={100}
@@ -51,24 +49,24 @@ const TyrePreview = props => {
               // height: '90px',
               // position: 'absolute',
             }}
-            thickness={thickness}
+            props.thickness={props.thickness}
           /> */}
 
       <CircularProgress
         variant="static"
         value={coverageCircle}
         thickness={
-          thickness - props.data.offsetU * thickness <=
-          props.data.scaleU * thickness
-            ? thickness - props.data.offsetU * thickness
-            : props.data.scaleU * thickness
+          props.thickness - props.data.offsetU * props.thickness <=
+          props.data.scaleU * props.thickness
+            ? props.thickness - props.data.offsetU * props.thickness
+            : props.data.scaleU * props.thickness
         }
-        size={size - 38 * props.data.offsetU}
+        size={props.size - 38 * props.data.offsetU}
         style={{
           position: 'absolute',
           transform: `rotate(${start + offsetCoverage}deg)`,
           opacity: '.4',
-          color: '#8cf',
+          color: '#ccc',
         }}
       />
       {props.data.mirror && (
@@ -76,12 +74,12 @@ const TyrePreview = props => {
           variant="static"
           value={coverageCircle}
           thickness={
-            thickness - props.data.offsetU * thickness <=
-            props.data.scaleU * thickness
-              ? thickness - props.data.offsetU * thickness
-              : props.data.scaleU * thickness
+            props.thickness - props.data.offsetU * props.thickness <=
+            props.data.scaleU * props.thickness
+              ? props.thickness - props.data.offsetU * props.thickness
+              : props.data.scaleU * props.thickness
           }
-          size={size - 38 * props.data.offsetU}
+          size={props.size - 38 * props.data.offsetU}
           style={{
             position: 'absolute',
             transform: `rotate(${start + offsetCoverage + 180}deg)`,
@@ -92,9 +90,9 @@ const TyrePreview = props => {
       )}
       <CircularProgress
         variant="static"
-        value={2}
-        thickness={thickness}
-        size={size}
+        value={100 / 180}
+        thickness={props.thickness}
+        size={props.size}
         style={{
           position: 'absolute',
           transform: `rotate(${start}deg)`,
@@ -103,9 +101,9 @@ const TyrePreview = props => {
       />
       <CircularProgress
         variant="static"
-        value={2}
-        thickness={thickness}
-        size={size}
+        value={100 / 180}
+        thickness={props.thickness}
+        size={props.size}
         style={{
           position: 'absolute',
           transform: `rotate(${end}deg)`,

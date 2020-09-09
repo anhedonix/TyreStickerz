@@ -64,7 +64,10 @@ const StickerCard = props => {
         elevation={6}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: props.edit || list ? '620px' : '100px' }}
+        style={{
+          height: props.edit || list ? '620px' : '100px',
+          borderRadius: props.edit && '175px 175px 4px 4px',
+        }}
       >
         {!props.edit ? (
           <StickerCardPreview
