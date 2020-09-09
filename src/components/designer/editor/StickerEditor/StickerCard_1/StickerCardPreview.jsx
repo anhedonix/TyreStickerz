@@ -1,15 +1,15 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import IconButton from '@material-ui/core/IconButton'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import EditIcon from '@material-ui/icons/Edit'
-import ChangeHistoryIcon from '@material-ui/icons/ChangeHistory'
-import ChangeHistoryTwoToneIcon from '@material-ui/icons/ChangeHistoryTwoTone'
+import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+
+import TyrePreview from './TyrePreview'
 
 const useStyles = makeStyles(theme => ({
   stickerCardDataPreview: {
-    width: '100px',
+    width: '100%',
+    flexGrow: '1',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -26,128 +26,64 @@ const useStyles = makeStyles(theme => ({
       transition: 'none',
     },
   },
-  coverageCircle: {
-    width: '100%',
-    height: '100px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundImage: `url('TyrePreview.png')`,
-    backgroundSize: 'contain',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-  },
   dataTitle: {
     margin: '4px',
   },
 }))
 
-const thickness = 8
-const size = 100
-
 const StickerDataPreview = props => {
   const classes = useStyles()
 
-  const start = props.data.start - 180
-  const end = props.data.start + props.data.length - 180
-  const coverage = props.data.length
-  const offsetCoverage = coverage * props.data.offsetV
-  const offsetScaledCoverage = (offsetCoverage + coverage) * props.data.scaleV
-  const usableCanvas = coverage - offsetCoverage
-  const scale = { x: '100', y: '100' }
-
-  // const calculateOffsetV = () => {
-  //   const usedDegree = props.data.End - props.data.Start
-  //   const offsetV = props.data.Start + usedDegree * props.data.offsetV
-  //   return offsetV
-  // }
-  const coverageCircle =
-    offsetScaledCoverage >= usableCanvas
-      ? (usableCanvas / 360) * 100
-      : (offsetScaledCoverage / 360) * 100
-
   return (
     <div className={classes.stickerCardDataPreview}>
-      <div className={classes.coverageCircle}>
-        {/* <CircularProgress
-            variant='static'
-            value={100}
-            size={size}
-            style={{
-              opacity: '0.6',
-              color: 'black',
-              // height: '90px',
-              // position: 'absolute',
-            }}
-            thickness={thickness}
-          /> */}
-
-        <CircularProgress
-          variant="static"
-          value={coverageCircle}
-          thickness={
-            thickness - props.data.offsetU * thickness <=
-            props.data.scaleU * thickness
-              ? thickness - props.data.offsetU * thickness
-              : props.data.scaleU * thickness
-          }
-          size={size - 38 * props.data.offsetU}
-          style={{
-            position: 'absolute',
-            transform: `rotate(${start + offsetCoverage}deg)`,
-            opacity: '.4',
-            color: '#8cf',
-          }}
-        />
-        {props.data.mirror && (
-          <CircularProgress
-            variant="static"
-            value={coverageCircle}
-            thickness={
-              thickness - props.data.offsetU * thickness <=
-              props.data.scaleU * thickness
-                ? thickness - props.data.offsetU * thickness
-                : props.data.scaleU * thickness
-            }
-            size={size - 38 * props.data.offsetU}
-            style={{
-              position: 'absolute',
-              transform: `rotate(${start + offsetCoverage + 180}deg)`,
-              opacity: '.3',
-              color: '#fff',
-            }}
-          />
-        )}
-        <CircularProgress
-          variant="static"
-          value={2}
-          thickness={thickness}
-          size={size}
-          style={{
-            position: 'absolute',
-            transform: `rotate(${start}deg)`,
-            color: '#eeff00',
-          }}
-        />
-        <CircularProgress
-          variant="static"
-          value={2}
-          thickness={thickness}
-          size={size}
-          style={{
-            position: 'absolute',
-            transform: `rotate(${end}deg)`,
-            color: 'red',
-          }}
-        />
-        {/* <IconButton
-            style={{ position: 'absolute' }}
-            color='primary'
-            onClick={props.setCurrentSticker}
-          >
-            <EditIcon />
-          </IconButton> */}
+      <div style={{ width: '100px' }}>
+        <TyrePreview data={props.data} />
       </div>
+      <div
+        style={{
+          backgroundColor: 'black',
+          padding: '8px',
+          margin: '4px',
+          borderRadius: '.5rem',
+        }}
+      >
+        <div
+          className={classes.image}
+          style={{
+            backgroundImage: `url(${props.data.texture.file})`,
+            width: '170px',
+            height: '60px',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
+        />
+      </div>
+      <IconButton
+        variant="outline"
+        style={{
+          // backgroundColor: '#8888',
+          height: '60px',
+          width: '60px',
+          // color: 'orange',
+          margin: '16px 8px 0 4px',
+          border: 'solid 1px rgba(255,255,255,0.4)',
+        }}
+      >
+        <EditIcon style={{ fontSize: '40px' }} />
+      </IconButton>
+
+      <IconButton
+        style={{
+          display: 'block',
+          position: 'absolute',
+          top: -8,
+          right: -8,
+          opacity: '.5',
+        }}
+      >
+        <HighlightOffIcon />
+      </IconButton>
     </div>
   )
 }

@@ -9,13 +9,14 @@ const useStyles = makeStyles(theme => ({
   stickerCardPreview: props => ({
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     width: '370px',
-    height: '200px',
+    height: '150px',
     margin: ' 0 0 1vh 10px',
     padding: '8px',
     position: 'relative',
+    borderRadius: '75px 0 75px 75px',
   }),
   imageWrapper: props => ({
     width: '100%',
@@ -63,7 +64,7 @@ const StickerCard = props => {
         elevation={6}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
-        style={{ height: props.edit || list ? '620px' : '120px' }}
+        style={{ height: props.edit || list ? '620px' : '100px' }}
       >
         {!props.edit ? (
           <StickerCardPreview
