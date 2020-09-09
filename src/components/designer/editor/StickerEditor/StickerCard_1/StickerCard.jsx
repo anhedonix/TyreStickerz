@@ -70,6 +70,7 @@ const StickerCard = props => {
           <StickerCardPreview
             data={props.data}
             setCurrentSticker={props.setCurrentSticker}
+            update={props.update}
           />
         ) : (
           <StickerCardEditMode

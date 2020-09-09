@@ -69,6 +69,7 @@ const StickerDataPreview = props => {
           margin: '16px 8px 0 4px',
           border: 'solid 1px rgba(255,255,255,0.4)',
         }}
+        onClick={props.setCurrentSticker}
       >
         <EditIcon style={{ fontSize: '40px' }} />
       </IconButton>
@@ -80,6 +81,9 @@ const StickerDataPreview = props => {
           top: -8,
           right: -8,
           opacity: '.5',
+        }}
+        onClick={() => {
+          props.update('delete', props.data)
         }}
       >
         <HighlightOffIcon />
