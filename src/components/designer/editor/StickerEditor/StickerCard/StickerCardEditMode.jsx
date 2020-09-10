@@ -27,15 +27,15 @@ const StickerCardEditMode = props => {
       }}
     >
       <TyrePreview data={props.data} {...previewValues} />
-      <div
-        style={{
-          backgroundColor: 'black',
-          padding: '8px',
-          margin: '4px',
-          borderRadius: '.5rem',
-        }}
-      >
-        <Tooltip title="change sticker">
+      <Tooltip title="change sticker">
+        <div
+          style={{
+            backgroundColor: 'black',
+            padding: '8px',
+            margin: '4px',
+            borderRadius: '.5rem',
+          }}
+        >
           <div
             style={{
               backgroundImage: `url(${props.data.texture.file})`,
@@ -46,8 +46,8 @@ const StickerCardEditMode = props => {
               backgroundPosition: 'center',
             }}
           />
-        </Tooltip>
-      </div>
+        </div>
+      </Tooltip>
       <div className={classes.stickerCardEdit}>
         <Typography id="discrete-slider" gutterBottom>
           Start
