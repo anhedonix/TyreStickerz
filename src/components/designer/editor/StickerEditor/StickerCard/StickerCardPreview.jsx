@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     margin: '4px',
   },
 }))
-const previewValues = { size: 60, thickness: 8 }
+const previewValues = { size: 60, thickness: 9 }
 
 const StickerDataPreview = props => {
   const classes = useStyles()
