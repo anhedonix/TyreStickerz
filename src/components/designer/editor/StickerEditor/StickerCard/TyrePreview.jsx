@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
+    pointerEvents: 'none',
     '& circle': {
       transition: 'none',
     },
