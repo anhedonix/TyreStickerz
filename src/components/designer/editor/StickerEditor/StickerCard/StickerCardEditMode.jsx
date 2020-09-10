@@ -14,7 +14,18 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import TyrePreview from './TyrePreview'
 import StickerList from './StickerList'
 
-const useStyles = makeStyles(theme => ({}))
+const useStyles = makeStyles(theme => ({
+  stickerBack: {
+    backgroundColor: 'black',
+    padding: '8px',
+    margin: '4px',
+    borderRadius: '.5rem',
+    opacity: '1',
+    '&:hover': {
+      opacity: '.5',
+    },
+  },
+}))
 
 const previewValues = { size: 300, thickness: 9 }
 
@@ -40,14 +51,12 @@ const StickerCardEditMode = props => {
         }}
       >
         <TyrePreview data={props.data} {...previewValues} />
-        <Tooltip title="change sticker">
+        <Tooltip
+          title="change sticker"
+          style={{ pointerEvents: 'none !Important' }}
+        >
           <div
-            style={{
-              backgroundColor: 'black',
-              padding: '8px',
-              margin: '4px',
-              borderRadius: '.5rem',
-            }}
+            className={classes.stickerBack}
             onClick={() => {
               setListView(true)
             }}
@@ -65,107 +74,127 @@ const StickerCardEditMode = props => {
           </div>
         </Tooltip>
         <div className={classes.stickerCardEdit}>
-          <Typography id="discrete-slider" gutterBottom>
-            Start
-          </Typography>
-          <Slider
-            value={props.data.start}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            step={3}
-            marks
-            min={0}
-            max={360}
-            onChange={(e, v) => {
-              props.update({ ...sticker, start: v })
-            }}
-          />
-          <Typography id="discrete-slider" gutterBottom>
-            Length
-          </Typography>
-          <Slider
-            value={sticker.length}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            step={3}
-            marks
-            min={0}
-            max={360}
-            onChange={(e, v) => {
-              props.update({ ...sticker, length: v })
-            }}
-          />
-          <Typography id="discrete-slider" gutterBottom>
-            Offset U
-          </Typography>
-          <Slider
-            value={sticker.offsetU}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            step={0.1}
-            marks
-            min={-1}
-            max={1}
-            onChange={(e, v) => {
-              props.update({ ...sticker, offsetU: v })
-            }}
-          />
-          <Typography id="discrete-slider" gutterBottom>
-            Offset V
-          </Typography>
-          <Slider
-            value={sticker.offsetV}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            step={0.1}
-            marks
-            min={-1}
-            max={1}
-            onChange={(e, v) => {
-              props.update({ ...sticker, offsetV: v })
-            }}
-          />
-          <Typography id="discrete-slider" gutterBottom>
-            Scale U
-          </Typography>
-          <Slider
-            value={sticker.scaleU}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            step={0.1}
-            marks
-            min={0}
-            max={1}
-            onChange={(e, v) => {
-              props.update({ ...sticker, scaleU: v })
-            }}
-          />
-          <Typography id="discrete-slider" gutterBottom>
-            Scale V
-          </Typography>
-          <Slider
-            value={sticker.scaleV}
-            aria-labelledby="discrete-slider"
-            valueLabelDisplay="auto"
-            step={0.1}
-            marks
-            min={0}
-            max={1}
-            onChange={(e, v) => {
-              props.update({ ...sticker, scaleV: v })
-            }}
-          />
-          <Typography id="discrete-slider" gutterBottom>
-            Mirror
-          </Typography>
-          <Switch
-            value={sticker.mirror}
-            checked={sticker.mirror}
-            onChange={(e, v) => {
-              props.update({ ...sticker, mirror: v })
-            }}
-          />
-        </div>{' '}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography id="discrete-slider" gutterBottom>
+              Start
+            </Typography>
+            <Slider
+              value={props.data.start}
+              aria-labelledby="discrete-slider"
+              valueLabelDisplay="auto"
+              step={3}
+              marks
+              min={0}
+              max={360}
+              style={{ width: '80%', marginRight: '8px' }}
+              onChange={(e, v) => {
+                props.update({ ...sticker, start: v })
+              }}
+            />
+          </div>{' '}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography id="discrete-slider" gutterBottom>
+              Length
+            </Typography>
+            <Slider
+              value={sticker.length}
+              aria-labelledby="discrete-slider"
+              valueLabelDisplay="auto"
+              step={3}
+              marks
+              min={0}
+              max={360}
+              style={{ width: '80%', marginRight: '8px' }}
+              onChange={(e, v) => {
+                props.update({ ...sticker, length: v })
+              }}
+            />{' '}
+          </div>{' '}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography id="discrete-slider" gutterBottom>
+              Offset U
+            </Typography>
+            <Slider
+              style={{ width: '80%', marginRight: '8px' }}
+              value={sticker.offsetU}
+              aria-labelledby="discrete-slider"
+              valueLabelDisplay="auto"
+              step={0.1}
+              marks
+              min={-1}
+              max={1}
+              onChange={(e, v) => {
+                props.update({ ...sticker, offsetU: v })
+              }}
+            />{' '}
+          </div>{' '}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography id="discrete-slider" gutterBottom>
+              Offset V
+            </Typography>
+            <Slider
+              style={{ width: '80%', marginRight: '8px' }}
+              value={sticker.offsetV}
+              aria-labelledby="discrete-slider"
+              valueLabelDisplay="auto"
+              step={0.1}
+              marks
+              min={-1}
+              max={1}
+              onChange={(e, v) => {
+                props.update({ ...sticker, offsetV: v })
+              }}
+            />{' '}
+          </div>{' '}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography id="discrete-slider" gutterBottom>
+              Scale U
+            </Typography>
+            <Slider
+              style={{ width: '80%', marginRight: '8px' }}
+              value={sticker.scaleU}
+              aria-labelledby="discrete-slider"
+              valueLabelDisplay="auto"
+              step={0.1}
+              marks
+              min={0}
+              max={1}
+              onChange={(e, v) => {
+                props.update({ ...sticker, scaleU: v })
+              }}
+            />{' '}
+          </div>{' '}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography id="discrete-slider" gutterBottom>
+              Scale V
+            </Typography>
+            <Slider
+              style={{ width: '80%', marginRight: '8px' }}
+              value={sticker.scaleV}
+              aria-labelledby="discrete-slider"
+              valueLabelDisplay="auto"
+              step={0.1}
+              marks
+              min={0}
+              max={1}
+              onChange={(e, v) => {
+                props.update({ ...sticker, scaleV: v })
+              }}
+            />{' '}
+          </div>{' '}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography id="discrete-slider" gutterBottom>
+              Mirror
+            </Typography>
+            <Switch
+              value={sticker.mirror}
+              checked={sticker.mirror}
+              onChange={(e, v) => {
+                props.update({ ...sticker, mirror: v })
+              }}
+            />{' '}
+          </div>
+        </div>
         <div
           style={{
             display: 'flex',
@@ -176,7 +205,7 @@ const StickerCardEditMode = props => {
           <ButtonGroup
             // color="primary"
             aria-label="outlined primary button group"
-            style={{ alignSelf: 'center' }}
+            style={{ alignSelf: 'center', margin: '16px' }}
           >
             <Button startIcon={<SettingsBackupRestoreIcon />}>reset</Button>
             <Button
@@ -194,7 +223,6 @@ const StickerCardEditMode = props => {
                 props.apply('update')
               }}
             >
-              {' '}
               Apply
             </Button>
           </ButtonGroup>
