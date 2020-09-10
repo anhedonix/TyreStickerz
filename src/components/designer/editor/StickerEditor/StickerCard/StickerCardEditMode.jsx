@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
@@ -15,6 +15,7 @@ const previewValues = { size: 300, thickness: 9 }
 const StickerCardEditMode = props => {
   const sticker = props.data
   const classes = useStyles()
+  const [listView, setListView] = useState(false)
 
   return (
     <div
@@ -24,6 +25,8 @@ const StickerCardEditMode = props => {
         width: `${previewValues.size}`,
         flexGrow: '1',
         justifyContent: 'flex-start',
+        transform: listView ? 'translate(410px)' : 'translate(0)',
+        transition: 'transform 500ms',
       }}
     >
       <TyrePreview data={props.data} {...previewValues} />
@@ -34,6 +37,9 @@ const StickerCardEditMode = props => {
             padding: '8px',
             margin: '4px',
             borderRadius: '.5rem',
+          }}
+          onClick={() => {
+            setListView(true)
           }}
         >
           <div
