@@ -4,7 +4,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import css from 'dom-css'
 import React, { useRef, useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
-import StickerCard from './StickerCard_1/StickerCard'
+import StickerCard from './StickerCard/StickerCard'
 
 import StickerEditMode from './StickerCard/StickerCardEditMode'
 const useStyles = makeStyles(theme => ({
