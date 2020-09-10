@@ -14,6 +14,12 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
+    '& circle': {
+      transition: 'none',
+    },
+    '& div': {
+      transition: 'none',
+    },
   },
 }))
 
