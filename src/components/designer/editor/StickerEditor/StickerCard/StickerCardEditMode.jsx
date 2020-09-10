@@ -6,6 +6,10 @@ import Switch from '@material-ui/core/Switch'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import Slide from '@material-ui/core/Slide'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore'
+import CancelIcon from '@material-ui/icons/Cancel'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 
 import TyrePreview from './TyrePreview'
 import StickerList from './StickerList'
@@ -161,31 +165,39 @@ const StickerCardEditMode = props => {
               props.update({ ...sticker, mirror: v })
             }}
           />
-          <div style={{ display: 'flex' }}>
-            <Tooltip title="discard changes">
-              <Button
-                onClick={() => {
-                  props.apply('cancel')
-                }}
-                style={{ width: '100%' }}
-                variant="contained"
-              >
-                cancel
-              </Button>
-            </Tooltip>
-            <Tooltip title="save changes">
-              <Button
-                onClick={() => {
-                  props.apply('update')
-                }}
-                style={{ width: '100%' }}
-                color="primary"
-                variant="contained"
-              >
-                apply
-              </Button>
-            </Tooltip>
-          </div>
+        </div>{' '}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <ButtonGroup
+            // color="primary"
+            aria-label="outlined primary button group"
+            style={{ alignSelf: 'center' }}
+          >
+            <Button startIcon={<SettingsBackupRestoreIcon />}>reset</Button>
+            <Button
+              startIcon={<CancelIcon />}
+              onClick={() => {
+                props.apply('cancel')
+              }}
+            >
+              cancel
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<CheckCircleIcon />}
+              onClick={() => {
+                props.apply('update')
+              }}
+            >
+              {' '}
+              Apply
+            </Button>
+          </ButtonGroup>
         </div>
       </div>
       <Slide
