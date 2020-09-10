@@ -146,16 +146,27 @@ const StickerCardEditMode = props => {
             props.update({ ...sticker, mirror: v })
           }}
         />
-        <Button
-          onClick={() => {
-            props.apply('update')
-          }}
-          style={{ width: '100%' }}
-          color="primary"
-          variant="contained"
-        >
-          apply
-        </Button>
+        <div style={{ display: 'flex' }}>
+          <Button
+            onClick={() => {
+              props.apply('cancel')
+            }}
+            style={{ width: '100%' }}
+            variant="contained"
+          >
+            cancel
+          </Button>
+          <Button
+            onClick={() => {
+              props.apply('update')
+            }}
+            style={{ width: '100%' }}
+            color="primary"
+            variant="contained"
+          >
+            apply
+          </Button>
+        </div>
       </div>
     </div>
   )

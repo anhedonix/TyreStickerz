@@ -113,7 +113,10 @@ const Designer = () => {
           setCurrentSticker()
         }
       })
+
       setStickersList(temp)
+    } else if (action === 'cancel') {
+      setCurrentSticker()
     }
   }
 
