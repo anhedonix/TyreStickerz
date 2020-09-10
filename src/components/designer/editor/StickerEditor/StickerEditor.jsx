@@ -5,6 +5,7 @@ import css from 'dom-css'
 import React, { useRef, useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import StickerCard from './StickerCard/StickerCard'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import StickerEditMode from './StickerCard/StickerCardEditMode'
 const useStyles = makeStyles(theme => ({
@@ -86,13 +87,15 @@ const StickerEditor = ({
     <div className={classes.stickerWrapper}>
       {!currentSticker ? (
         <>
-          <IconButton
-            onClick={create}
-            className={classes.addStickerCard}
-            disabled={stickers.length >= maxStickers}
-          >
-            <AddCircleIcon fontSize="large" />
-          </IconButton>
+          <Tooltip title="add new sticker" placement="left">
+            <IconButton
+              onClick={create}
+              className={classes.addStickerCard}
+              disabled={stickers.length >= maxStickers}
+            >
+              <AddCircleIcon fontSize="large" />
+            </IconButton>
+          </Tooltip>
           {`${stickers.length} of ${maxStickers}`}
           <div style={{ position: 'relative' }}>
             <Scrollbars

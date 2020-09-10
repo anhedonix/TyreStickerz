@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import TyrePreview from './TyrePreview'
 
@@ -60,35 +61,38 @@ const StickerDataPreview = props => {
           }}
         />
       </div>
-      <IconButton
-        variant="outline"
-        style={{
-          // backgroundColor: '#8888',
-          height: '60px',
-          width: '60px',
-          // color: 'orange',
-          margin: '16px 8px 0 4px',
-          border: 'solid 1px rgba(255,255,255,0.4)',
-        }}
-        onClick={props.setCurrentSticker}
-      >
-        <EditIcon style={{ fontSize: '40px' }} />
-      </IconButton>
-
-      <IconButton
-        style={{
-          display: 'block',
-          position: 'absolute',
-          top: -8,
-          right: -8,
-          opacity: '.5',
-        }}
-        onClick={() => {
-          props.update('delete', props.data)
-        }}
-      >
-        <HighlightOffIcon />
-      </IconButton>
+      <Tooltip title="edit sticker">
+        <IconButton
+          variant="outline"
+          style={{
+            // backgroundColor: '#8888',
+            height: '60px',
+            width: '60px',
+            // color: 'orange',
+            margin: '16px 8px 0 4px',
+            border: 'solid 1px rgba(255,255,255,0.4)',
+          }}
+          onClick={props.setCurrentSticker}
+        >
+          <EditIcon style={{ fontSize: '40px' }} />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="delete sticker" placement="top">
+        <IconButton
+          style={{
+            display: 'block',
+            position: 'absolute',
+            top: -8,
+            right: -8,
+            opacity: '.5',
+          }}
+          onClick={() => {
+            props.update('delete', props.data)
+          }}
+        >
+          <HighlightOffIcon />
+        </IconButton>
+      </Tooltip>
     </div>
   )
 }

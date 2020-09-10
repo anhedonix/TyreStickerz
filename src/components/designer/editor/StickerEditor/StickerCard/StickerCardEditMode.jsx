@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
 import Switch from '@material-ui/core/Switch'
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import TyrePreview from './TyrePreview'
 
@@ -34,16 +35,18 @@ const StickerCardEditMode = props => {
           borderRadius: '.5rem',
         }}
       >
-        <div
-          style={{
-            backgroundImage: `url(${props.data.texture.file})`,
-            width: '100%',
-            height: '60px',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-        />
+        <Tooltip title="change sticker">
+          <div
+            style={{
+              backgroundImage: `url(${props.data.texture.file})`,
+              width: '100%',
+              height: '60px',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          />
+        </Tooltip>
       </div>
       <div className={classes.stickerCardEdit}>
         <Typography id="discrete-slider" gutterBottom>
@@ -147,25 +150,29 @@ const StickerCardEditMode = props => {
           }}
         />
         <div style={{ display: 'flex' }}>
-          <Button
-            onClick={() => {
-              props.apply('cancel')
-            }}
-            style={{ width: '100%' }}
-            variant="contained"
-          >
-            cancel
-          </Button>
-          <Button
-            onClick={() => {
-              props.apply('update')
-            }}
-            style={{ width: '100%' }}
-            color="primary"
-            variant="contained"
-          >
-            apply
-          </Button>
+          <Tooltip title="discard changes">
+            <Button
+              onClick={() => {
+                props.apply('cancel')
+              }}
+              style={{ width: '100%' }}
+              variant="contained"
+            >
+              cancel
+            </Button>
+          </Tooltip>
+          <Tooltip title="save changes">
+            <Button
+              onClick={() => {
+                props.apply('update')
+              }}
+              style={{ width: '100%' }}
+              color="primary"
+              variant="contained"
+            >
+              apply
+            </Button>
+          </Tooltip>
         </div>
       </div>
     </div>
