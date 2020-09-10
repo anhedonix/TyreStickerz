@@ -71,7 +71,7 @@ const TyrePreview = props => {
         style={{
           position: 'absolute',
           transform: `rotate(${start + offsetCoverage}deg)`,
-          opacity: '.4',
+          opacity: '.6',
           color: '#ccc',
         }}
       />
