@@ -6,7 +6,7 @@ import React, { useRef, useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import StickerCard from './StickerCard_1/StickerCard'
 
-import StickerEditMode from './StickerCard_1/StickerCardEditMode'
+import StickerEditMode from './StickerCard/StickerCardEditMode'
 const useStyles = makeStyles(theme => ({
   stickerWrapper: {
     float: 'right',
