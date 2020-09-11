@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { DarkThemeContainer } from '../../../../../config/theme'
 import * as CONTENT from '../../../../../constants/contentTypes'
 import { TYPES } from '../../../../../constants/stickerCategories'
+import store from '../../../../../functions/store'
 
 const useStyles = makeStyles(theme => ({
   stickerList: {
@@ -33,20 +34,48 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 console.log('working')
+const Sticker = ({ path }) => {
+  const classes = useStyles()
+
+  const [image, setImage] = useState()
+  useEffect(() => {
+    store.getFileUrl(path).then(p => {
+      setImage(p)
+      console.log(p)
+    })
+  }, [])
+
+  if (image) {
+    return (
+      <Paper
+        variant="outlined"
+        className={classes.listItem}
+        style={{
+          backgroundImage: `url(${image})`,
+        }}
+        onClick={() => {
+          props.setListView(false)
+        }}
+      />
+    )
+  } else {
+    return null
+  }
+}
 const StickerList = props => {
   const classes = useStyles()
-  const [stickerList, setStickerList] = useState()
-  const [currentCategory, setCurrentCategory] = useState(TYPES[0])
+  const [stickerList, setStickerList] = useState([])
+  const [currentCategory, setCurrentCategory] = useState(TYPES[1])
 
   const handleChange = e => {
     setCurrentCategory(e.target.value)
   }
 
   useEffect(() => {
-    // CONTENT.sticker_graphics.read().then(e => console.log(e))
-  }, [])
-
-  console.log(currentCategory)
+    CONTENT.sticker_graphics
+      .read(null, `category:${currentCategory}`)
+      .then(e => setStickerList(e))
+  }, [currentCategory])
 
   return (
     <DarkThemeContainer>
@@ -63,20 +92,11 @@ const StickerList = props => {
             ))}
           </Select>
         </div>
-        <Scrollbars>
-          {/* {list.map(image => (
-            <Paper
-              variant="outlined"
-              className={classes.listItem}
-              style={{
-                backgroundImage: `url(${image})`,
-              }}
-              onClick={() => {
-                props.setListView(false)
-              }}
-            />
-          ))} */}
-        </Scrollbars>
+        {/* <Scrollbars> */}
+        {stickerList.map(data => (
+          <Sticker path={data.image} key={data.image} />
+        ))}
+        {/* </Scrollbars> */}
         <Button
           variant="contained"
           style={{ width: '100%' }}
