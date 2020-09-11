@@ -6,7 +6,7 @@ import store from '../../../functions/store'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
 import { types as textureTypes } from '../../../constants/Designer/textureTypes'
-import StickerList from './StickerEditor/StickerCard/StickerList'
+// import StickerList from './StickerEditor/StickerCard/StickerList'
 import * as CONTENT from '../../../constants/contentTypes'
 
 const useStyles = makeStyles(theme => ({
@@ -113,7 +113,10 @@ const Designer = () => {
           setCurrentSticker()
         }
       })
+
       setStickersList(temp)
+    } else if (action === 'cancel') {
+      setCurrentSticker()
     }
   }
 
