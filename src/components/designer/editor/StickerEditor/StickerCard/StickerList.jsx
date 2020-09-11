@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     margin: '8px',
   },
 }))
-console.log('working')
+
 const Sticker = props => {
   const classes = useStyles()
 

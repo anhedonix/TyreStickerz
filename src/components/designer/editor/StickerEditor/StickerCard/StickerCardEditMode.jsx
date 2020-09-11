@@ -34,7 +34,6 @@ const previewValues = { size: 300, thickness: 9 }
 const StickerCardEditMode = props => {
   const sticker = props.data
   const updateSticker = (file, path) => {
-    console.log('running')
     props.update({
       ...sticker,
       texture: {
