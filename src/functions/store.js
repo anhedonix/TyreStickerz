@@ -261,15 +261,29 @@ store.readContent = (contentType, id = null, filter = null) => {
             .then(doc => resolve({ ...doc.data(), uid: id }))
             .catch(reason => reject(reason))
         } else {
-          firestore
-            .collection(token)
-            .get()
-            .then(docs => {
-              const data = []
-              docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
-              resolve(data)
-            })
-            .catch(reason => reject(reason))
+          if (!filter) {
+            firestore
+              .collection(token)
+              .get()
+              .then(docs => {
+                const data = []
+                docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
+                resolve(data)
+              })
+              .catch(reason => reject(reason))
+          } else {
+            const [filterType, filterToken] = filter.split(':')
+            firestore
+              .collection(token)
+              .where(filterType, '==', filterToken)
+              .get()
+              .then(docs => {
+                const data = []
+                docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
+                resolve(data)
+              })
+              .catch(reason => reject(reason))
+          }
         }
         break
       }
