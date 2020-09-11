@@ -76,7 +76,7 @@ const Designer = () => {
   const [accessories, setAccessories] = useState()
   const [stickerMesh, setStickerMesh] = useState()
   const [currentSticker, setCurrentSticker] = useState()
-
+  console.log(currentSticker)
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
       CONTENT.wheel.read(i.data.whl).then(j => {

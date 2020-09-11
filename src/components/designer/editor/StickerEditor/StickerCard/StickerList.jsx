@@ -34,14 +34,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 console.log('working')
-const Sticker = ({ path }) => {
+const Sticker = props => {
   const classes = useStyles()
 
   const [image, setImage] = useState()
   useEffect(() => {
-    store.getFileUrl(path).then(p => {
+    store.getFileUrl(props.path).then(p => {
       setImage(p)
-      console.log(p)
     })
   }, [])
 
@@ -54,6 +53,7 @@ const Sticker = ({ path }) => {
           backgroundImage: `url(${image})`,
         }}
         onClick={() => {
+          props.updateSticker(image, props.path)
           props.setListView(false)
         }}
       />
@@ -94,7 +94,12 @@ const StickerList = props => {
         </div>
         {/* <Scrollbars> */}
         {stickerList.map(data => (
-          <Sticker path={data.image} key={data.image} />
+          <Sticker
+            path={data.image}
+            key={data.image}
+            updateSticker={props.updateSticker}
+            setListView={props.setListView}
+          />
         ))}
         {/* </Scrollbars> */}
         <Button

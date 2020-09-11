@@ -14,6 +14,7 @@ import Zoom from '@material-ui/core/Zoom'
 
 import TyrePreview from './TyrePreview'
 import StickerList from './StickerList'
+import { types as textureTypes } from '../../../../../constants/Designer/textureTypes'
 
 const useStyles = makeStyles(theme => ({
   stickerBack: {
@@ -32,6 +33,17 @@ const previewValues = { size: 300, thickness: 9 }
 
 const StickerCardEditMode = props => {
   const sticker = props.data
+  const updateSticker = (file, path) => {
+    console.log('running')
+    props.update({
+      ...sticker,
+      texture: {
+        file: file,
+        type: textureTypes.raster,
+        path: path,
+      },
+    })
+  }
   const classes = useStyles()
   const [listView, setListView] = useState(false)
 
@@ -239,7 +251,10 @@ const StickerCardEditMode = props => {
         unmountOnExit
       >
         <div>
-          <StickerList setListView={setListView} />
+          <StickerList
+            setListView={setListView}
+            updateSticker={updateSticker}
+          />
         </div>
       </Slide>
     </div>
