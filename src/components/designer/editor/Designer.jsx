@@ -124,9 +124,12 @@ const Designer = () => {
       setStickersList(temp)
     } else if (action === 'cancel') {
       setCurrentSticker()
+    } else if (action === 'duplicate') {
+      setStickersList([{ ...currentSticker, uid: uuid() }, ...temp])
+      setCurrentSticker()
     }
   }
-
+  console.log(stickersList)
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>

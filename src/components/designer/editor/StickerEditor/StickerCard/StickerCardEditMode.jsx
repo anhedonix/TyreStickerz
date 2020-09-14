@@ -11,6 +11,7 @@ import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore'
 import CancelIcon from '@material-ui/icons/Cancel'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import Zoom from '@material-ui/core/Zoom'
+import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
 
 import TyrePreview from './TyrePreview'
 import StickerList from './StickerList'
@@ -77,6 +78,14 @@ const StickerCardEditMode = props => {
         }}
       >
         <TyrePreview data={props.data} {...previewValues} />
+        <Button
+          startIcon={<ControlPointDuplicateIcon />}
+          onClick={() => {
+            props.apply('duplicate')
+          }}
+        >
+          Duplicate
+        </Button>
         <Tooltip
           title="change sticker"
           style={{ pointerEvents: 'none !Important' }}
@@ -236,6 +245,7 @@ const StickerCardEditMode = props => {
             style={{ alignSelf: 'center', margin: '16px' }}
           >
             <Button startIcon={<SettingsBackupRestoreIcon />}>reset</Button>
+
             <Button
               startIcon={<CancelIcon />}
               onClick={() => {
