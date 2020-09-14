@@ -106,30 +106,39 @@ const Designer = () => {
 
   const updateStickersList = (action, sticker = null) => {
     let temp = [...stickersList]
-    if (action === 'delete') {
-      temp.map((e, i) => {
-        if (e.uid === sticker.uid) {
-          temp.splice(i, 1)
-        }
-      })
-      setStickersList(temp)
-    } else if (action === 'update') {
-      temp.map((e, i) => {
-        if (e.uid === currentSticker.uid) {
-          temp.splice(i, 1, { ...currentSticker, index: i })
-          setCurrentSticker()
-        }
-      })
+    switch (action) {
+      case 'delete': {
+        temp.map((e, i) => {
+          if (e.uid === sticker.uid) {
+            temp.splice(i, 1)
+          }
+        })
+        setStickersList(temp)
+        break
+      }
+      case 'update': {
+        temp.map((e, i) => {
+          if (e.uid === currentSticker.uid) {
+            temp.splice(i, 1, { ...currentSticker, index: i })
+            setCurrentSticker()
+          }
+        })
 
-      setStickersList(temp)
-    } else if (action === 'cancel') {
-      setCurrentSticker()
-    } else if (action === 'duplicate') {
-      setStickersList([{ ...currentSticker, uid: uuid() }, ...temp])
-      setCurrentSticker()
+        setStickersList(temp)
+        break
+      }
+      case 'cancel': {
+        setCurrentSticker()
+        break
+      }
+      case 'duplicate': {
+        setStickersList([{ ...currentSticker, uid: uuid() }, ...temp])
+        setCurrentSticker()
+        break
+      }
     }
   }
-  console.log(stickersList)
+  // console.log(stickersList)
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>
