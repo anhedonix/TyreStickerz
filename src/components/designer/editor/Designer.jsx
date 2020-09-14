@@ -2,23 +2,29 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
+
 import store from '../../../functions/store'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
 import { types as textureTypes } from '../../../constants/Designer/textureTypes'
 // import StickerList from './StickerEditor/StickerCard/StickerList'
 import * as CONTENT from '../../../constants/contentTypes'
+import { MainContext } from '../../../states/mainState'
+import { useContext } from 'react'
 
 const useStyles = makeStyles(theme => ({
-  designer: {
+  designer: state => ({
     display: 'flex',
     width: '100vw',
-    height: `calc(100vh - 104px)`,
+    height:
+      state.userData.type === 'DEV'
+        ? `calc(100vh - 104px)`
+        : `calc(100vh - 64px)`,
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
-  },
+  }),
   canvas: editMode => ({
     height: `calc(100vh - 104px)`,
     width: `84vw`,
@@ -69,7 +75,8 @@ const hydrateTexture = value => {
 }
 
 const Designer = () => {
-  const classes = useStyles()
+  const { state, dispatch } = useContext(MainContext)
+  const classes = useStyles(state)
   const [stickersList, setStickersList] = useState([])
   const [wheel, setWheel] = useState()
   const [rim, setRim] = useState()
