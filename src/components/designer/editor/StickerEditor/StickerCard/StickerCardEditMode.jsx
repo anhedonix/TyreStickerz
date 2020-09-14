@@ -244,7 +244,14 @@ const StickerCardEditMode = props => {
             aria-label="outlined primary button group"
             style={{ alignSelf: 'center', margin: '16px' }}
           >
-            <Button startIcon={<SettingsBackupRestoreIcon />}>reset</Button>
+            <Button
+              startIcon={<SettingsBackupRestoreIcon />}
+              onClick={() => {
+                props.apply('reset')
+              }}
+            >
+              reset
+            </Button>
 
             <Button
               startIcon={<CancelIcon />}

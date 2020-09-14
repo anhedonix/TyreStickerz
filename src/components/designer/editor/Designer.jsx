@@ -136,9 +136,17 @@ const Designer = () => {
         setCurrentSticker()
         break
       }
+      case 'reset': {
+        stickersList.map(e => {
+          if (e.uid === currentSticker.uid) {
+            setCurrentSticker(e)
+          }
+        })
+        break
+      }
     }
   }
-  // console.log(stickersList)
+  // console.log(currentSticker)
   return (
     <div className={classes.designer}>
       <div className={classes.canvas}>
