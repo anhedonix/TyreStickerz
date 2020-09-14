@@ -56,6 +56,20 @@ const StickerCardEditMode = props => {
         justifyContent: 'flex-start',
       }}
     >
+      <Slide
+        in={listView}
+        direction="right"
+        timeout={{ enter: 500, exit: 500 }}
+        mountOnEnter
+        unmountOnExit
+      >
+        <div>
+          <StickerList
+            setListView={setListView}
+            updateSticker={updateSticker}
+          />
+        </div>
+      </Slide>
       <div
         style={{
           transform: listView ? 'translate(410px)' : 'translate(0)',
@@ -242,20 +256,6 @@ const StickerCardEditMode = props => {
           </ButtonGroup>
         </div>
       </div>
-      <Slide
-        in={listView}
-        direction="right"
-        timeout={{ enter: 500, exit: 500 }}
-        mountOnEnter
-        unmountOnExit
-      >
-        <div>
-          <StickerList
-            setListView={setListView}
-            updateSticker={updateSticker}
-          />
-        </div>
-      </Slide>
     </div>
   )
 }

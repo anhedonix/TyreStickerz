@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '340px',
     height: '100%',
+    position: 'absolute',
   },
   sortBar: {
     minHeight: '50px',
