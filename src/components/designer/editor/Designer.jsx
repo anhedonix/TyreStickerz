@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
-import Paper from '@material-ui/core/Paper'
 
+import DesignerMenuBar from './DesignerMenuBar'
 import store from '../../../functions/store'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
@@ -55,10 +55,6 @@ const useStyles = makeStyles(theme => ({
       outline: 'none',
     },
   }),
-  menuBar: {
-    height: '50px',
-    width: '100%',
-  },
 }))
 
 const defaults = () => {
@@ -173,7 +169,7 @@ const Designer = () => {
   // console.log(currentSticker)
   return (
     <div className={classes.designerWrapper}>
-      <Paper className={classes.menuBar}>sample</Paper>
+      <DesignerMenuBar />
       <div className={classes.designer}>
         <div className={classes.canvas}>
           <Canvas
