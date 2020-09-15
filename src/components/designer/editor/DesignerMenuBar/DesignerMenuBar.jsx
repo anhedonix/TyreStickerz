@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import { makeStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+
 import Dialog from '@material-ui/core/Dialog'
+
+import { items, listItemFunctions } from './MenuItems'
 
 const useStyles = makeStyles(theme => ({
   menuBar: {
@@ -18,37 +21,6 @@ const useStyles = makeStyles(theme => ({
 const DesignerMenuBar = props => {
   const classes = useStyles()
   const [about, setAbout] = useState(false)
-
-  const listItemFunction = listItem => {
-    switch (listItem) {
-      case 'New':
-        console.log('new')
-        break
-      case 'Open':
-        console.log('open')
-        break
-      case 'Save':
-        console.log('save')
-        break
-      case 'Reset':
-        console.log('reset')
-        break
-      case 'Save Product Image':
-        console.log('save product image')
-        break
-      case 'About':
-        setAbout(true)
-        console.log('about')
-        break
-      case 'Help':
-        console.log('help')
-        break
-      default:
-        break
-    }
-  }
-  const file = ['New', 'Open', 'Save', 'Reset', 'Save Product Image']
-  const help = ['About', 'Help']
 
   const MenuHead = props => {
     const [anchorEl, setAnchorEl] = React.useState(null)
@@ -85,7 +57,7 @@ const DesignerMenuBar = props => {
           {props.list.map(listItem => (
             <MenuItem
               onClick={e => {
-                listItemFunction(listItem)
+                listItemFunctions(listItem, setAbout)
                 handleClose()
               }}
               children={listItem}
@@ -98,8 +70,9 @@ const DesignerMenuBar = props => {
 
   return (
     <Paper className={classes.menuBar}>
-      <MenuHead head="file" list={file} />
-      <MenuHead head="help" list={help} />
+      {items.map(item => (
+        <MenuHead head={item.head} list={item.list} />
+      ))}
       <Dialog open={about} onClose={() => setAbout(false)}>
         test
       </Dialog>

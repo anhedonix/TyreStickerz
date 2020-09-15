@@ -3,7 +3,7 @@ import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
 
-import DesignerMenuBar from './DesignerMenuBar'
+import DesignerMenuBar from './DesignerMenuBar/DesignerMenuBar'
 import store from '../../../functions/store'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
