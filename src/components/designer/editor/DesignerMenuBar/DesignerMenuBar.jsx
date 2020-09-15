@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper'
 import Dialog from '@material-ui/core/Dialog'
 
 import { items, listItemFunctions } from './MenuItems'
+import AboutDialogue from './AboutDialog'
 
 const useStyles = makeStyles(theme => ({
   menuBar: {
@@ -74,7 +75,7 @@ const DesignerMenuBar = props => {
         <MenuHead head={item.head} list={item.list} />
       ))}
       <Dialog open={about} onClose={() => setAbout(false)}>
-        test
+        <AboutDialogue />
       </Dialog>
     </Paper>
   )
