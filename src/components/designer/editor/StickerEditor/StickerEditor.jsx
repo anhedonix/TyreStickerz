@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     // width: '360px',
     position: 'absolute',
     right: '8px',
-    top: '8px',
+    top: '58px',
     display: 'flex',
     flexDirection: 'column',
   },
