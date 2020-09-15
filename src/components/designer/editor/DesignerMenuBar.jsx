@@ -16,50 +16,87 @@ const useStyles = makeStyles(theme => ({
 
 const DesignerMenuBar = props => {
   const classes = useStyles()
-  const [anchorEl, setAnchorEl] = React.useState(null)
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget)
+  const listItemFunction = listItem => {
+    switch (listItem) {
+      case 'New':
+        console.log('new')
+        break
+      case 'Open':
+        console.log('open')
+        break
+      case 'Save':
+        console.log('save')
+        break
+      case 'Reset':
+        console.log('reset')
+        break
+      case 'Save Product Image':
+        console.log('save product image')
+        break
+      case 'About':
+        console.log('about')
+        break
+      case 'Help':
+        console.log('help')
+        break
+      default:
+        break
+    }
   }
+  const file = ['New', 'Open', 'Save', 'Reset', 'Save Product Image']
+  const help = ['About', 'Help']
 
-  const handleClose = () => {
-    setAnchorEl(null)
+  const MenuHead = props => {
+    const [anchorEl, setAnchorEl] = React.useState(null)
+
+    const handleClick = event => {
+      setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+      setAnchorEl(null)
+    }
+    return (
+      <>
+        <Button onClick={handleClick} style={{ marginLeft: '8px' }}>
+          {props.head}
+        </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          getContentAnchorEl={null}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left',
+            },
+            getContentAnchorEl: null,
+          }}
+        >
+          {props.list.map(listItem => (
+            <MenuItem
+              onClick={e => {
+                listItemFunction(listItem)
+                handleClose()
+              }}
+              children={listItem}
+            />
+          ))}
+        </Menu>
+      </>
+    )
   }
-  const fileMenuList = ['New', 'Open', 'Save', 'Reset', 'Save Product Image']
 
   return (
     <Paper className={classes.menuBar}>
-      <Button onClick={handleClick} style={{ marginLeft: '8px' }}>
-        File
-      </Button>
-      <Button style={{ marginLeft: '8px' }}>help</Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        MenuProps={{
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'left',
-          },
-          getContentAnchorEl: null,
-        }}
-      >
-        {fileMenuList.map(listItem => (
-          <MenuItem
-            onClick={e => {
-              console.log(e.target.children.innerHTML)
-              handleClose()
-            }}
-            children={listItem}
-          />
-        ))}
-      </Menu>
+      <MenuHead head="file" list={file} />
+      <MenuHead head="help" list={help} />
     </Paper>
   )
 }
