@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import Dialog from '@material-ui/core/Dialog'
 
 const useStyles = makeStyles(theme => ({
   menuBar: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 const DesignerMenuBar = props => {
   const classes = useStyles()
+  const [about, setAbout] = useState(false)
 
   const listItemFunction = listItem => {
     switch (listItem) {
@@ -35,6 +37,7 @@ const DesignerMenuBar = props => {
         console.log('save product image')
         break
       case 'About':
+        setAbout(true)
         console.log('about')
         break
       case 'Help':
@@ -97,6 +100,9 @@ const DesignerMenuBar = props => {
     <Paper className={classes.menuBar}>
       <MenuHead head="file" list={file} />
       <MenuHead head="help" list={help} />
+      <Dialog open={about} onClose={() => setAbout(false)}>
+        test
+      </Dialog>
     </Paper>
   )
 }
