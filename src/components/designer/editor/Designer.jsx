@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
+import Paper from '@material-ui/core/Paper'
 
 import store from '../../../functions/store'
 import Canvas from './Canvas/index'
@@ -13,20 +14,39 @@ import { MainContext } from '../../../states/mainState'
 import { useContext } from 'react'
 
 const useStyles = makeStyles(theme => ({
-  designer: state => ({
+  designerWrapper: state => ({
     display: 'flex',
+    flexDirection: 'column',
     width: '100vw',
     height:
       state.userData.type === 'DEV'
         ? `calc(100vh - 104px)`
         : `calc(100vh - 64px)`,
+    // flexGrow: '1',
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
   }),
-  canvas: editMode => ({
-    height: `calc(100vh - 104px)`,
+  designer: state => ({
+    display: 'flex',
+    width: '100vw',
+    height:
+      state.userData.type === 'DEV'
+        ? `calc(100vh - 154px)`
+        : `calc(100vh - 114px)`,
+    // flexGrow: '1',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundImage: `url('/BGs/DesignerBanner.png')`,
+    backgroundSize: '100% 100%',
+  }),
+  canvas: state => ({
+    height:
+      state.userData.type === 'DEV'
+        ? `calc(100vh - 154px)`
+        : `calc(100vh - 114px)`,
+    // flexGrow: '1',
     width: `84vw`,
     '& div': {
       overflow: 'visible',
@@ -35,6 +55,10 @@ const useStyles = makeStyles(theme => ({
       outline: 'none',
     },
   }),
+  menuBar: {
+    height: '50px',
+    width: '100%',
+  },
 }))
 
 const defaults = () => {
@@ -148,24 +172,28 @@ const Designer = () => {
   }
   // console.log(currentSticker)
   return (
-    <div className={classes.designer}>
-      <div className={classes.canvas}>
-        <Canvas
-          rim={rim}
-          wheel={wheel}
-          accessories={accessories}
-          stickerMesh={stickerMesh}
+    <div className={classes.designerWrapper}>
+      <Paper className={classes.menuBar}>sample</Paper>
+      <div className={classes.designer}>
+        <div className={classes.canvas}>
+          <Canvas
+            rim={rim}
+            wheel={wheel}
+            accessories={accessories}
+            stickerMesh={stickerMesh}
+            stickers={stickersList}
+            currentSticker={currentSticker}
+            style={{ flexGrow: '1' }}
+          />
+        </div>
+        <StickerEditor
           stickers={stickersList}
           currentSticker={currentSticker}
+          setCurrentSticker={setCurrentSticker}
+          create={createNewStickerCard}
+          update={updateStickersList}
         />
       </div>
-      <StickerEditor
-        stickers={stickersList}
-        currentSticker={currentSticker}
-        setCurrentSticker={setCurrentSticker}
-        create={createNewStickerCard}
-        update={updateStickersList}
-      />
     </div>
   )
 }
