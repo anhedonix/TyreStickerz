@@ -39,12 +39,17 @@ const TyrePreview = props => {
       ? (usableCanvas / 360) * 100
       : (offsetScaledCoverage / 360) * 100
 
+  const calcThickness =
+    props.data.offsetU < -0
+      ? props.thickness * props.data.scaleU - Math.abs(2.5 * props.data.offsetU)
+      : props.thickness * props.data.scaleU
+
   return (
     <div className={classes.coverageCircle} style={{ height: props.size }}>
       <CircularProgress
         variant="static"
         value={coverageCircle}
-        thickness={6.5}
+        thickness={calcThickness}
         size={props.size - props.size * 0.405 * props.data.offsetU}
         style={{
           position: 'absolute',
@@ -60,7 +65,7 @@ const TyrePreview = props => {
         <CircularProgress
           variant="static"
           value={coverageCircle}
-          thickness={9}
+          thickness={calcThickness}
           size={props.size - 38 * props.data.offsetU}
           style={{
             position: 'absolute',
