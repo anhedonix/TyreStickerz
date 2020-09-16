@@ -66,12 +66,15 @@ const TyrePreview = props => {
           variant="static"
           value={coverageCircle}
           thickness={calcThickness}
-          size={props.size - 38 * props.data.offsetU}
+          size={props.size - props.size * 0.405 * props.data.offsetU}
           style={{
             position: 'absolute',
-            transform: `rotate(${start + offsetCoverage + 180}deg)`,
-            opacity: '.3',
-            color: '#fff',
+            transform:
+              props.data.offsetV < 0
+                ? `rotate(${start}deg)`
+                : `rotate(${start + offsetCoverage + 180}deg)`,
+            opacity: '.6',
+            color: '#ccc',
           }}
         />
       )}
