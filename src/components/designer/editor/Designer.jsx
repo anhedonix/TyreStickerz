@@ -74,7 +74,7 @@ const defaults = () => {
     mirror: false,
     texture: {
       type: textureTypes.raster,
-      path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
+      path: 'Stickers/Graphics/uQYVTcmctCxIlh072FtY/WhiteWall.png',
     },
   }
   return value
