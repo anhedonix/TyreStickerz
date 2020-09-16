@@ -34,11 +34,6 @@ const TyrePreview = props => {
   const offsetScaledCoverage = (offsetCoverage + coverage) * props.data.scaleV
   const usableCanvas = coverage - offsetCoverage
 
-  // const calculateOffsetV = () => {
-  //   const usedDegree = props.data.End - props.data.Start
-  //   const offsetV = props.data.Start + usedDegree * props.data.offsetV
-  //   return offsetV
-  // }
   const coverageCircle =
     offsetScaledCoverage >= usableCanvas
       ? (usableCanvas / 360) * 100
@@ -46,32 +41,17 @@ const TyrePreview = props => {
 
   return (
     <div className={classes.coverageCircle} style={{ height: props.size }}>
-      {/* <CircularProgress
-            variant='static'
-            value={100}
-            size={size}
-            style={{
-              opacity: '0.6',
-              color: 'black',
-              // height: '90px',
-              // position: 'absolute',
-            }}
-            props.thickness={props.thickness}
-          /> */}
-
       <CircularProgress
         variant="static"
         value={coverageCircle}
-        thickness={
-          props.thickness - props.data.offsetU * props.thickness <=
-          props.data.scaleU * props.thickness
-            ? props.thickness - props.data.offsetU * props.thickness
-            : props.data.scaleU * props.thickness
-        }
-        size={props.size - 38 * props.data.offsetU}
+        thickness={6.5}
+        size={props.size - props.size * 0.405 * props.data.offsetU}
         style={{
           position: 'absolute',
-          transform: `rotate(${start + offsetCoverage}deg)`,
+          transform:
+            props.data.offsetV < 0
+              ? `rotate(${start}deg)`
+              : `rotate(${start + offsetCoverage}deg)`,
           opacity: '.6',
           color: '#ccc',
         }}
@@ -80,12 +60,7 @@ const TyrePreview = props => {
         <CircularProgress
           variant="static"
           value={coverageCircle}
-          thickness={
-            props.thickness - props.data.offsetU * props.thickness <=
-            props.data.scaleU * props.thickness
-              ? props.thickness - props.data.offsetU * props.thickness
-              : props.data.scaleU * props.thickness
-          }
+          thickness={9}
           size={props.size - 38 * props.data.offsetU}
           style={{
             position: 'absolute',
