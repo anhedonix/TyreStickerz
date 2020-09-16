@@ -34,44 +34,29 @@ const TyrePreview = props => {
   const offsetScaledCoverage = (offsetCoverage + coverage) * props.data.scaleV
   const usableCanvas = coverage - offsetCoverage
 
-  // const calculateOffsetV = () => {
-  //   const usedDegree = props.data.End - props.data.Start
-  //   const offsetV = props.data.Start + usedDegree * props.data.offsetV
-  //   return offsetV
-  // }
   const coverageCircle =
     offsetScaledCoverage >= usableCanvas
       ? (usableCanvas / 360) * 100
       : (offsetScaledCoverage / 360) * 100
 
+  const calcThickness =
+    props.data.offsetU < -0
+      ? props.thickness * props.data.scaleU - Math.abs(2.5 * props.data.offsetU)
+      : props.thickness * props.data.scaleU
+
   return (
     <div className={classes.coverageCircle} style={{ height: props.size }}>
-      {/* <CircularProgress
-            variant='static'
-            value={100}
-            size={size}
-            style={{
-              opacity: '0.6',
-              color: 'black',
-              // height: '90px',
-              // position: 'absolute',
-            }}
-            props.thickness={props.thickness}
-          /> */}
-
       <CircularProgress
         variant="static"
         value={coverageCircle}
-        thickness={
-          props.thickness - props.data.offsetU * props.thickness <=
-          props.data.scaleU * props.thickness
-            ? props.thickness - props.data.offsetU * props.thickness
-            : props.data.scaleU * props.thickness
-        }
-        size={props.size - 38 * props.data.offsetU}
+        thickness={calcThickness}
+        size={props.size - props.size * 0.405 * props.data.offsetU}
         style={{
           position: 'absolute',
-          transform: `rotate(${start + offsetCoverage}deg)`,
+          transform:
+            props.data.offsetV < 0
+              ? `rotate(${start}deg)`
+              : `rotate(${start + offsetCoverage}deg)`,
           opacity: '.6',
           color: '#ccc',
         }}
@@ -80,18 +65,16 @@ const TyrePreview = props => {
         <CircularProgress
           variant="static"
           value={coverageCircle}
-          thickness={
-            props.thickness - props.data.offsetU * props.thickness <=
-            props.data.scaleU * props.thickness
-              ? props.thickness - props.data.offsetU * props.thickness
-              : props.data.scaleU * props.thickness
-          }
-          size={props.size - 38 * props.data.offsetU}
+          thickness={calcThickness}
+          size={props.size - props.size * 0.405 * props.data.offsetU}
           style={{
             position: 'absolute',
-            transform: `rotate(${start + offsetCoverage + 180}deg)`,
-            opacity: '.3',
-            color: '#fff',
+            transform:
+              props.data.offsetV < 0
+                ? `rotate(${start}deg)`
+                : `rotate(${start + offsetCoverage + 180}deg)`,
+            opacity: '.6',
+            color: '#ccc',
           }}
         />
       )}
