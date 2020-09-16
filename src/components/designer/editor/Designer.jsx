@@ -34,6 +34,8 @@ const useStyles = makeStyles(theme => ({
     height:
       state.userData.type === 'DEV'
         ? `calc(100vh - 154px)`
+        : ['ANON', 'CLIENT'].includes(state.userData.type)
+        ? `calc(100vh - 64px)`
         : `calc(100vh - 114px)`,
     // flexGrow: '1',
     alignItems: 'center',
@@ -45,6 +47,8 @@ const useStyles = makeStyles(theme => ({
     height:
       state.userData.type === 'DEV'
         ? `calc(100vh - 154px)`
+        : ['ANON', 'CLIENT'].includes(state.userData.type)
+        ? `calc(100vh - 64px)`
         : `calc(100vh - 114px)`,
     // flexGrow: '1',
     width: `84vw`,
@@ -70,7 +74,7 @@ const defaults = () => {
     mirror: false,
     texture: {
       type: textureTypes.raster,
-      path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
+      path: 'Stickers/Graphics/uQYVTcmctCxIlh072FtY/WhiteWall.png',
     },
   }
   return value
@@ -169,7 +173,7 @@ const Designer = () => {
   // console.log(currentSticker)
   return (
     <div className={classes.designerWrapper}>
-      <DesignerMenuBar />
+      {!['ANON', 'CLIENT'].includes(state.userData.type) && <DesignerMenuBar />}
       <div className={classes.designer}>
         <div className={classes.canvas}>
           <Canvas
