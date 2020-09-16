@@ -11,6 +11,7 @@ import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore'
 import CancelIcon from '@material-ui/icons/Cancel'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import Zoom from '@material-ui/core/Zoom'
+import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
 
 import TyrePreview from './TyrePreview'
 import StickerList from './StickerList'
@@ -56,6 +57,20 @@ const StickerCardEditMode = props => {
         justifyContent: 'flex-start',
       }}
     >
+      <Slide
+        in={listView}
+        direction="right"
+        timeout={{ enter: 500, exit: 500 }}
+        mountOnEnter
+        unmountOnExit
+      >
+        <div>
+          <StickerList
+            setListView={setListView}
+            updateSticker={updateSticker}
+          />
+        </div>
+      </Slide>
       <div
         style={{
           transform: listView ? 'translate(410px)' : 'translate(0)',
@@ -63,6 +78,14 @@ const StickerCardEditMode = props => {
         }}
       >
         <TyrePreview data={props.data} {...previewValues} />
+        <Button
+          startIcon={<ControlPointDuplicateIcon />}
+          onClick={() => {
+            props.apply('duplicate')
+          }}
+        >
+          Duplicate
+        </Button>
         <Tooltip
           title="change sticker"
           style={{ pointerEvents: 'none !Important' }}
@@ -221,7 +244,15 @@ const StickerCardEditMode = props => {
             aria-label="outlined primary button group"
             style={{ alignSelf: 'center', margin: '16px' }}
           >
-            <Button startIcon={<SettingsBackupRestoreIcon />}>reset</Button>
+            <Button
+              startIcon={<SettingsBackupRestoreIcon />}
+              onClick={() => {
+                props.apply('reset')
+              }}
+            >
+              reset
+            </Button>
+
             <Button
               startIcon={<CancelIcon />}
               onClick={() => {
@@ -242,20 +273,6 @@ const StickerCardEditMode = props => {
           </ButtonGroup>
         </div>
       </div>
-      <Slide
-        in={listView}
-        direction="right"
-        timeout={{ enter: 500, exit: 500 }}
-        mountOnEnter
-        unmountOnExit
-      >
-        <div>
-          <StickerList
-            setListView={setListView}
-            updateSticker={updateSticker}
-          />
-        </div>
-      </Slide>
     </div>
   )
 }

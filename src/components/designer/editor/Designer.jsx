@@ -2,25 +2,55 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
+
+import DesignerMenuBar from './DesignerMenuBar/DesignerMenuBar'
 import store from '../../../functions/store'
 import Canvas from './Canvas/index'
 import StickerEditor from './StickerEditor/StickerEditor'
 import { types as textureTypes } from '../../../constants/Designer/textureTypes'
 // import StickerList from './StickerEditor/StickerCard/StickerList'
 import * as CONTENT from '../../../constants/contentTypes'
+import { MainContext } from '../../../states/mainState'
+import { useContext } from 'react'
 
 const useStyles = makeStyles(theme => ({
-  designer: {
+  designerWrapper: state => ({
     display: 'flex',
+    flexDirection: 'column',
     width: '100vw',
-    height: `calc(100vh - 104px)`,
+    height:
+      state.userData.type === 'DEV'
+        ? `calc(100vh - 104px)`
+        : `calc(100vh - 64px)`,
+    // flexGrow: '1',
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
-  },
-  canvas: editMode => ({
-    height: `calc(100vh - 104px)`,
+  }),
+  designer: state => ({
+    display: 'flex',
+    width: '100vw',
+    height:
+      state.userData.type === 'DEV'
+        ? `calc(100vh - 154px)`
+        : ['ANON', 'CLIENT'].includes(state.userData.type)
+        ? `calc(100vh - 64px)`
+        : `calc(100vh - 114px)`,
+    // flexGrow: '1',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundImage: `url('/BGs/DesignerBanner.png')`,
+    backgroundSize: '100% 100%',
+  }),
+  canvas: state => ({
+    height:
+      state.userData.type === 'DEV'
+        ? `calc(100vh - 154px)`
+        : ['ANON', 'CLIENT'].includes(state.userData.type)
+        ? `calc(100vh - 64px)`
+        : `calc(100vh - 114px)`,
+    // flexGrow: '1',
     width: `84vw`,
     '& div': {
       overflow: 'visible',
@@ -44,7 +74,7 @@ const defaults = () => {
     mirror: false,
     texture: {
       type: textureTypes.raster,
-      path: 'Stickers/Graphics/0c231838-96c9-4a90-bff7-efd3ede4a763.png',
+      path: 'Stickers/Graphics/uQYVTcmctCxIlh072FtY/WhiteWall.png',
     },
   }
   return value
@@ -69,7 +99,8 @@ const hydrateTexture = value => {
 }
 
 const Designer = () => {
-  const classes = useStyles()
+  const { state, dispatch } = useContext(MainContext)
+  const classes = useStyles(state)
   const [stickersList, setStickersList] = useState([])
   const [wheel, setWheel] = useState()
   const [rim, setRim] = useState()
@@ -99,46 +130,70 @@ const Designer = () => {
 
   const updateStickersList = (action, sticker = null) => {
     let temp = [...stickersList]
-    if (action === 'delete') {
-      temp.map((e, i) => {
-        if (e.uid === sticker.uid) {
-          temp.splice(i, 1)
-        }
-      })
-      setStickersList(temp)
-    } else if (action === 'update') {
-      temp.map((e, i) => {
-        if (e.uid === currentSticker.uid) {
-          temp.splice(i, 1, { ...currentSticker, index: i })
-          setCurrentSticker()
-        }
-      })
+    switch (action) {
+      case 'delete': {
+        temp.map((e, i) => {
+          if (e.uid === sticker.uid) {
+            temp.splice(i, 1)
+          }
+        })
+        setStickersList(temp)
+        break
+      }
+      case 'update': {
+        temp.map((e, i) => {
+          if (e.uid === currentSticker.uid) {
+            temp.splice(i, 1, { ...currentSticker, index: i })
+            setCurrentSticker()
+          }
+        })
 
-      setStickersList(temp)
-    } else if (action === 'cancel') {
-      setCurrentSticker()
+        setStickersList(temp)
+        break
+      }
+      case 'cancel': {
+        setCurrentSticker()
+        break
+      }
+      case 'duplicate': {
+        setStickersList([{ ...currentSticker, uid: uuid() }, ...temp])
+        setCurrentSticker()
+        break
+      }
+      case 'reset': {
+        stickersList.map(e => {
+          if (e.uid === currentSticker.uid) {
+            setCurrentSticker(e)
+          }
+        })
+        break
+      }
     }
   }
-
+  // console.log(currentSticker)
   return (
-    <div className={classes.designer}>
-      <div className={classes.canvas}>
-        <Canvas
-          rim={rim}
-          wheel={wheel}
-          accessories={accessories}
-          stickerMesh={stickerMesh}
+    <div className={classes.designerWrapper}>
+      {!['ANON', 'CLIENT'].includes(state.userData.type) && <DesignerMenuBar />}
+      <div className={classes.designer}>
+        <div className={classes.canvas}>
+          <Canvas
+            rim={rim}
+            wheel={wheel}
+            accessories={accessories}
+            stickerMesh={stickerMesh}
+            stickers={stickersList}
+            currentSticker={currentSticker}
+            style={{ flexGrow: '1' }}
+          />
+        </div>
+        <StickerEditor
           stickers={stickersList}
           currentSticker={currentSticker}
+          setCurrentSticker={setCurrentSticker}
+          create={createNewStickerCard}
+          update={updateStickersList}
         />
       </div>
-      <StickerEditor
-        stickers={stickersList}
-        currentSticker={currentSticker}
-        setCurrentSticker={setCurrentSticker}
-        create={createNewStickerCard}
-        update={updateStickersList}
-      />
     </div>
   )
 }

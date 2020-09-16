@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '340px',
     height: '100%',
+    position: 'absolute',
   },
   sortBar: {
     minHeight: '50px',
@@ -65,7 +66,7 @@ const Sticker = props => {
 const StickerList = props => {
   const classes = useStyles()
   const [stickerList, setStickerList] = useState([])
-  const [currentCategory, setCurrentCategory] = useState(TYPES[1])
+  const [currentCategory, setCurrentCategory] = useState(TYPES[0])
 
   const handleChange = e => {
     setCurrentCategory(e.target.value)
