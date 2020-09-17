@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     margin: ' 0 0 1vh 10px',
     padding: '8px',
     position: 'relative',
-    borderRadius: '75px 0 75px 75px',
+    borderRadius: '75px 24px 75px 75px',
   }),
   imageWrapper: props => ({
     width: '100%',
@@ -61,7 +61,7 @@ const StickerCard = props => {
   return (
     <DarkThemeContainer>
       <Paper
-        elevation={6}
+        elevation={8}
         onClick={props.onClick}
         className={classes.stickerCardPreview}
         style={{

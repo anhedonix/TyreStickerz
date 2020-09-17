@@ -1,5 +1,5 @@
 import Slider from '@material-ui/core/Slider'
-import { OrbitControls, TrackballControls, Shadow } from 'drei'
+import { OrbitControls, TrackballControls } from 'drei'
 import React, { useEffect, useState } from 'react'
 import { Canvas } from 'react-three-fiber'
 import Env from './Loader/Env'
@@ -13,6 +13,7 @@ const MainCanvas = ({
   stickers,
   stickerMesh,
   currentSticker,
+  currentStickerTemp,
 }) => {
   const [init, setInit] = useState(false)
 
@@ -40,6 +41,7 @@ const MainCanvas = ({
                 data={sticker_element}
                 key={sticker_element.uid}
                 index={i}
+                length={stickers.length}
               />
             )
           }
@@ -49,16 +51,8 @@ const MainCanvas = ({
           <SDSM
             mesh={stickerMesh}
             data={currentSticker}
-            index={stickers.length}
-          />
-        )}
-
-        {init && (
-          <Shadow
-            scale={[40, 40, 1]}
-            opacity={0.8}
-            position={[0, 0, 0]}
-            rotation={[-Math.PI / 2, 0, 0]}
+            index={0}
+            length={stickers.length}
           />
         )}
 
