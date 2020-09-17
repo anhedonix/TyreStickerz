@@ -125,10 +125,13 @@ const StickerCardEditMode = props => {
               max={360}
               style={{ width: '80%', marginRight: '8px' }}
               onChange={(e, v) => {
+                props.liveUpdate({ ...sticker, start: v })
+              }}
+              onChangeCommitted={(e, v) => {
                 props.update({ ...sticker, start: v })
               }}
             />
-          </div>{' '}
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="discrete-slider" gutterBottom>
               Length
@@ -143,10 +146,13 @@ const StickerCardEditMode = props => {
               max={360}
               style={{ width: '80%', marginRight: '8px' }}
               onChange={(e, v) => {
+                props.liveUpdate({ ...sticker, length: v })
+              }}
+              onChangeCommitted={(e, v) => {
                 props.update({ ...sticker, length: v })
               }}
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="discrete-slider" gutterBottom>
               Offset U
@@ -161,10 +167,13 @@ const StickerCardEditMode = props => {
               min={-1}
               max={1}
               onChange={(e, v) => {
+                props.liveUpdate({ ...sticker, offsetU: v })
+              }}
+              onChangeCommitted={(e, v) => {
                 props.update({ ...sticker, offsetU: v })
               }}
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="discrete-slider" gutterBottom>
               Offset V
@@ -179,10 +188,13 @@ const StickerCardEditMode = props => {
               min={-1}
               max={1}
               onChange={(e, v) => {
+                props.liveUpdate({ ...sticker, offsetV: v })
+              }}
+              onChangeCommitted={(e, v) => {
                 props.update({ ...sticker, offsetV: v })
               }}
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="discrete-slider" gutterBottom>
               Scale U
@@ -197,10 +209,13 @@ const StickerCardEditMode = props => {
               min={0}
               max={1}
               onChange={(e, v) => {
+                props.liveUpdate({ ...sticker, scaleU: v })
+              }}
+              onChangeCommitted={(e, v) => {
                 props.update({ ...sticker, scaleU: v })
               }}
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="discrete-slider" gutterBottom>
               Scale V
@@ -215,10 +230,13 @@ const StickerCardEditMode = props => {
               min={0}
               max={1}
               onChange={(e, v) => {
+                props.liveUpdate({ ...sticker, scaleV: v })
+              }}
+              onChangeCommitted={(e, v) => {
                 props.update({ ...sticker, scaleV: v })
               }}
-            />{' '}
-          </div>{' '}
+            />
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="discrete-slider" gutterBottom>
               Mirror
@@ -229,7 +247,7 @@ const StickerCardEditMode = props => {
               onChange={(e, v) => {
                 props.update({ ...sticker, mirror: v })
               }}
-            />{' '}
+            />
           </div>
         </div>
         <div

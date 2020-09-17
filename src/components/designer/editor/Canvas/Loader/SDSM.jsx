@@ -61,7 +61,7 @@ const BufferGeoCustom = ({ data, material, uvOffset, offset }) => {
   return <bufferGeometry Name="Model" attach="geometry" ref={geoRef} />
 }
 
-const SDSM = ({ mesh, data, index }) => {
+const SDSM = ({ mesh, data, index, length }) => {
   const { scene } = useThree()
   const [ready, setReady] = useState(false)
   const [model, setModel] = useState()
@@ -100,7 +100,7 @@ const SDSM = ({ mesh, data, index }) => {
 
   const final_mesh = model && (
     <group
-      position={[model.c[0] + index * 0.05, model.c[1], model.c[2]]}
+      position={[model.c[0] + (length - index) * 0.05, model.c[1], model.c[2]]}
       scale={[1, 1, -1]}
     >
       {[...Array(parseInt(data.length / 3)).keys()].map(i => {

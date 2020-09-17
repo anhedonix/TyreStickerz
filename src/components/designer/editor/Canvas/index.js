@@ -13,6 +13,7 @@ const MainCanvas = ({
   stickers,
   stickerMesh,
   currentSticker,
+  currentStickerTemp,
 }) => {
   const [init, setInit] = useState(false)
 
@@ -40,6 +41,7 @@ const MainCanvas = ({
                 data={sticker_element}
                 key={sticker_element.uid}
                 index={i}
+                length={stickers.length}
               />
             )
           }
@@ -49,7 +51,8 @@ const MainCanvas = ({
           <SDSM
             mesh={stickerMesh}
             data={currentSticker}
-            index={stickers.length}
+            index={0}
+            length={stickers.length}
           />
         )}
 

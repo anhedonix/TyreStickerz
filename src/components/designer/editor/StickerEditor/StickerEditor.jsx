@@ -38,6 +38,8 @@ const StickerEditor = ({
   stickers,
   setCurrentSticker,
   currentSticker,
+  setCurrentStickerTemp,
+  currentStickerTemp,
 }) => {
   const classes = useStyles()
 
@@ -114,6 +116,7 @@ const StickerEditor = ({
                     data={e}
                     setCurrentSticker={() => {
                       setCurrentSticker(e)
+                      setCurrentStickerTemp(e)
                     }}
                     update={update}
                   />
@@ -130,7 +133,8 @@ const StickerEditor = ({
           style={{ position: 'relative', width: '400px', overflow: 'hidden' }}
         >
           <StickerEditMode
-            data={currentSticker}
+            data={currentStickerTemp}
+            liveUpdate={setCurrentStickerTemp}
             update={setCurrentSticker}
             apply={update}
           />
