@@ -36,12 +36,19 @@ const BufferGeoCustom = ({ data, material, uvOffset, offset }) => {
         new THREE.Float32BufferAttribute(
           data.uv.map((i, j) => {
             if (j % 2) {
-              return (i + offset.offsetU - 1 + offset.scaleU) / offset.scaleU
+              return (
+                ((i + offset.offsetU - 1 + offset.scaleU) / offset.scaleU) *
+                0.99
+              )
             } else {
               const iter = uvOffset[0]
               const end = uvOffset[1]
               const val = i
-              return ((val + iter) / (end / 3) - offset.offsetV) / offset.scaleV
+              return (
+                (((val + iter) / (end / 3) - offset.offsetV) / offset.scaleV) *
+                  0.996 +
+                0.002
+              )
             }
           }),
           2
