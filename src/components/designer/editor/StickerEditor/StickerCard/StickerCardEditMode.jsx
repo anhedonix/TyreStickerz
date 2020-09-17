@@ -43,6 +43,14 @@ const StickerCardEditMode = props => {
         path: path,
       },
     })
+    props.liveUpdate({
+      ...sticker,
+      texture: {
+        file: file,
+        type: textureTypes.raster,
+        path: path,
+      },
+    })
   }
   const classes = useStyles()
   const [listView, setListView] = useState(false)
