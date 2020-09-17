@@ -36,12 +36,19 @@ const BufferGeoCustom = ({ data, material, uvOffset, offset }) => {
         new THREE.Float32BufferAttribute(
           data.uv.map((i, j) => {
             if (j % 2) {
-              return (i + offset.offsetU - 1 + offset.scaleU) / offset.scaleU
+              return (
+                ((i + offset.offsetU - 1 + offset.scaleU) / offset.scaleU) *
+                0.99
+              )
             } else {
               const iter = uvOffset[0]
               const end = uvOffset[1]
               const val = i
-              return ((val + iter) / (end / 3) - offset.offsetV) / offset.scaleV
+              return (
+                (((val + iter) / (end / 3) - offset.offsetV) / offset.scaleV) *
+                  0.996 +
+                0.002
+              )
             }
           }),
           2
@@ -54,7 +61,7 @@ const BufferGeoCustom = ({ data, material, uvOffset, offset }) => {
   return <bufferGeometry Name="Model" attach="geometry" ref={geoRef} />
 }
 
-const SDSM = ({ mesh, data, index }) => {
+const SDSM = ({ mesh, data, index, length }) => {
   const { scene } = useThree()
   const [ready, setReady] = useState(false)
   const [model, setModel] = useState()
@@ -93,7 +100,7 @@ const SDSM = ({ mesh, data, index }) => {
 
   const final_mesh = model && (
     <group
-      position={[model.c[0] + index * 0.05, model.c[1], model.c[2]]}
+      position={[model.c[0] + (length - index) * 0.05, model.c[1], model.c[2]]}
       scale={[1, 1, -1]}
     >
       {[...Array(parseInt(data.length / 3)).keys()].map(i => {

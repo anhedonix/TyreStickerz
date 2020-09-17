@@ -107,6 +107,7 @@ const Designer = () => {
   const [accessories, setAccessories] = useState()
   const [stickerMesh, setStickerMesh] = useState()
   const [currentSticker, setCurrentSticker] = useState()
+  const [currentStickerTemp, setCurrentStickerTemp] = useState()
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
@@ -170,7 +171,7 @@ const Designer = () => {
       }
     }
   }
-  // console.log(currentSticker)
+
   return (
     <div className={classes.designerWrapper}>
       {!['ANON', 'CLIENT'].includes(state.userData.type) && <DesignerMenuBar />}
@@ -189,7 +190,9 @@ const Designer = () => {
         <StickerEditor
           stickers={stickersList}
           currentSticker={currentSticker}
+          currentStickerTemp={currentStickerTemp}
           setCurrentSticker={setCurrentSticker}
+          setCurrentStickerTemp={setCurrentStickerTemp}
           create={createNewStickerCard}
           update={updateStickersList}
         />
