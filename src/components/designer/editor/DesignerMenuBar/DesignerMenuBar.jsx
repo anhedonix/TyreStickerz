@@ -47,13 +47,6 @@ const DesignerMenuBar = props => {
           keepMounted
           open={Boolean(anchorEl)}
           onClose={handleClose}
-          MenuProps={{
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left',
-            },
-            getContentAnchorEl: null,
-          }}
         >
           {props.list.map(listItem => (
             <MenuItem
@@ -62,6 +55,7 @@ const DesignerMenuBar = props => {
                 handleClose()
               }}
               children={listItem}
+              key={listItem}
             />
           ))}
         </Menu>
@@ -72,7 +66,7 @@ const DesignerMenuBar = props => {
   return (
     <Paper className={classes.menuBar}>
       {items.map(item => (
-        <MenuHead head={item.head} list={item.list} />
+        <MenuHead head={item.head} list={item.list} key={item.head} />
       ))}
       <Dialog open={about} onClose={() => setAbout(false)}>
         <AboutDialogue />
