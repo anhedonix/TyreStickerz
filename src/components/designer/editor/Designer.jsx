@@ -174,7 +174,9 @@ const Designer = () => {
 
   return (
     <div className={classes.designerWrapper}>
-      {!['ANON', 'CLIENT'].includes(state.userData.type) && <DesignerMenuBar />}
+      {!['ANON', 'CLIENT', null].includes(state.userData.type) && (
+        <DesignerMenuBar />
+      )}
       <div className={classes.designer}>
         <div className={classes.canvas}>
           <Canvas
