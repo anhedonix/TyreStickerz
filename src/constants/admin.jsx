@@ -9,4 +9,5 @@ export default [
   contentTypes.rims,
   contentTypes.wheel,
   contentTypes.accessories,
+  contentTypes.customStickers,
 ]

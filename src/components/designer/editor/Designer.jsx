@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { v4 as uuid } from 'uuid'
+import Dialog from '@material-ui/core/Dialog'
+import TextField from '@material-ui/core/TextField'
+import _ from 'lodash'
 
 import DesignerMenuBar from './DesignerMenuBar/DesignerMenuBar'
 import store from '../../../functions/store'
@@ -12,6 +15,8 @@ import { types as textureTypes } from '../../../constants/Designer/textureTypes'
 import * as CONTENT from '../../../constants/contentTypes'
 import { MainContext } from '../../../states/mainState'
 import { useContext } from 'react'
+import AboutDialogue from './DesignerMenuBar/AboutDialog'
+import customStickers from '../../../constants/contentTypes/customStickers'
 
 const useStyles = makeStyles(theme => ({
   designerWrapper: state => ({
@@ -59,12 +64,18 @@ const useStyles = makeStyles(theme => ({
       outline: 'none',
     },
   }),
+  title: {
+    float: 'left',
+    position: 'absolute',
+    '& input': {
+      fontSize: '2rem',
+    },
+  },
 }))
 
 const defaults = () => {
   const value = {
     uid: uuid(),
-    proportional: false,
     start: 45,
     length: 90,
     offsetU: 0,
@@ -73,7 +84,6 @@ const defaults = () => {
     scaleV: 1,
     mirror: false,
     texture: {
-      type: textureTypes.raster,
       path: 'Stickers/Graphics/uQYVTcmctCxIlh072FtY/WhiteWall.png',
     },
   }
@@ -81,21 +91,17 @@ const defaults = () => {
 }
 
 const hydrateTexture = value => {
-  if (value.texture.type === textureTypes.raster) {
-    return new Promise((resolve, reject) => {
-      store
-        .getFileUrl(value.texture.path)
-        .then(texture_path =>
-          resolve({
-            ...value,
-            texture: { ...value.texture, file: texture_path },
-          })
-        )
-        .catch(err => reject(err))
-    })
-  } else {
-    return resolve(value)
-  }
+  return new Promise((resolve, reject) => {
+    store
+      .getFileUrl(value.texture.path)
+      .then(texture_path =>
+        resolve({
+          ...value,
+          texture: { ...value.texture, file: texture_path },
+        })
+      )
+      .catch(err => reject(err))
+  })
 }
 
 const Designer = () => {
@@ -108,6 +114,7 @@ const Designer = () => {
   const [stickerMesh, setStickerMesh] = useState()
   const [currentSticker, setCurrentSticker] = useState()
   const [currentStickerTemp, setCurrentStickerTemp] = useState()
+  const [about, setAbout] = useState(false)
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
@@ -124,6 +131,7 @@ const Designer = () => {
   }, [])
 
   const createNewStickerCard = () => {
+    console.log(stickersList)
     hydrateTexture(defaults()).then(val =>
       setStickersList([{ ...val, index: stickersList.length }, ...stickersList])
     )
@@ -174,7 +182,28 @@ const Designer = () => {
 
   return (
     <div className={classes.designerWrapper}>
-      {!['ANON', 'CLIENT'].includes(state.userData.type) && <DesignerMenuBar />}
+      {!['ANON', 'CLIENT', null].includes(state.userData.type) && (
+        <>
+          <DesignerMenuBar
+            functions={{
+              New: () => setStickersList([]),
+              Reset: () => {
+                hydrateTexture(defaults()).then(val =>
+                  setStickersList([{ ...val, index: 0 }])
+                )
+              },
+              About: () => setAbout(true),
+              Save: name => {
+                console.log(stickersList)
+                customStickers.create({
+                  name: name,
+                  data: [...stickersList],
+                })
+              },
+            }}
+          />
+        </>
+      )}
       <div className={classes.designer}>
         <div className={classes.canvas}>
           <Canvas
@@ -197,6 +226,9 @@ const Designer = () => {
           update={updateStickersList}
         />
       </div>
+      <Dialog open={about} onClose={() => setAbout(false)}>
+        <AboutDialogue />
+      </Dialog>
     </div>
   )
 }

@@ -8,6 +8,8 @@ import environment from './environment'
 import accessories from './accessories'
 import rims from './rims'
 import wheel from './wheel'
+import customStickers from './customStickers'
+import sticker from './sticker'
 
 export {
   user,
@@ -20,4 +22,6 @@ export {
   accessories,
   rims,
   wheel,
+  customStickers,
+  sticker,
 }

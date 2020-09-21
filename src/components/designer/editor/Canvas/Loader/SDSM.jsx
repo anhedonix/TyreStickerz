@@ -76,6 +76,7 @@ const SDSM = ({ mesh, data, index, length }) => {
       texture_map.wrapT = THREE.ClampToEdgeWrapping
       texture_map.minFilter = THREE.LinearFilter
       texture_map.magFilter = THREE.NearestFilter
+      texture_map.encoding = THREE.sRGBEncoding
       setTexture(texture_map)
       setReady(true)
     }
@@ -86,12 +87,13 @@ const SDSM = ({ mesh, data, index, length }) => {
 
   const material = () => {
     return new THREE.MeshPhysicalMaterial({
-      roughness: 0.3,
+      roughness: 1,
       side: THREE.DoubleSide,
       map: texture,
       emissive: '#ffffff',
       emissiveMap: texture,
-      emissiveIntensity: 0.4,
+      metalness: 0,
+      emissiveIntensity: 0.6,
       premultipliedAlpha: true,
       transparent: true,
       envMap: scene.environment,

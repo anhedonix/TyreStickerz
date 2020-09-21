@@ -39,7 +39,6 @@ const StickerCardEditMode = props => {
       ...sticker,
       texture: {
         file: file,
-        type: textureTypes.raster,
         path: path,
       },
     })
@@ -47,7 +46,6 @@ const StickerCardEditMode = props => {
       ...sticker,
       texture: {
         file: file,
-        type: textureTypes.raster,
         path: path,
       },
     })
