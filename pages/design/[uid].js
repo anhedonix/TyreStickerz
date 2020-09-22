@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import { name } from '../../package.json'
 import Design from '../../src/components/designer/editor/Design'
+import { DarkThemeContainer } from '../../src/config/theme'
 
 export default function designer() {
   return (
@@ -13,7 +14,9 @@ export default function designer() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Design />
+      <DarkThemeContainer>
+        <Design />
+      </DarkThemeContainer>
     </div>
   )
 }
