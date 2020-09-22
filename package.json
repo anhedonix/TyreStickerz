@@ -46,6 +46,7 @@
     "postprocessing": "^6.17.3",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "16.13.1",
     "react-icons": "^3.11.0",

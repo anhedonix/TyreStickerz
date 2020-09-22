@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     // flexGrow: '1',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    // backgroundImage: `url('/BGs/DesignerBanner.png')`,
+    backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
   }),
   designer: state => ({
@@ -105,10 +105,15 @@ const hydrateTexture = value => {
   })
 }
 
-const Designer = () => {
+const Editor = () => {
+  const router = useRouter()
+  const { uid } = router.query
+
+  const [data, setData] = useState()
+
   const { state, dispatch } = useContext(MainContext)
   const classes = useStyles(state)
-  const [stickersList, setStickersList] = useState([])
+  const [stickersList, setStickersList] = useState()
   const [wheel, setWheel] = useState()
   const [rim, setRim] = useState()
   const [accessories, setAccessories] = useState()
@@ -116,8 +121,6 @@ const Designer = () => {
   const [currentSticker, setCurrentSticker] = useState()
   const [currentStickerTemp, setCurrentStickerTemp] = useState()
   const [about, setAbout] = useState(false)
-
-  const router = useRouter()
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
@@ -128,10 +131,14 @@ const Designer = () => {
       CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
       CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
     })
-    hydrateTexture(defaults()).then(val =>
-      setStickersList([{ ...val, index: 0 }])
-    )
-  }, [])
+    if (uid) {
+      customStickers.read(uid).then(cdata => {
+        setData(cdata)
+        setStickersList(cdata.data)
+        console.log(cdata)
+      })
+    }
+  }, [uid])
 
   const createNewStickerCard = () => {
     console.log(stickersList)
@@ -188,49 +195,59 @@ const Designer = () => {
       {!['ANON', 'CLIENT', null].includes(state.userData.type) && (
         <>
           <DesignerMenuBar
+            name={data ? data.name : ''}
+            copyUrl={`/design/${uid}`}
             functions={{
-              New: () => setStickersList([]),
+              New: () => {
+                setStickersList([])
+                router.push(`/designer`)
+              },
               Reset: () => {
                 hydrateTexture(defaults()).then(val =>
                   setStickersList([{ ...val, index: 0 }])
                 )
               },
               About: () => setAbout(true),
-              Save: name => {
-                customStickers
-                  .create({
-                    name: name,
-                    data: [...stickersList],
-                  })
-                  .then(e => {
-                    router.push(`/editor/${e}`)
-                  })
-              },
+              Update: () =>
+                customStickers.update(
+                  uid,
+                  null,
+                  { data: [...stickersList] },
+                  true
+                ),
             }}
           />
         </>
       )}
       <div className={classes.designer}>
         <div className={classes.canvas}>
-          <Canvas
-            rim={rim}
-            wheel={wheel}
-            accessories={accessories}
-            stickerMesh={stickerMesh}
-            stickers={stickersList}
-            currentSticker={currentSticker}
-            style={{ flexGrow: '1' }}
-          />
+          {stickersList && (
+            <>
+              <Canvas
+                rim={rim}
+                wheel={wheel}
+                accessories={accessories}
+                stickerMesh={stickerMesh}
+                stickers={stickersList}
+                currentSticker={currentSticker}
+                style={{ flexGrow: '1' }}
+              />
+            </>
+          )}
         </div>
-        <StickerEditor
-          stickers={stickersList}
-          currentSticker={currentSticker}
-          currentStickerTemp={currentStickerTemp}
-          setCurrentSticker={setCurrentSticker}
-          setCurrentStickerTemp={setCurrentStickerTemp}
-          create={createNewStickerCard}
-          update={updateStickersList}
-        />
+        {stickersList && (
+          <>
+            <StickerEditor
+              stickers={stickersList}
+              currentSticker={currentSticker}
+              currentStickerTemp={currentStickerTemp}
+              setCurrentSticker={setCurrentSticker}
+              setCurrentStickerTemp={setCurrentStickerTemp}
+              create={createNewStickerCard}
+              update={updateStickersList}
+            />
+          </>
+        )}
       </div>
       <Dialog open={about} onClose={() => setAbout(false)}>
         <AboutDialogue />
@@ -239,4 +256,4 @@ const Designer = () => {
   )
 }
 
-export default Designer
+export default Editor
