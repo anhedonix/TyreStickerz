@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid'
 import Dialog from '@material-ui/core/Dialog'
 import TextField from '@material-ui/core/TextField'
 import _ from 'lodash'
+import { useRouter } from 'next/router'
 
 import DesignerMenuBar from './DesignerMenuBar/DesignerMenuBar'
 import store from '../../../functions/store'
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     // flexGrow: '1',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundImage: `url('/BGs/DesignerBanner.png')`,
+    // backgroundImage: `url('/BGs/DesignerBanner.png')`,
     backgroundSize: '100% 100%',
   }),
   designer: state => ({
@@ -116,6 +117,8 @@ const Designer = () => {
   const [currentStickerTemp, setCurrentStickerTemp] = useState()
   const [about, setAbout] = useState(false)
 
+  const router = useRouter()
+
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
       CONTENT.wheel.read(i.data.whl).then(j => {
@@ -194,11 +197,14 @@ const Designer = () => {
               },
               About: () => setAbout(true),
               Save: name => {
-                console.log(stickersList)
-                customStickers.create({
-                  name: name,
-                  data: [...stickersList],
-                })
+                customStickers
+                  .create({
+                    name: name,
+                    data: [...stickersList],
+                  })
+                  .then(e => {
+                    router.push(`/editor/${e}`)
+                  })
               },
             }}
           />
