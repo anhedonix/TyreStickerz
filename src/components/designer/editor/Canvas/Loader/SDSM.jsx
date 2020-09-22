@@ -10,7 +10,7 @@ import * as THREE from 'three'
 import React, { useEffect, useState } from 'react'
 import initializeStickerMeshData from './initializeData'
 import store from '../../../../../functions/store'
-
+import { colors } from '../../StickerEditor/StickerCard/StickerCardEditMode'
 import { useThree, useLoader } from 'react-three-fiber'
 
 const BufferGeoCustom = ({ data, material, uvOffset, offset }) => {
@@ -90,10 +90,10 @@ const SDSM = ({ mesh, data, index, length }) => {
       roughness: 1,
       side: THREE.DoubleSide,
       map: texture,
-      emissive: '#ffffff',
+      emissive: colors[data.tint]['color'],
       emissiveMap: texture,
       metalness: 0,
-      emissiveIntensity: 0.6,
+      emissiveIntensity: 1,
       premultipliedAlpha: true,
       transparent: true,
       envMap: scene.environment,

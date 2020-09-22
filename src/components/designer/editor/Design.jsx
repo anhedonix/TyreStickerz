@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog'
 import TextField from '@material-ui/core/TextField'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
+import Paper from '@material-ui/core/Paper'
 
 import DesignerMenuBar from './DesignerMenuBar/DesignerMenuBar'
 import store from '../../../functions/store'
@@ -21,17 +22,6 @@ import customStickers from '../../../constants/contentTypes/customStickers'
 import ThemeWrapper from '../../shared/ThemeWrapper'
 
 const useStyles = makeStyles(theme => ({
-  designerWrapper: state => ({
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100vw',
-    height: '100vh',
-    // flexGrow: '1',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundImage: `url('/BGs/DesignerBanner.png')`,
-    backgroundSize: '100% 100%',
-  }),
   designer: state => ({
     display: 'flex',
     width: '100vw',
@@ -131,19 +121,21 @@ const Design = () => {
   }, [uid])
 
   return (
-    <div className={classes.designer}>
-      <div className={classes.canvas}>
-        <Canvas
-          rim={rim}
-          wheel={wheel}
-          accessories={accessories}
-          stickerMesh={stickerMesh}
-          stickers={stickersList}
-          currentSticker={currentSticker}
-          style={{ flexGrow: '1' }}
-        />
+    <Paper>
+      <div className={classes.designer}>
+        <div className={classes.canvas}>
+          <Canvas
+            rim={rim}
+            wheel={wheel}
+            accessories={accessories}
+            stickerMesh={stickerMesh}
+            stickers={stickersList}
+            currentSticker={currentSticker}
+            style={{ flexGrow: '1' }}
+          />
+        </div>
       </div>
-    </div>
+    </Paper>
   )
 }
 
