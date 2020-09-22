@@ -90,7 +90,7 @@ const SDSM = ({ mesh, data, index, length }) => {
       roughness: 1,
       side: THREE.DoubleSide,
       map: texture,
-      emissive: colors[data.tint]['color'],
+      emissive: data.tint ? colors[data.tint]['color'] : '#ffffff',
       emissiveMap: texture,
       metalness: 0,
       emissiveIntensity: 1,
