@@ -28,7 +28,46 @@ const useStyles = makeStyles(theme => ({
       opacity: '.5',
     },
   },
+  colors: {
+    minHeight: '100px',
+    padding: '1rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  colorSwatch: {
+    minWidth: '0',
+    width: '30px',
+    height: '30px',
+    borderRadius: '40px',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+    transition: 'all 200ms',
+    '&:hover': {
+      opacity: '0.8',
+    },
+  },
+  colorSwatchActive: {
+    minWidth: '0',
+    width: '60px',
+    height: '60px',
+    borderRadius: '40px',
+    transition: 'all 200ms',
+    boxShadow: '0 8px 20px rgba(0,0,0,0.4)',
+    border: '2px solid #000',
+    '&:hover': {
+      opacity: '0.8',
+    },
+  },
 }))
+
+export const colors = [
+  { id: 0, color: '#c5cdd5', swatch: '#e3e7eb', name: 'White' },
+  { id: 1, color: '#cd8617', swatch: '#e7bf57', name: 'Yellow' },
+  { id: 2, color: '#ba3f0e', swatch: '#dd8846', name: 'Orange' },
+  { id: 3, color: '#6d080b', swatch: '#ae353d', name: 'Red' },
+  { id: 4, color: '#186d0e', swatch: '#58ae46', name: 'Green' },
+  { id: 5, color: '#0a439a', swatch: '#3c8ccb', name: 'Blue' },
+]
 
 const previewValues = { size: 300, thickness: 9 }
 
@@ -39,7 +78,6 @@ const StickerCardEditMode = props => {
       ...sticker,
       texture: {
         file: file,
-        type: textureTypes.raster,
         path: path,
       },
     })
@@ -47,13 +85,14 @@ const StickerCardEditMode = props => {
       ...sticker,
       texture: {
         file: file,
-        type: textureTypes.raster,
         path: path,
       },
     })
   }
   const classes = useStyles()
   const [listView, setListView] = useState(false)
+
+  console.log(props.data)
 
   return (
     <div
@@ -119,6 +158,23 @@ const StickerCardEditMode = props => {
           </div>
         </Tooltip>
         <div className={classes.stickerCardEdit}>
+          <div className={classes.colors}>
+            {colors.map(e => (
+              <Button
+                style={{ backgroundColor: e.swatch }}
+                className={
+                  props.data.tint == e.id
+                    ? classes.colorSwatchActive
+                    : classes.colorSwatch
+                }
+                onClick={() => {
+                  props.liveUpdate({ ...sticker, tint: e.id })
+                  props.update({ ...sticker, tint: e.id })
+                }}
+                key={e.id}
+              />
+            ))}
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography id="discrete-slider" gutterBottom>
               Start
@@ -253,6 +309,7 @@ const StickerCardEditMode = props => {
               value={sticker.mirror}
               checked={sticker.mirror}
               onChange={(e, v) => {
+                props.liveUpdate({ ...sticker, mirror: v })
                 props.update({ ...sticker, mirror: v })
               }}
             />
