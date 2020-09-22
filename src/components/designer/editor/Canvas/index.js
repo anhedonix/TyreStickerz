@@ -19,7 +19,7 @@ const MainCanvas = ({
 
   return (
     <>
-      <Canvas camera={{ position: [80, 60, -100], fov: 30 }}>
+      <Canvas camera={{ position: [80, 60, -60], fov: 30 }}>
         <ambientLight intensity={0.2} />
         <Env initialize={() => setInit(true)} />
 
