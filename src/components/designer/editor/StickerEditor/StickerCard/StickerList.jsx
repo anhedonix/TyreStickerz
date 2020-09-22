@@ -93,16 +93,16 @@ const StickerList = props => {
             ))}
           </Select>
         </div>
-        {/* <Scrollbars> */}
-        {stickerList.map(data => (
-          <Sticker
-            path={data.image}
-            key={data.image}
-            updateSticker={props.updateSticker}
-            setListView={props.setListView}
-          />
-        ))}
-        {/* </Scrollbars> */}
+        <Scrollbars>
+          {stickerList.map(data => (
+            <Sticker
+              path={data.image}
+              key={data.image}
+              updateSticker={props.updateSticker}
+              setListView={props.setListView}
+            />
+          ))}
+        </Scrollbars>
         <Button
           variant="contained"
           style={{ width: '100%' }}
