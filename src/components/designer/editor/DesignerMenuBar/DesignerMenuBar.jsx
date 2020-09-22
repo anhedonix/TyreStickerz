@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -7,6 +7,10 @@ import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Save from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
+import UpdateIcon from '@material-ui/icons/Update'
+import { useRouter } from 'next/router'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import FileCopyIcon from '@material-ui/icons/FileCopy'
 
 import { items } from './MenuItems'
 
@@ -63,7 +67,11 @@ const MenuHead = props => {
 const DesignerMenuBar = props => {
   const classes = useStyles()
 
-  const [name, setName] = useState('')
+  const [name, setName] = useState(props.name)
+
+  useEffect(() => {
+    setName(props.name)
+  }, [props.name])
 
   return (
     <Paper className={classes.menuBar} square>
@@ -75,16 +83,33 @@ const DesignerMenuBar = props => {
           {...props}
         />
       ))}
-      <div style={{ marginLeft: 'auto', marginTop: '0.8rem' }}>
-        Name: <TextField value={name} onChange={e => setName(e.target.value)} />
+      <div style={{ marginLeft: 'auto' }}>
+        <TextField
+          label="Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+      </div>
+      {props.functions.Save ? (
         <IconButton
-          style={{ marginTop: '-0.8rem' }}
-          disabled={name.length < 5}
+          disabled={name && name.length < 5}
           onClick={() => props.functions.Save(name)}
         >
           <Save />
         </IconButton>
-      </div>
+      ) : props.functions.Update ? (
+        <IconButton onClick={() => props.functions.Update(name)}>
+          <UpdateIcon />
+        </IconButton>
+      ) : null}
+
+      {props.copyUrl && (
+        <CopyToClipboard text={props.copyUrl}>
+          <IconButton>
+            <FileCopyIcon />
+          </IconButton>
+        </CopyToClipboard>
+      )}
     </Paper>
   )
 }
