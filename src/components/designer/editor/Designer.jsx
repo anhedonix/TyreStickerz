@@ -84,6 +84,7 @@ const defaults = () => {
     scaleU: 1,
     scaleV: 1,
     mirror: false,
+    tint: 0,
     texture: {
       path: 'Stickers/Graphics/uQYVTcmctCxIlh072FtY/WhiteWall.png',
     },
