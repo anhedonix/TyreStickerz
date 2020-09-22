@@ -8,12 +8,6 @@ import _ from 'lodash'
 const DesignerStateWrapper = props => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  useEffect(() => {
-    axios.get('/api/defaults').then(i => {
-      dispatch({ type: 'defaults', payload: i.data })
-    })
-  }, [])
-
   return (
     <DesignerContext.Provider value={{ state, dispatch }}>
       {props.children}
