@@ -103,9 +103,9 @@ const StickerEditor = ({
             <Scrollbars
               onUpdate={handleScroll}
               style={{
-                minHeight: 480,
-                height: 'calc(80vh - 100px)',
-                width: 400,
+                minHeight: 400,
+                height: 'calc(80vh - 120px)',
+                minWidth: 380,
               }}
               universal
             >
@@ -130,7 +130,12 @@ const StickerEditor = ({
         </>
       ) : (
         <div
-          style={{ position: 'relative', width: '400px', overflow: 'hidden' }}
+          style={{
+            position: 'relative',
+            width: `calc(100vh/4)`,
+            overflow: 'hidden',
+            minWidth: '400px',
+          }}
         >
           <StickerEditMode
             data={currentStickerTemp}
