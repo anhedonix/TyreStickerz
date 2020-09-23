@@ -208,6 +208,7 @@ const Editor = () => {
                 )
               },
               About: () => setAbout(true),
+              Open: e => router.push(`/gallery`),
               Update: () =>
                 customStickers.update(
                   uid,
