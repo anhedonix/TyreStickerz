@@ -11,6 +11,7 @@ import UpdateIcon from '@material-ui/icons/Update'
 import { useRouter } from 'next/router'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import { items } from './MenuItems'
 
@@ -98,9 +99,11 @@ const DesignerMenuBar = props => {
           <Save />
         </IconButton>
       ) : props.functions.Update ? (
-        <IconButton onClick={() => props.functions.Update(name)}>
-          <UpdateIcon />
-        </IconButton>
+        <Tooltip title="update">
+          <IconButton onClick={() => props.functions.Update(name)}>
+            <UpdateIcon />
+          </IconButton>
+        </Tooltip>
       ) : null}
 
       {props.copyUrl && (
