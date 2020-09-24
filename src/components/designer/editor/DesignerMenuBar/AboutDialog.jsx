@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   logo: {
     width: '50px',
     height: '50px',
-    backgroundImage: `url('CompanyLogo.png')`,
+    backgroundImage: `url('/CompanyLogo.png')`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   copyRightImage: {
     width: '50px',
     height: '50px',
-    backgroundImage: `url('SaddlesLogo.png')`,
+    backgroundImage: `url('/SaddlesLogo.png')`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',

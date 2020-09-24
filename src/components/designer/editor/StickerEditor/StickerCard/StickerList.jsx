@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+
 import { DarkThemeContainer } from '../../../../../config/theme'
 import * as CONTENT from '../../../../../constants/contentTypes'
 import { TYPES } from '../../../../../constants/stickerCategories'
@@ -67,9 +70,11 @@ const StickerList = props => {
   const classes = useStyles()
   const [stickerList, setStickerList] = useState([])
   const [currentCategory, setCurrentCategory] = useState(TYPES[0])
+  const [value, setValue] = useState(0)
 
-  const handleChange = e => {
-    setCurrentCategory(e.target.value)
+  const handleChange = (event, newValue) => {
+    setCurrentCategory(event.target.innerHTML)
+    setValue(newValue)
   }
 
   useEffect(() => {
@@ -78,11 +83,13 @@ const StickerList = props => {
       .then(e => setStickerList(e))
   }, [currentCategory])
 
+  // console.log(TYPES)
+
   return (
     <DarkThemeContainer>
       <Paper className={classes.stickerList} elevation={20}>
         <div className={classes.sortBar}>
-          Sticker Category
+          {/* Sticker Category
           <Select
             value={currentCategory}
             onChange={handleChange}
@@ -91,7 +98,19 @@ const StickerList = props => {
             {TYPES.map(e => (
               <MenuItem value={e}>{e}</MenuItem>
             ))}
-          </Select>
+          </Select> */}
+
+          <Tabs
+            value={value}
+            ndicatorColor="primary"
+            textColor="primary"
+            onChange={handleChange}
+            aria-label="disabled tabs example"
+          >
+            {TYPES.map(content => (
+              <Tab label={content} />
+            ))}
+          </Tabs>
         </div>
         <Scrollbars>
           {stickerList.map(data => (

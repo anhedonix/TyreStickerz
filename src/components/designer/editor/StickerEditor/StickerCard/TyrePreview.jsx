@@ -21,6 +21,9 @@ const useStyles = makeStyles(theme => ({
     '& div': {
       transition: 'none',
     },
+    // [theme.breakpoints.down('lg')]: {
+    //   width: '30%',
+    // },
   },
 }))
 
