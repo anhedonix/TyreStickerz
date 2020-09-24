@@ -207,6 +207,7 @@ const Designer = () => {
                     router.push(`/editor/${e}`)
                   })
               },
+              Open: e => router.push(`/gallery`),
             }}
           />
         </>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
@@ -12,6 +12,7 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import Zoom from '@material-ui/core/Zoom'
 import ControlPointDuplicateIcon from '@material-ui/icons/ControlPointDuplicate'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 import TyrePreview from './TyrePreview'
 import StickerList from './StickerList'
@@ -69,9 +70,11 @@ export const colors = [
   { id: 5, color: '#0a439a', swatch: '#3c8ccb', name: 'Blue' },
 ]
 
-const previewValues = { size: 300, thickness: 9 }
-
 const StickerCardEditMode = props => {
+  const [previewValues, setPreviewValues] = useState({
+    size: 300,
+    thickness: 9,
+  })
   const sticker = props.data
   const updateSticker = (file, path) => {
     props.update({
@@ -92,7 +95,22 @@ const StickerCardEditMode = props => {
   const classes = useStyles()
   const [listView, setListView] = useState(false)
 
-  console.log(props.data)
+  useEffect(() => {
+    setPreviewValues({ ...previewValues, size: window.innerHeight / 4 })
+    console.log(window.innerHeight)
+  }, [])
+
+  const handleScroll = values => {
+    const shadowTop_ = shadowTop.current
+    const shadowBottom_ = shadowBottom.current
+    const { scrollTop, scrollHeight, clientHeight } = values
+    const shadowTopOpacity = (1 / 20) * Math.min(scrollTop, 20)
+    const bottomScrollTop = scrollHeight - clientHeight
+    const shadowBottomOpacity =
+      (1 / 20) * (bottomScrollTop - Math.max(scrollTop, bottomScrollTop - 20))
+    css(shadowTop_, { opacity: shadowTopOpacity })
+    css(shadowBottom_, { opacity: shadowBottomOpacity })
+  }
 
   return (
     <div
@@ -125,236 +143,244 @@ const StickerCardEditMode = props => {
         }}
       >
         <TyrePreview data={props.data} {...previewValues} />
-        <Button
-          startIcon={<ControlPointDuplicateIcon />}
-          onClick={() => {
-            props.apply('duplicate')
-          }}
-        >
-          Duplicate
-        </Button>
-        <Tooltip
-          title="change sticker"
-          style={{ pointerEvents: 'none !Important' }}
-          TransitionComponent={Zoom}
-          placement="left"
-        >
-          <div
-            className={classes.stickerBack}
+        <Scrollbars style={{ minHeight: '50vh' }}>
+          <Button
+            startIcon={<ControlPointDuplicateIcon />}
             onClick={() => {
-              setListView(true)
+              props.apply('duplicate')
             }}
           >
+            Duplicate
+          </Button>
+          <Tooltip
+            title="change sticker"
+            style={{ pointerEvents: 'none !Important' }}
+            TransitionComponent={Zoom}
+            placement="left"
+          >
+            <div
+              className={classes.stickerBack}
+              onClick={() => {
+                setListView(true)
+              }}
+            >
+              <div
+                style={{
+                  backgroundImage: `url(${props.data.texture.file})`,
+                  width: '100%',
+                  height: '60px',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                }}
+              />
+            </div>
+          </Tooltip>
+          <div className={classes.stickerCardEdit}>
+            <div className={classes.colors}>
+              {colors.map(e => (
+                <Button
+                  style={{ backgroundColor: e.swatch }}
+                  className={
+                    props.data.tint == e.id
+                      ? classes.colorSwatchActive
+                      : classes.colorSwatch
+                  }
+                  onClick={() => {
+                    props.liveUpdate({ ...sticker, tint: e.id })
+                    props.update({ ...sticker, tint: e.id })
+                  }}
+                  key={e.id}
+                />
+              ))}
+            </div>
+
             <div
               style={{
-                backgroundImage: `url(${props.data.texture.file})`,
-                width: '100%',
-                height: '60px',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
+                display: 'flex',
+                justifyContent: 'space-between',
               }}
-            />
-          </div>
-        </Tooltip>
-        <div className={classes.stickerCardEdit}>
-          <div className={classes.colors}>
-            {colors.map(e => (
-              <Button
-                style={{ backgroundColor: e.swatch }}
-                className={
-                  props.data.tint == e.id
-                    ? classes.colorSwatchActive
-                    : classes.colorSwatch
-                }
-                onClick={() => {
-                  props.liveUpdate({ ...sticker, tint: e.id })
-                  props.update({ ...sticker, tint: e.id })
+            >
+              <Typography id="discrete-slider" gutterBottom>
+                Start
+              </Typography>
+              <Slider
+                value={props.data.start}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={3}
+                marks
+                min={0}
+                max={360}
+                style={{ width: '80%', marginRight: '8px' }}
+                onChange={(e, v) => {
+                  props.liveUpdate({ ...sticker, start: v })
                 }}
-                key={e.id}
+                onChangeCommitted={(e, v) => {
+                  props.update({ ...sticker, start: v })
+                }}
               />
-            ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography id="discrete-slider" gutterBottom>
+                Length
+              </Typography>
+              <Slider
+                value={sticker.length}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={3}
+                marks
+                min={0}
+                max={360}
+                style={{ width: '80%', marginRight: '8px' }}
+                onChange={(e, v) => {
+                  props.liveUpdate({ ...sticker, length: v })
+                }}
+                onChangeCommitted={(e, v) => {
+                  props.update({ ...sticker, length: v })
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography id="discrete-slider" gutterBottom>
+                Offset U
+              </Typography>
+              <Slider
+                style={{ width: '80%', marginRight: '8px' }}
+                value={sticker.offsetU}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={0.1}
+                marks
+                min={-1}
+                max={1}
+                onChange={(e, v) => {
+                  props.liveUpdate({ ...sticker, offsetU: v })
+                }}
+                onChangeCommitted={(e, v) => {
+                  props.update({ ...sticker, offsetU: v })
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography id="discrete-slider" gutterBottom>
+                Offset V
+              </Typography>
+              <Slider
+                style={{ width: '80%', marginRight: '8px' }}
+                value={sticker.offsetV}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={0.1}
+                marks
+                min={-1}
+                max={1}
+                onChange={(e, v) => {
+                  props.liveUpdate({ ...sticker, offsetV: v })
+                }}
+                onChangeCommitted={(e, v) => {
+                  props.update({ ...sticker, offsetV: v })
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography id="discrete-slider" gutterBottom>
+                Scale U
+              </Typography>
+              <Slider
+                style={{ width: '80%', marginRight: '8px' }}
+                value={sticker.scaleU}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={0.1}
+                marks
+                min={0}
+                max={1}
+                onChange={(e, v) => {
+                  props.liveUpdate({ ...sticker, scaleU: v })
+                }}
+                onChangeCommitted={(e, v) => {
+                  props.update({ ...sticker, scaleU: v })
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography id="discrete-slider" gutterBottom>
+                Scale V
+              </Typography>
+              <Slider
+                style={{ width: '80%', marginRight: '8px' }}
+                value={sticker.scaleV}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={0.1}
+                marks
+                min={0}
+                max={1}
+                onChange={(e, v) => {
+                  props.liveUpdate({ ...sticker, scaleV: v })
+                }}
+                onChangeCommitted={(e, v) => {
+                  props.update({ ...sticker, scaleV: v })
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography id="discrete-slider" gutterBottom>
+                Mirror
+              </Typography>
+              <Switch
+                value={sticker.mirror}
+                checked={sticker.mirror}
+                onChange={(e, v) => {
+                  props.liveUpdate({ ...sticker, mirror: v })
+                  props.update({ ...sticker, mirror: v })
+                }}
+              />
+            </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="discrete-slider" gutterBottom>
-              Start
-            </Typography>
-            <Slider
-              value={props.data.start}
-              aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              step={3}
-              marks
-              min={0}
-              max={360}
-              style={{ width: '80%', marginRight: '8px' }}
-              onChange={(e, v) => {
-                props.liveUpdate({ ...sticker, start: v })
-              }}
-              onChangeCommitted={(e, v) => {
-                props.update({ ...sticker, start: v })
-              }}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="discrete-slider" gutterBottom>
-              Length
-            </Typography>
-            <Slider
-              value={sticker.length}
-              aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              step={3}
-              marks
-              min={0}
-              max={360}
-              style={{ width: '80%', marginRight: '8px' }}
-              onChange={(e, v) => {
-                props.liveUpdate({ ...sticker, length: v })
-              }}
-              onChangeCommitted={(e, v) => {
-                props.update({ ...sticker, length: v })
-              }}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="discrete-slider" gutterBottom>
-              Offset U
-            </Typography>
-            <Slider
-              style={{ width: '80%', marginRight: '8px' }}
-              value={sticker.offsetU}
-              aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              step={0.1}
-              marks
-              min={-1}
-              max={1}
-              onChange={(e, v) => {
-                props.liveUpdate({ ...sticker, offsetU: v })
-              }}
-              onChangeCommitted={(e, v) => {
-                props.update({ ...sticker, offsetU: v })
-              }}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="discrete-slider" gutterBottom>
-              Offset V
-            </Typography>
-            <Slider
-              style={{ width: '80%', marginRight: '8px' }}
-              value={sticker.offsetV}
-              aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              step={0.1}
-              marks
-              min={-1}
-              max={1}
-              onChange={(e, v) => {
-                props.liveUpdate({ ...sticker, offsetV: v })
-              }}
-              onChangeCommitted={(e, v) => {
-                props.update({ ...sticker, offsetV: v })
-              }}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="discrete-slider" gutterBottom>
-              Scale U
-            </Typography>
-            <Slider
-              style={{ width: '80%', marginRight: '8px' }}
-              value={sticker.scaleU}
-              aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              step={0.1}
-              marks
-              min={0}
-              max={1}
-              onChange={(e, v) => {
-                props.liveUpdate({ ...sticker, scaleU: v })
-              }}
-              onChangeCommitted={(e, v) => {
-                props.update({ ...sticker, scaleU: v })
-              }}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="discrete-slider" gutterBottom>
-              Scale V
-            </Typography>
-            <Slider
-              style={{ width: '80%', marginRight: '8px' }}
-              value={sticker.scaleV}
-              aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              step={0.1}
-              marks
-              min={0}
-              max={1}
-              onChange={(e, v) => {
-                props.liveUpdate({ ...sticker, scaleV: v })
-              }}
-              onChangeCommitted={(e, v) => {
-                props.update({ ...sticker, scaleV: v })
-              }}
-            />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography id="discrete-slider" gutterBottom>
-              Mirror
-            </Typography>
-            <Switch
-              value={sticker.mirror}
-              checked={sticker.mirror}
-              onChange={(e, v) => {
-                props.liveUpdate({ ...sticker, mirror: v })
-                props.update({ ...sticker, mirror: v })
-              }}
-            />
-          </div>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <ButtonGroup
-            // color="primary"
-            aria-label="outlined primary button group"
-            style={{ alignSelf: 'center', margin: '16px' }}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            <Button
-              startIcon={<SettingsBackupRestoreIcon />}
-              onClick={() => {
-                props.apply('reset')
-              }}
+            <ButtonGroup
+              // color="primary"
+              aria-label="outlined primary button group"
+              style={{ alignSelf: 'center', margin: '16px' }}
             >
-              reset
-            </Button>
+              <Button
+                startIcon={<SettingsBackupRestoreIcon />}
+                onClick={() => {
+                  props.apply('reset')
+                }}
+              >
+                reset
+              </Button>
 
-            <Button
-              startIcon={<CancelIcon />}
-              onClick={() => {
-                props.apply('cancel')
-              }}
-            >
-              cancel
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<CheckCircleIcon />}
-              onClick={() => {
-                props.apply('update')
-              }}
-            >
-              Apply
-            </Button>
-          </ButtonGroup>
-        </div>
+              <Button
+                startIcon={<CancelIcon />}
+                onClick={() => {
+                  props.apply('cancel')
+                }}
+              >
+                cancel
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<CheckCircleIcon />}
+                onClick={() => {
+                  props.apply('update')
+                }}
+              >
+                Apply
+              </Button>
+            </ButtonGroup>
+          </div>
+        </Scrollbars>
       </div>
     </div>
   )

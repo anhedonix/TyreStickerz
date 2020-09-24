@@ -208,11 +208,12 @@ const Editor = () => {
                 )
               },
               About: () => setAbout(true),
-              Update: () =>
+              Open: e => router.push(`/gallery`),
+              Update: currentName =>
                 customStickers.update(
                   uid,
                   null,
-                  { data: [...stickersList] },
+                  { name: currentName, data: [...stickersList] },
                   true
                 ),
             }}
