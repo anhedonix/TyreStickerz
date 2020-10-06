@@ -108,23 +108,33 @@ const Designer = () => {
       })
   }, [])
 
-  const goToNextPage = element => {
+  const goToPrevPage = () => {
+    console.log(data)
     customStickers
-      .read(null, null, { limit: 10, orderby: 'name', start: true, element })
-      .then(cdata => {
-        setData(cdata)
-        setPage(page + 1)
-        console.log(cdata)
+      .read(null, null, {
+        limit: 10,
+        orderby: 'name',
+        start: false,
+        element: data[0].doc,
       })
-  }
-
-  const goToPrevPage = element => {
-    customStickers
-      .read(null, null, { limit: 10, orderby: 'name', start: false, element })
       .then(cdata => {
         setData(cdata)
         setPage(page - 1)
-        console.log(cdata)
+      })
+  }
+
+  const goToNextPage = () => {
+    console.log(data)
+    customStickers
+      .read(null, null, {
+        limit: 10,
+        orderby: 'name',
+        start: true,
+        element: data[data.length - 1].doc,
+      })
+      .then(cdata => {
+        setData(cdata)
+        setPage(page + 1)
       })
   }
 
@@ -155,14 +165,8 @@ const Designer = () => {
           ))}
         </div>
         <div>
-          {page != 0 && (
-            <Button onClick={() => goToPrevPage(data[0].doc)}>Prev</Button>
-          )}
-          {data.length == 10 && (
-            <Button onClick={() => goToNextPage(data[data.length - 1].doc)}>
-              Next
-            </Button>
-          )}
+          <Button onClick={() => goToPrevPage()}>Prev</Button>
+          <Button onClick={() => goToNextPage()}>Next</Button>
         </div>
       </>
     )
