@@ -90,6 +90,7 @@ const Designer = () => {
   const [accessories, setAccessories] = useState()
   const [stickerMesh, setStickerMesh] = useState()
   const [currentSticker, setCurrentSticker] = useState()
+  const [page, setPage] = useState(0)
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
@@ -100,36 +101,74 @@ const Designer = () => {
       CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
       CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
     })
-    customStickers.read().then(cdata => {
-      setData(cdata)
-    })
+    customStickers
+      .read(null, null, { limit: 10, orderby: 'name' })
+      .then(cdata => {
+        setData(cdata)
+      })
   }, [])
 
-  return (
-    <div className={classes.designer}>
-      {data.map(e => (
-        <Paper className={classes.canvas}>
-          <Canvas
-            rim={rim}
-            wheel={wheel}
-            accessories={accessories}
-            stickerMesh={stickerMesh}
-            stickers={e.data}
-            currentSticker={currentSticker}
-            style={{ flexGrow: '1' }}
-          />
-          <div className={classes.button}>
-            <a href={`/design/${e.uid}`} target="_blank">
-              <Button startIcon={<VisibilityIcon />}>View</Button>
-            </a>
-            <Link href={`/editor/${e.uid}`}>
-              <Button startIcon={<EditIcon />}>Edit</Button>
-            </Link>
-          </div>
-        </Paper>
-      ))}
-    </div>
-  )
+  const goToNextPage = element => {
+    customStickers
+      .read(null, null, { limit: 10, orderby: 'name', start: true, element })
+      .then(cdata => {
+        setData(cdata)
+        setPage(page + 1)
+        console.log(cdata)
+      })
+  }
+
+  const goToPrevPage = element => {
+    customStickers
+      .read(null, null, { limit: 10, orderby: 'name', start: false, element })
+      .then(cdata => {
+        setData(cdata)
+        setPage(page - 1)
+        console.log(cdata)
+      })
+  }
+
+  if (wheel && rim && accessories) {
+    return (
+      <>
+        <div className={classes.designer}>
+          {data.map(e => (
+            <Paper className={classes.canvas} key={e.uid}>
+              <Canvas
+                rim={rim}
+                wheel={wheel}
+                accessories={accessories}
+                stickerMesh={stickerMesh}
+                stickers={e.data}
+                currentSticker={currentSticker}
+                style={{ flexGrow: '1' }}
+              />
+              <div className={classes.button}>
+                <a href={`/design/${e.uid}`} target="_blank">
+                  <Button startIcon={<VisibilityIcon />}>View</Button>
+                </a>
+                <Link href={`/editor/${e.uid}`}>
+                  <Button startIcon={<EditIcon />}>Edit</Button>
+                </Link>
+              </div>
+            </Paper>
+          ))}
+        </div>
+        <div>
+          {page != 0 && (
+            <Button onClick={() => goToPrevPage(data[0].doc)}>Prev</Button>
+          )}
+          {data.length == 10 && (
+            <Button onClick={() => goToNextPage(data[data.length - 1].doc)}>
+              Next
+            </Button>
+          )}
+        </div>
+      </>
+    )
+  } else {
+    return null
+  }
 }
 
 export default Designer
