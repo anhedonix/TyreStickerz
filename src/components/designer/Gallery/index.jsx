@@ -81,6 +81,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const paginationLimit = 8
+
 const Designer = () => {
   const { state, dispatch } = useContext(MainContext)
   const classes = useStyles(state)
@@ -102,7 +104,7 @@ const Designer = () => {
       CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
     })
     customStickers
-      .read(null, null, { limit: 10, orderby: 'name' })
+      .read(null, null, { limit: paginationLimit, orderby: 'name' })
       .then(cdata => {
         setData(cdata)
       })
@@ -112,7 +114,7 @@ const Designer = () => {
     console.log(data)
     customStickers
       .read(null, null, {
-        limit: 10,
+        limit: paginationLimit,
         orderby: 'name',
         start: false,
         element: data[0].doc,
@@ -127,7 +129,7 @@ const Designer = () => {
     console.log(data)
     customStickers
       .read(null, null, {
-        limit: 10,
+        limit: paginationLimit,
         orderby: 'name',
         start: true,
         element: data[data.length - 1].doc,
