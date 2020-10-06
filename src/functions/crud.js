@@ -17,7 +17,8 @@ const crud = type => {
      * Read content
      * @param {string} UID ID that has to be used.
      */
-    read: (uid, filter = null) => store.readContent(type, uid, filter),
+    read: (uid, filter = null, pagination = null) =>
+      store.readContent(type, uid, filter, pagination),
 
     /**
      * Read content snapshot.

@@ -81,6 +81,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const paginationLimit = 8
+
 const Designer = () => {
   const { state, dispatch } = useContext(MainContext)
   const classes = useStyles(state)
@@ -90,6 +92,7 @@ const Designer = () => {
   const [accessories, setAccessories] = useState()
   const [stickerMesh, setStickerMesh] = useState()
   const [currentSticker, setCurrentSticker] = useState()
+  const [page, setPage] = useState(0)
 
   useEffect(() => {
     axios.get('/api/defaults').then(i => {
@@ -100,36 +103,78 @@ const Designer = () => {
       CONTENT.rims.read(i.data.rim).then(j => setRim(j.model))
       CONTENT.accessories.read(i.data.acc).then(j => setAccessories(j.model))
     })
-    customStickers.read().then(cdata => {
-      setData(cdata)
-    })
+    customStickers
+      .read(null, null, { limit: paginationLimit, orderby: 'name' })
+      .then(cdata => {
+        setData(cdata)
+      })
   }, [])
 
-  return (
-    <div className={classes.designer}>
-      {data.map(e => (
-        <Paper className={classes.canvas}>
-          <Canvas
-            rim={rim}
-            wheel={wheel}
-            accessories={accessories}
-            stickerMesh={stickerMesh}
-            stickers={e.data}
-            currentSticker={currentSticker}
-            style={{ flexGrow: '1' }}
-          />
-          <div className={classes.button}>
-            <a href={`/design/${e.uid}`} target="_blank">
-              <Button startIcon={<VisibilityIcon />}>View</Button>
-            </a>
-            <Link href={`/editor/${e.uid}`}>
-              <Button startIcon={<EditIcon />}>Edit</Button>
-            </Link>
-          </div>
-        </Paper>
-      ))}
-    </div>
-  )
+  const goToPrevPage = () => {
+    console.log(data)
+    customStickers
+      .read(null, null, {
+        limit: paginationLimit,
+        orderby: 'name',
+        start: false,
+        element: data[0].doc,
+      })
+      .then(cdata => {
+        setData(cdata)
+        setPage(page - 1)
+      })
+  }
+
+  const goToNextPage = () => {
+    console.log(data)
+    customStickers
+      .read(null, null, {
+        limit: paginationLimit,
+        orderby: 'name',
+        start: true,
+        element: data[data.length - 1].doc,
+      })
+      .then(cdata => {
+        setData(cdata)
+        setPage(page + 1)
+      })
+  }
+
+  if (wheel && rim && accessories) {
+    return (
+      <>
+        <div className={classes.designer}>
+          {data.map(e => (
+            <Paper className={classes.canvas} key={e.uid}>
+              <Canvas
+                rim={rim}
+                wheel={wheel}
+                accessories={accessories}
+                stickerMesh={stickerMesh}
+                stickers={e.data}
+                currentSticker={currentSticker}
+                style={{ flexGrow: '1' }}
+              />
+              <div className={classes.button}>
+                <a href={`/design/${e.uid}`} target="_blank">
+                  <Button startIcon={<VisibilityIcon />}>View</Button>
+                </a>
+                <Link href={`/editor/${e.uid}`}>
+                  <Button startIcon={<EditIcon />}>Edit</Button>
+                </Link>
+              </div>
+            </Paper>
+          ))}
+        </div>
+        <div>
+          <Button onClick={() => goToPrevPage()}>Prev</Button>
+          <Button onClick={() => goToNextPage()}>Next</Button>
+        </div>
+      </>
+    )
+  } else {
+    return null
+  }
 }
 
 export default Designer

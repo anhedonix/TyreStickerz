@@ -218,7 +218,17 @@ store.createContent = (contentType, id = null, payload = null) => {
  * This function works well on arrays and objects. It is not designed for any
  * other types
  */
-store.readContent = (contentType, id = null, filter = null) => {
+store.readContent = (
+  contentType,
+  id = null,
+  filter = null,
+  pagination = {
+    orderby: '',
+    limit: null,
+    element: null,
+    start: true,
+  }
+) => {
   return new Promise((resolve, reject) => {
     const [access, token] = contentType.token.split(':')
     let path
@@ -262,15 +272,60 @@ store.readContent = (contentType, id = null, filter = null) => {
             .catch(reason => reject(reason))
         } else {
           if (!filter) {
-            firestore
-              .collection(token)
-              .get()
-              .then(docs => {
-                const data = []
-                docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
-                resolve(data)
-              })
-              .catch(reason => reject(reason))
+            if (pagination) {
+              const currentCollectionRef = firestore
+                .collection(token)
+                .orderBy(pagination.orderby)
+                .limit(pagination.limit)
+              if (pagination.element) {
+                if (pagination.start) {
+                  currentCollectionRef
+                    .startAt(pagination.element)
+                    .get()
+                    .then(docs => {
+                      const data = []
+                      docs.forEach(doc =>
+                        data.push({ ...doc.data(), uid: doc.id, doc })
+                      )
+                      resolve(data)
+                    })
+                    .catch(reason => reject(reason))
+                } else {
+                  currentCollectionRef
+                    .endAt(pagination.element)
+                    .get()
+                    .then(docs => {
+                      const data = []
+                      docs.forEach(doc =>
+                        data.push({ ...doc.data(), uid: doc.id, doc })
+                      )
+                      resolve(data)
+                    })
+                    .catch(reason => reject(reason))
+                }
+              } else {
+                currentCollectionRef
+                  .get()
+                  .then(docs => {
+                    const data = []
+                    docs.forEach(doc =>
+                      data.push({ ...doc.data(), uid: doc.id, doc })
+                    )
+                    resolve(data)
+                  })
+                  .catch(reason => reject(reason))
+              }
+            } else {
+              firestore
+                .collection(token)
+                .get()
+                .then(docs => {
+                  const data = []
+                  docs.forEach(doc => data.push({ ...doc.data(), uid: doc.id }))
+                  resolve(data)
+                })
+                .catch(reason => reject(reason))
+            }
           } else {
             const [filterType, filterToken] = filter.split(':')
             firestore
