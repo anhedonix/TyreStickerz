@@ -56,7 +56,7 @@
     "react-swipeable-views": "^0.13.9",
     "react-three-fiber": "^4.2.21",
     "react-touch": "^0.4.4",
-    "three": "^0.119.1",
+    "three": "^0.125.0",
     "typeface-roboto": "^0.0.75",
     "uuid": "^8.3.0",
     "validate.js": "^0.13.1",
