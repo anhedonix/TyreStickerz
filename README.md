@@ -1,2 +1,2 @@
 # TyreStickers
-TyreSticker Designer for HotTracks
+TyreSticker Designer for HotTracks.
