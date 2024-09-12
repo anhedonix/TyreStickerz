@@ -7,8 +7,8 @@
     "secondaryColor": "#ff2200"
   },
   "engines": {
-    "node": "14.4.x",
-    "npm": "6.14.x"
+    "node": "20.x",
+    "npm": "10.x"
   },
   "cacheDirectories": [
     ".next/cache"
